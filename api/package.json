@@ -1,0 +1,28 @@
+{
+  "name": "orders",
+  "version": "1.0.0",
+  "description": "Manages the orders of a restaurant",
+  "main": "src/main.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "ts-node src/main.ts",
+    "lint": "tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix"
+  },
+  "author": "Paul Toffoloni",
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/express-session": "^1.17.7",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "@types/express": "^4.17.17",
+    "@types/mongoose": "^5.11.97",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "mongoose": "^7.2.0",
+    "ts-node": "^10.9.1",
+    "winston": "^3.8.2"
+  }
+}
