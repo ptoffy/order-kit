@@ -10,7 +10,7 @@ function checkRole(requiredRole: UserRole) {
         const token = header && header.split(' ')[1];
 
         if (!token) {
-            return res.status(401).json({ message: 'No token, authorization denied' });
+            return res.status(401).json({ message: 'Please provide an authentication token!' });
         }
 
         try {
