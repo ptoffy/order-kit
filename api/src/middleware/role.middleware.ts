@@ -1,26 +1,32 @@
-// import { Request, Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
+import { Request, Response } from 'express';
+import { UserRole } from '../models/user.model';
+import logger from '../logger';
 
-// import { UserSessionData } from '../extensions/session+user';
-// import { User, UserRole } from '../models/user';
-// import logger from '../logger';
+// This middleware checks if the user has the required role to access a resource
+function checkRole(requiredRole: UserRole) {
+    return function (req: Request, res: Response, next: Function) {
+        const header = req.headers['authorization'];
+        const token = header && header.split(' ')[1];
 
-// /**
-//  * Checks if the user is authenticated and has the specified role.
-//  * @param role The role to check for.
-//  * @returns A 403 response if the user is not authenticated or does not have the specified role.
-//  */
-// function requireRole(role: UserRole) {
-//     return async (req: Request, res: Response, next: NextFunction) => {
-//         const session = req.session as UserSessionData;
-//         try {
-//             const user = await User.findById(session.userId);
-//             if (!user || user.role !== role) {
-//                 return res.status(403).send({ message: 'Forbidden' });
-//             }
-//             next();
-//         } catch (err) {
-//             logger.error(err);
-//             return res.status(500).send({ message: 'Internal Server Error' });
-//         }
-//     }
-// }
+        if (!token) {
+            return res.status(401).json({ message: 'No token, authorization denied' });
+        }
+
+        try {
+            const decoded: any = jwt.verify(token, process.env.JWT_PRIVATE_KEY!);
+            const role = decoded.role;
+
+            if (role !== requiredRole) {
+                logger.warn(`User with role ${role} tried to access a resource that requires role ${requiredRole}`);
+                return res.status(403).json({ message: 'Forbidden' });
+            }
+
+            next();
+        } catch (error) {
+            res.status(400).json({ message: 'Invalid token' });
+        }
+    }
+}
+
+export { checkRole };
