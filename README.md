@@ -17,6 +17,6 @@ docker-compose up
 ```
 This will start the frontend, backend and database services. The frontend will be available at `localhost:4200` and the backend at `localhost:3000`.
 
-> :warning: The application relies on an `.env` file to set environment variables. This file is not included in the repository for security reasons. 
+> :warning: The backend application relies on an `.env` file to set environment variables. This file is not included in the repository for security reasons. 
 If you want to run the application locally, you will need to create this file following the `.env.example` file.
 

@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
+import { BaseModel, BaseModelType } from "./baseModel";
 
 enum OrderStatus {
     NEW = "new",
@@ -7,22 +8,24 @@ enum OrderStatus {
     SERVED = "served"
 }
 
-interface Order extends Document {
+interface OrderType extends BaseModelType {
     table: number;
-    items: string[];
+    items: { itemId: string, name: string, quantity: number, price: number }[];
     status: OrderStatus;
-    createdAt: Date;
-    updatedAt: Date;
 }
 
-const orderSchema = new mongoose.Schema<Order>({
+const orderSchema = new Schema<OrderType>({
+    ...BaseModel.schema.obj,
     table: { type: Number, required: true },
     items: { type: [String], required: true },
-    status: { type: String, enum: Object.values(OrderStatus), required: true },
+    status: {
+        type: String, enum: Object.values(OrderStatus),
+        required: true, default: OrderStatus.NEW
+    },
     createdAt: { type: Date, required: true },
     updatedAt: { type: Date, required: true }
 });
 
-const OrderModel = mongoose.model<Order>("Order", orderSchema);
+const Order = model<OrderType>("Order", orderSchema);
 
-export { Order, OrderModel, OrderStatus };
+export { Order, OrderStatus };

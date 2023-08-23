@@ -6,31 +6,35 @@
 version: '3.8'
 
 services:
-  # Setup the backend Node.js API
-  api:
-    build: api
-    env_file: api/.env
-    # Docker-compose fails to read the .env file if we set the environment variables here 😑
-    # environment:
-    #   - SESSION_SECRET=${SESSION_SECRET}
-    #   - MONGODB_URI=${MONGODB_URI}
-    ports:
-      - '3000:3000'
-    # Create a connection to the MongoDB service with the name of the service as the host name
-    links:
-      - db 
-    # Start the MongoDB service before the API service
-    depends_on:
-      - db
-  # Setup the frontend Angular.js UI
-  ui:
-    build: ui
-    ports:
-      - '8080:8080'
-    depends_on:
-      - api
-  # Setup the MongoDB service
+  # # Setup the backend Node.js API
+  # api:
+  #   build: api
+  #   env_file: api/.env
+  #   # Docker-compose fails to read the .env file if we set the environment variables here 😑
+  #   # environment:
+  #   #   - SESSION_SECRET=${SESSION_SECRET}
+  #   #   - MONGODB_URI=${MONGODB_URI}
+  #   ports:
+  #     - '3000:3000'
+  #   # Create a connection to the MongoDB service with the name of the service as the host name
+  #   links:
+  #     - db 
+  #   # Start the MongoDB service before the API service
+  #   depends_on:
+  #     - db
+  # # Setup the frontend Angular.js UI
+  # ui:
+  #   build: ui
+  #   ports:
+  #     - '8080:8080'
+  #   depends_on:
+  #     - api
+  # # Setup the MongoDB service
   db:
     image: mongo
+    container_name: orders-db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=password
     ports:
       - '27017:27017'

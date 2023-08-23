@@ -1,17 +1,16 @@
 import express, { Express, Request, Response } from 'express';
 import mongoose from 'mongoose';
 import session from 'express-session';
-import dotenv from 'dotenv';
-import fs from 'fs';
 
-import { requireAuthenticated } from './middleware/requireAuthenticated';
 import logger from './logger';
-
-// Import Controllers
-import * as userController from './controllers/user';
 
 // Create Express server
 const app = express();
+
+// Import env variables from env file only when in dev mode
+if (app.get('env') === 'development') {
+    require('dotenv').config({ path: 'api/.env' });
+}
 
 if (!process.env.SESSION_SECRET) {
     logger.error('No session secret. Set SESSION_SECRET environment variable.');
@@ -36,12 +35,14 @@ app.set('port', process.env.PORT || 3000);
 app.use(express.json());
 
 // Session config
-const sessionSettings = {
-    resave: true,
+
+// Add/configure our app to use the session middleware with a unique session id we generate. 
+// We will log the request.sessionID object before and after the middleware is used.
+app.use(session({
+    resave: false,
     saveUninitialized: true,
     secret: process.env.SESSION_SECRET
-}
-app.use(session(sessionSettings)); 
+}));
 
 // Routes
 
@@ -56,5 +57,8 @@ app.listen(app.get("port"), () => {
 app.get('/', (req: Request, res: Response) => {
     res.send('Hello World!');
 });
+
+// var userRouter = require('./routes/user');
+// app.use('/users', userRouter);
 
 export default app;
