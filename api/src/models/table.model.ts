@@ -1,5 +1,5 @@
 import { Schema, Document, Model, model, Types } from "mongoose";
-import { BaseModel, BaseModelType } from "./baseModel";
+import { BaseModel, BaseModelType } from "./base.model";
 
 interface TableType extends BaseModelType {
     number: number;

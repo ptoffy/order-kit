@@ -1,5 +1,5 @@
 import { Schema, Document, Model, model } from "mongoose";
-import { BaseModelType, BaseModel } from "./baseModel";
+import { BaseModelType, BaseModel } from "./base.model";
 
 enum UserRole {
     WAITER = "waiter",

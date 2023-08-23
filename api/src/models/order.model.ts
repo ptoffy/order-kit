@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { BaseModel, BaseModelType } from "./baseModel";
+import { BaseModel, BaseModelType } from "./base.model";
 
 enum OrderStatus {
     NEW = "new",

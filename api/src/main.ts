@@ -61,8 +61,8 @@ app.get('/', (req: Request, res: Response) => {
     res.send('Hello World!');
 });
 
-var userController = require('./controllers/user');
-app.use('/users', userController);
+import userRouter from './routers/user.router';
+app.use('/users', userRouter);
 
 
 export default app;
