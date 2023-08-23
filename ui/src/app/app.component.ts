@@ -1,16 +1,18 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-root',
-  template: '<h1>Angular App</h1>',
+  template: `
+    <app-header></app-header>
+  `,
+  styles: []
 })
 export class AppComponent {
-  constructor(private http: HttpClient) {}
+  constructor(private modalService: NgbModal) {
+  }
 
-  ngOnInit() {
-    this.http.get('/').subscribe((data: any) => {
-      console.log(data);
-    });
+  public open(modal: any): void {
+    this.modalService.open(modal);
   }
 }

@@ -1,23 +1,23 @@
-# Fetch the latest node image from Docker Hub
+# Create a docker image for the angular ui
 FROM node:20-alpine
 
-# Create a directory to hold the application code inside the image
+# Change directory so that our commands run inside this new directory
 WORKDIR /app
 
-# Copy the package.json and package-lock.json files to the image
+# Copy the package.json and package-lock.json to the working directory
 COPY package*.json ./
 
-# Install the dependencies
-RUN npm install
+# Install dependencies
+RUN npm install -g @angular/cli && npm install
 
-# Copy the rest of the application code to the image
+# Copy the rest of the code to the working directory
 COPY . .
 
 # Build the application
-RUN npm run build --prod
+RUN ng build
 
-# Expose the port the application is running on
-EXPOSE 8080
+# Expose port 4200
+EXPOSE 4200
 
-# Run the application
+# Run the app
 CMD ["npm", "start"]
