@@ -5,6 +5,8 @@ import session from 'express-session';
 import logger from './logger';
 import morganMiddleware from './middleware/morgan.middleware';
 
+import { seedUser } from './seeds/user.seed';
+
 // Create Express server
 const app = express();
 
@@ -25,9 +27,10 @@ if (!process.env.MONGODB_URI) {
 
 // Connect to DB
 mongoose.connect(process.env.MONGODB_URI).then(() => {
-    logger.info('Connected to MongoDB');
+    logger.info('🐱 Connected to MongoDB');
+    seedUser();
 }).catch((err) => {
-    logger.error('MongoDB connection error: ' + err);
+    logger.error('❌ MongoDB connection error: ' + err);
     process.exit(1);
 });
 

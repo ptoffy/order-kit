@@ -9,7 +9,7 @@ interface BaseModelType extends mongoose.Document {
 
 const baseSchema = new mongoose.Schema<BaseModelType>(
     {
-        _id: { type: Schema.Types.ObjectId, required: true }
+        _id: { type: Schema.Types.ObjectId, required: true, auto: true },
     },
     {
         timestamps: true
