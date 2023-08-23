@@ -1,5 +1,6 @@
 import { Schema, Document, Model, model } from "mongoose";
-import { BaseModelType, BaseModel } from "./base.model";
+import { BaseModelType, baseSchema } from "./base.model";
+import { IsString, IsNotEmpty, Length, IsIn } from 'class-validator';
 
 enum UserRole {
     WAITER = "waiter",
@@ -19,8 +20,26 @@ interface UserType extends BaseModelType {
     };
 }
 
+class CreateUserDTO {
+    @IsString()
+    @IsNotEmpty()
+    username!: string;
+
+    @IsString()
+    @IsNotEmpty()
+    password!: string;
+
+    @IsString()
+    @IsNotEmpty()
+    name!: string;
+
+    @IsString()
+    @IsIn(Object.values(UserRole))
+    role!: UserRole;
+}
+
 const userSchema = new Schema<UserType>({
-    ...BaseModel.schema.obj,
+    ...baseSchema.obj,
     username: { type: String, unique: true, required: true },
     password: { type: String, required: true },
     name: { type: String, required: true },

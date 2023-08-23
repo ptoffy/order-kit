@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { BaseModel, BaseModelType } from "./base.model";
+import { baseSchema, BaseModelType } from "./base.model";
 
 interface MenuItemType extends BaseModelType {
     name: string;
@@ -8,7 +8,7 @@ interface MenuItemType extends BaseModelType {
 }
 
 const menuItemSchema = new Schema<MenuItemType>({
-    ...BaseModel.schema.obj,
+    ...baseSchema.obj,
     name: { type: String, required: true },
     price: { type: Number, required: true },
     category: { type: String, required: true }

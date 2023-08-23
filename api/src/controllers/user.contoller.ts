@@ -4,6 +4,9 @@ import { UserType, User, UserRole } from '../models/user.model';
 import { UserSessionData } from '../extensions/session+user';
 import logger from '../logger';
 import jwt from 'jsonwebtoken';
+import { plainToClass } from 'class-transformer';
+import { IsString, IsNotEmpty, MinLength, validate } from 'class-validator';
+
 
 async function registerHandler(req: Request, res: Response) {
     try {
@@ -19,10 +22,17 @@ async function registerHandler(req: Request, res: Response) {
 
 async function loginHandler(req: Request, res: Response) {
     try {
-        const { email, password } = req.body;
+        const loginRequest = plainToClass(LoginRequest, req.body);
+        const errors = await validate(loginRequest);
+
+        if (errors.length > 0) {
+            const message = "Invalid request body: " + errors.map((error: any) => Object.values(error.constraints)).join(', ');
+            logger.warn(message);
+            return res.status(400).json(message);
+        }
 
         // Check if the user exists
-        const user: UserType | null = await User.findOne({ email });
+        const user: UserType | null = await User.findOne({ username: loginRequest.username });
         if (!user) {
             // We don't want to tell the user that the email is not found 
             // since it could reveal whether a user is registered or not
@@ -30,7 +40,7 @@ async function loginHandler(req: Request, res: Response) {
         }
 
         // Check if the password is correct
-        const passwordValid: boolean = await bcrypt.compare(password, user.password);
+        const passwordValid: boolean = await bcrypt.compare(loginRequest.password, user.password);
         if (!passwordValid) {
             return res.status(401).send({ message: 'Invalid email or password' });
         }
@@ -57,7 +67,18 @@ async function deleteHandler(req: Request, res: Response) {
 
 
 function generateAuthToken(user: UserType) {
-    return jwt.sign({ _id: user._id }, process.env.JWT_SECRET!);
+    return jwt.sign({ _id: user._id }, process.env.JWT_PRIVATE_KEY!, { expiresIn: '1h' });
+}
+
+class LoginRequest {
+    @IsString()
+    @IsNotEmpty()
+    username!: string;
+
+    @IsString()
+    @IsNotEmpty()
+    @MinLength(8)
+    password!: string;
 }
 
 export { registerHandler, loginHandler, deleteHandler };

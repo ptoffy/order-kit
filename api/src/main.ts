@@ -25,6 +25,11 @@ if (!process.env.MONGODB_URI) {
     process.exit(1);
 }
 
+if (!process.env.JWT_PRIVATE_KEY) {
+    logger.error('No JWT private key. Set JWT_PRIVATE_KEY environment variable.');
+    process.exit(1);
+}
+
 // Connect to DB
 mongoose.connect(process.env.MONGODB_URI).then(() => {
     logger.info('🐱 Connected to MongoDB');

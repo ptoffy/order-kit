@@ -1,5 +1,5 @@
 import { Schema, Document, Model, model, Types } from "mongoose";
-import { BaseModel, BaseModelType } from "./base.model";
+import { baseSchema, BaseModelType } from "./base.model";
 
 interface TableType extends BaseModelType {
     number: number;
@@ -10,7 +10,7 @@ interface TableType extends BaseModelType {
 }
 
 const tableSchema = new Schema<TableType>({
-    ...BaseModel.schema.obj,
+    ...baseSchema.obj,
     number: { type: Number, required: true },
     seats: { type: Number, required: true },
     occupancy: { type: Number, default: 0 },

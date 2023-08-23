@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { BaseModel, BaseModelType } from "./base.model";
+import { baseSchema, BaseModelType } from "./base.model";
 
 enum OrderStatus {
     NEW = "new",
@@ -15,7 +15,7 @@ interface OrderType extends BaseModelType {
 }
 
 const orderSchema = new Schema<OrderType>({
-    ...BaseModel.schema.obj,
+    ...baseSchema.obj,
     table: { type: Number, required: true },
     items: { type: [String], required: true },
     status: {

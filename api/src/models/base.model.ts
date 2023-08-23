@@ -16,6 +16,4 @@ const baseSchema = new mongoose.Schema<BaseModelType>(
     }
 );
 
-const BaseModel = mongoose.model<BaseModelType>("BaseModel", baseSchema);
-
-export { BaseModel, BaseModelType };
+export { baseSchema, BaseModelType };
