@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import session from 'express-session';
 
 import logger from './logger';
+import morganMiddleware from './middleware/morgan.middleware';
 
 // Create Express server
 const app = express();
@@ -44,13 +45,15 @@ app.use(session({
     secret: process.env.SESSION_SECRET
 }));
 
+// Logger
+
+app.use(morganMiddleware);
+
 // Routes
 
-app.listen(app.get("port"), () => {
-    console.log(
-        'Orders API is running at http://localhost:%d in %s mode',
-        app.get("port"),
-        app.get("env")
+app.listen(app.get("port"), '0.0.0.0', () => {
+    logger.info(
+        'Orders API is running at http://localhost:' + app.get("port") + ' in ' + app.get("env") + ' mode',
     );
 });
 
@@ -58,7 +61,8 @@ app.get('/', (req: Request, res: Response) => {
     res.send('Hello World!');
 });
 
-// var userRouter = require('./routes/user');
-// app.use('/users', userRouter);
+var userController = require('./controllers/user');
+app.use('/users', userController);
+
 
 export default app;
