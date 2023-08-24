@@ -1,6 +1,7 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import session from 'express-session';
+import cors from 'cors';
 
 import logger from './logger';
 import morganMiddleware from './middleware/morgan.middleware';
@@ -40,6 +41,9 @@ mongoose.connect(process.env.MONGODB_URI).then(() => {
 });
 
 // Express configuration
+app.use(cors({
+    origin: ['http://localhost:4200']
+}));
 app.set('port', process.env.PORT || 3000);
 app.use(express.json());
 
@@ -61,7 +65,7 @@ app.use(morganMiddleware);
 
 app.listen(app.get("port"), '0.0.0.0', () => {
     logger.info(
-        'Orders API is running at http://localhost:' + app.get("port") + ' in ' + app.get("env") + ' mode',
+        '⏱️ Orders API is running at http://localhost:' + app.get("port") + ' in ' + app.get("env") + ' mode',
     );
 });
 

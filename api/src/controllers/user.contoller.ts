@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import { UserType, User, UserRole } from '../models/user.model';
-import { UserSessionData } from '../extensions/session+user';
 import logger from '../logger';
 import jwt from 'jsonwebtoken';
 import { plainToClass } from 'class-transformer';
@@ -64,7 +63,6 @@ async function deleteHandler(req: Request, res: Response) {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 }
-
 
 function generateAuthToken(user: UserType) {
     return jwt.sign({ _id: user._id }, process.env.JWT_PRIVATE_KEY!, { expiresIn: '1h' });

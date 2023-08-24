@@ -9,6 +9,42 @@
             ],
             "group": "build",
             "label": "tsc: build - api/tsconfig.json"
+        },
+        {
+            "type": "npm",
+            "script": "start",
+            "problemMatcher": {
+                "owner": "typescript",
+                "source": "ts",
+                "applyTo": "closedDocuments",
+                "fileLocation": [
+                    "relative",
+                    "cwd"
+                ],
+                "pattern": "$tsc",
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": {
+                        "regexp": "(.*?)"
+                    },
+                    "endsPattern": {
+                        "regexp": "Compiled |Failed to compile."
+                    }
+                }
+            },
+            "isBackground": true,
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "label": "npm: start",
+            "options": {
+                "cwd": "${workspaceFolder}/ui"
+            }
         }
     ]
 }

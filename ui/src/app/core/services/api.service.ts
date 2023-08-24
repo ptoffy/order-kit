@@ -17,7 +17,11 @@ export class ApiService {
   }
 
   post<T>(endpoint: string, body: any): Observable<T> {
-    return this.http.post<T>(`${this.baseUrl}/${endpoint}`, body);
+    return this.http.post<T>(`${this.baseUrl}/${endpoint}`, body, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    });
   }
 
   put<T>(endpoint: string, body: any): Observable<T> {

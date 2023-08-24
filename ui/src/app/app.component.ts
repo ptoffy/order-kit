@@ -3,9 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-root',
-  template: `
-    <app-header></app-header>
-  `,
+  templateUrl: './app.component.html',
   styles: []
 })
 export class AppComponent {
