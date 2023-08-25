@@ -1,17 +1,17 @@
 <div class="container mt-5">
   <h2>Login</h2>
-  <form 
+  <form
     #loginForm="ngForm"
     (submit)="loginForm.form.valid && onLogin()"
   >
-    <div class="mb-3">
+    <div class="mb-3 mt-3">
       <label for="email-input" class="form-label">Username</label>
       <input 
         type="text" 
         name="username" 
         class="form-control" 
         id="username-input" 
-        [(ngModel)]="user.username" 
+        [(ngModel)]="loginRequest.username" 
         required
         [ngClass]="{ 'is-invalid': loginForm.submitted && loginForm.controls['username'].invalid }"
       />
@@ -25,7 +25,7 @@
         type="password" 
         class="form-control" 
         id="password-input" 
-        [(ngModel)]="user.password" 
+        [(ngModel)]="loginRequest.password"
         name="password" 
         required
         [ngClass]="{ 'is-invalid': loginForm.submitted && loginForm.controls['password'].invalid }"

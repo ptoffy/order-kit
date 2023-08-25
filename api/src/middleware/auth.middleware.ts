@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
+import { jwtUtil } from '../utils/jwt.util';
+import { UserJwtPayload } from '../models/jwt.model';
 
 // This middleware checks if the user is logged in
 function checkAuth(req: Request, res: Response, next: Function) {
@@ -11,7 +13,8 @@ function checkAuth(req: Request, res: Response, next: Function) {
     }
 
     try {
-        jwt.verify(token, process.env.JWT_PUBLIC_KEY!);
+        const decodedToken: UserJwtPayload = jwtUtil.verify(token) as UserJwtPayload;
+        req.userId = decodedToken.id;
     } catch (error) {
         return res.status(400).json({ message: 'Invalid token!' });
     }

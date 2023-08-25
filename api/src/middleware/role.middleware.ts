@@ -1,7 +1,7 @@
-import jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
 import { UserRole } from '../models/user.model';
 import logger from '../logger';
+import { jwtUtil } from '../utils/jwt.util';
 
 // This middleware checks if the user has the required role to access a resource
 function checkRole(requiredRole: UserRole) {
@@ -14,7 +14,7 @@ function checkRole(requiredRole: UserRole) {
         }
 
         try {
-            const decoded: any = jwt.verify(token, process.env.JWT_PRIVATE_KEY!);
+            const decoded: any = jwtUtil.verify(token);
             const role = decoded.role;
 
             if (role !== requiredRole) {

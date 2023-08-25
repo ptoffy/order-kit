@@ -1,0 +1,38 @@
+.live-dot {
+    height: .5rem;
+    position: relative;
+    width: .5rem;
+    border-radius: 100%;
+    background-color: #0cb770;
+}
+
+.live-dot::after {
+    content: '';
+    display: block;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    border-radius: 100%;
+    animation: 5s ease-out signal infinite;
+    -webkit-animation: 5s ease-out signal infinite;
+    background-color: inherit;
+    opacity: .5;
+}
+
+@-webkit-keyframes signal {
+
+    25%,
+    100% {
+        opacity: 0;
+        transform: scale(5);
+    }
+}
+
+@keyframes signal {
+
+    25%,
+    100% {
+        opacity: 0;
+        transform: scale(5);
+    }
+}

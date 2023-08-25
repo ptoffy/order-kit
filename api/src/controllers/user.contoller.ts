@@ -1,11 +1,22 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
-import { UserType, User, UserRole } from '../models/user.model';
+import { UserType, User } from '../models/user.model';
 import logger from '../logger';
 import jwt from 'jsonwebtoken';
 import { plainToClass } from 'class-transformer';
 import { IsString, IsNotEmpty, MinLength, validate } from 'class-validator';
+import { jwtUtil } from '../utils/jwt.util';
 
+async function meHandler(req: Request, res: Response) {
+    try {
+        const user = await User.findById(req.userId);
+        if (!user) return res.status(404).json({ message: 'User not found' });
+        res.json(user);
+    } catch (error) {
+        logger.error("Error getting user: " + error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
 
 async function registerHandler(req: Request, res: Response) {
     try {
@@ -35,18 +46,18 @@ async function loginHandler(req: Request, res: Response) {
         if (!user) {
             // We don't want to tell the user that the email is not found 
             // since it could reveal whether a user is registered or not
-            return res.status(401).send({ message: 'Invalid email or password' });
+            return res.status(401).json({ message: 'Invalid email or password' });
         }
 
         // Check if the password is correct
         const passwordValid: boolean = await bcrypt.compare(loginRequest.password, user.password);
         if (!passwordValid) {
-            return res.status(401).send({ message: 'Invalid email or password' });
+            return res.status(401).json({ message: 'Invalid email or password' });
         }
 
         // Generate a JWT token
-        const token = generateAuthToken(user);
-        res.json({ token });
+        const { token, expiration } = generateAuthToken(user);
+        res.json({ token, expiration });
     } catch (error) {
         logger.error("Error logging in: " + error);
         res.status(500).json({ message: 'Internal Server Error' });
@@ -64,8 +75,9 @@ async function deleteHandler(req: Request, res: Response) {
     }
 }
 
-function generateAuthToken(user: UserType) {
-    return jwt.sign({ _id: user._id }, process.env.JWT_PRIVATE_KEY!, { expiresIn: '1h' });
+function generateAuthToken(user: UserType): { token: string, expiration: number } {
+    const token = jwtUtil.sign({ id: user._id, role: user.role })
+    return { token, expiration: Date.now() + 3600000 };
 }
 
 class LoginRequest {
@@ -79,4 +91,4 @@ class LoginRequest {
     password!: string;
 }
 
-export { registerHandler, loginHandler, deleteHandler };
+export { registerHandler, loginHandler, deleteHandler, meHandler };

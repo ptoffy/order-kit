@@ -6,6 +6,8 @@ import { CoreModule } from './core/core.module';
 import { UserModule } from './user/user.module';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
+import { HomeModule } from './home/home.module';
+import { HeaderComponent } from './core/components/header/header.component';
 
 @NgModule({
   declarations: [
@@ -14,8 +16,10 @@ import { FormsModule } from '@angular/forms';
   imports: [
     BrowserModule,
     FormsModule,
+    HeaderComponent,
     NgbModule,
     CoreModule,
+    HomeModule,
     UserModule,
     AppRoutingModule
   ],

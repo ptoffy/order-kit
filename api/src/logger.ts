@@ -1,5 +1,4 @@
 import winston, { level } from 'winston';
-import { addColors } from 'winston/lib/winston/config';
 
 const colors = {
     http: 'magenta',

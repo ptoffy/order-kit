@@ -1,1 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
+html,
+body {
+    height: 100%;
+}
+
+.btn-primary {
+    background-color: #6290c8 !important;
+    border-color: #6290c8 !important;
+    color: #212529 !important;
+}
+
+.btn-outline-primary {
+    color: #6290c8 !important;
+    border-color: #6290c8 !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: #6290c8 !important;
+    border-color: #6290c8 !important;
+    color: #212529 !important;
+}

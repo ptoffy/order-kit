@@ -3,10 +3,9 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthService } from './services/auth.service';
 import { ApiService } from './services/api.service';
 // import { NotificationService } from './notification.service';
-import { authGuard } from './guards/auth.guard';
-import { loginGuard } from './guards/login.guard';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
+import { HeaderComponent } from './components/header/header.component';
 
 @NgModule({
   imports: [
@@ -26,6 +25,7 @@ import { ErrorInterceptor } from './interceptors/error.interceptor';
       useClass: ErrorInterceptor,
       multi: true
     }
-  ]
+  ],
+  declarations: []
 })
 export class CoreModule { }

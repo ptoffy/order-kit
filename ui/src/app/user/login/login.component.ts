@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { User } from '../../core/models/user.model';
 import { AuthService } from '../../core/services/auth.service';
 
 @Component({
@@ -8,7 +7,7 @@ import { AuthService } from '../../core/services/auth.service';
   styles: []
 })
 export class LoginComponent {
-  user: Partial<User> = {
+  loginRequest: LoginRequest = {
     username: '',
     password: ''
   };
@@ -16,8 +15,11 @@ export class LoginComponent {
   constructor(private authService: AuthService) { }
 
   onLogin() {
-    this.authService.login(this.user.username!, this.user.password!).subscribe(res => {
-      console.log(res);
-    });
+    this.authService.login(this.loginRequest.username, this.loginRequest.password).subscribe();
   }
+}
+
+interface LoginRequest {
+  username: string;
+  password: string;
 }
