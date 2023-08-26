@@ -1,10 +1,10 @@
 import { BaseModel } from "src/app/core/models/base.model";
 
 enum UserRole {
-    WAITER = "waiter",
-    COOK = "cook",
-    BARTENDER = "bartender",
-    CASHIER = "cashier"
+    Waiter = "waiter",
+    Cook = "cook",
+    Bartender = "bartender",
+    Cashier = "cashier"
 }
 
 interface User extends BaseModel {

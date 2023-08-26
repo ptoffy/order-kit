@@ -6,7 +6,17 @@ import { plainToClass } from 'class-transformer';
 import { IsString, IsNotEmpty, MinLength, validate } from 'class-validator';
 import { jwtUtil } from '../utils/jwt.util';
 
-async function meHandler(req: Request, res: Response) {
+export async function usersHandler(req: Request, res: Response) {
+    try {
+        const users = await User.find();
+        res.json(users);
+    } catch (error) {
+        logger.error("Error getting users: " + error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
+
+export async function meHandler(req: Request, res: Response) {
     try {
         const user = await User.findById(req.userId);
         if (!user) return res.status(404).json({ message: 'User not found' });
@@ -17,7 +27,7 @@ async function meHandler(req: Request, res: Response) {
     }
 }
 
-async function registerHandler(req: Request, res: Response) {
+export async function registerHandler(req: Request, res: Response) {
     try {
         const registrationRequest = plainToClass(RegistrationRequest, req.body);
         const errors = await validate(registrationRequest);
@@ -41,14 +51,14 @@ async function registerHandler(req: Request, res: Response) {
 
         // Generate a JWT token
         const { token, expiration } = generateAuthToken(user);
-        res.status(201).json({ token, expiration });
+        res.status(201).json({ token, expiration, role: user.role });
     } catch (error) {
         logger.error("Error registering: " + error);
         res.status(500).json({ message: 'Internal Server Error' });
     }
 }
 
-async function loginHandler(req: Request, res: Response) {
+export async function loginHandler(req: Request, res: Response) {
     try {
         const loginRequest = plainToClass(LoginRequest, req.body);
         const errors = await validate(loginRequest);
@@ -75,16 +85,17 @@ async function loginHandler(req: Request, res: Response) {
 
         // Generate a JWT token
         const { token, expiration } = generateAuthToken(user);
-        res.json({ token, expiration });
+        res.json({ token, expiration, role: user.role });
     } catch (error) {
         logger.error("Error logging in: " + error);
         res.status(500).json({ message: 'Internal Server Error' });
     }
 }
 
-async function deleteHandler(req: Request, res: Response) {
+export async function deleteHandler(req: Request, res: Response) {
     try {
-        const user = await User.findByIdAndDelete(req.params.id);
+        const username = req.params.username;
+        const user = await User.findOneAndDelete({ username });
         if (!user) return res.status(404).json({ message: 'User not found' });
         res.json({ message: 'User deleted successfully' });
     } catch (error) {
@@ -108,9 +119,6 @@ class LoginRequest {
     @MinLength(8)
     password!: string;
 }
-
-export { registerHandler, loginHandler, deleteHandler, meHandler };
-
 class RegistrationRequest {
     @IsString()
     @IsNotEmpty()

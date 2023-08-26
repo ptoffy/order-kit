@@ -6,7 +6,7 @@ export const jwtUtil = {
     },
     verify: (token: string): JwtPayload | string => {
         try {
-            return jwt.verify(token, process.env.JWT_PUBLIC_KEY!);
+            return jwt.verify(token, process.env.JWT_PRIVATE_KEY!);
         } catch (error) {
             throw new Error('Invalid token');
         }

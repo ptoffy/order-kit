@@ -13,19 +13,21 @@ function checkRole(requiredRole: UserRole) {
             return res.status(401).json({ message: 'Please provide an authentication token!' });
         }
 
+        var role: UserRole | null = null;
+
         try {
             const decoded: any = jwtUtil.verify(token);
-            const role = decoded.role;
-
-            if (role !== requiredRole) {
-                logger.warn(`User with role ${role} tried to access a resource that requires role ${requiredRole}`);
-                return res.status(403).json({ message: 'Forbidden' });
-            }
-
-            next();
+            role = decoded.role;
         } catch (error) {
             res.status(400).json({ message: 'Invalid token' });
         }
+
+        if (role !== requiredRole) {
+            logger.warn(`User with role ${role} tried to access a resource that requires role ${requiredRole}`);
+            return res.status(403).json({ message: 'Forbidden' });
+        }
+
+        next();
     }
 }
 
