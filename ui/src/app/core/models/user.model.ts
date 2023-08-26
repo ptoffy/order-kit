@@ -9,6 +9,7 @@ enum UserRole {
 
 interface User extends BaseModel {
     username: string;
+    password: string;
     name: string;
     role: UserRole;
     statistics: {

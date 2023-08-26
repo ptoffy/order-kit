@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { User } from '../models/user.model';
 import { ApiService } from 'src/app/core/services/api.service';
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -12,15 +11,20 @@ export class AuthService {
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
   private jwtTokenStorageName = 'auth-token';
   private jwtExpirationStorageName = 'auth-token-expiration';
-  public redirectUrl: string | null = null;
 
   constructor(
     private apiService: ApiService,
-    private router: Router
   ) { }
 
-  register(user: User) {
+  register(user: User): Observable<any> {
     return this.apiService.post('users/register', user)
+      .pipe(
+        tap(res => {
+          localStorage.setItem(this.jwtTokenStorageName, res.token);
+          localStorage.setItem(this.jwtExpirationStorageName, res.expiration);
+          this.isAuthenticatedSubject.next(true);
+        })
+      );
   }
 
   login(username: string, password: string): Observable<any> {
@@ -30,13 +34,6 @@ export class AuthService {
           localStorage.setItem(this.jwtTokenStorageName, res.token);
           localStorage.setItem(this.jwtExpirationStorageName, res.expiration);
           this.isAuthenticatedSubject.next(true);
-
-          if (this.redirectUrl) {
-            this.router.navigate([this.redirectUrl]);
-            this.redirectUrl = null;
-          } else {
-            this.router.navigate(['/']);
-          }
         })
       );
   }

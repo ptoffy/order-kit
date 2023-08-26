@@ -12,8 +12,8 @@
         </li>
       </ul>
       <div *ngIf="!isLoggedIn" class="d-lg-flex col-lg-3 justify-content-lg-end">
-        <a routerLink="/user/login" class="btn btn-outline-primary btn-sm me-2">Login</a>
-        <a routerLink="/user/register" class="btn btn-primary btn-sm">Register</a>
+        <a routerLink="/user/login" class="btn btn-outline-success btn-sm me-2">Login</a>
+        <a routerLink="/user/register" class="btn btn-success btn-sm">Register</a>
       </div>
       <div *ngIf="isLoggedIn" class="d-lg-flex col-lg-3 justify-content-lg-end">
         <button (click)="logout()" class="btn btn-primary btn-sm me-2">Logout</button>

@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import { UserType, User } from '../models/user.model';
 import logger from '../logger';
-import jwt from 'jsonwebtoken';
 import { plainToClass } from 'class-transformer';
 import { IsString, IsNotEmpty, MinLength, validate } from 'class-validator';
 import { jwtUtil } from '../utils/jwt.util';
@@ -20,10 +19,29 @@ async function meHandler(req: Request, res: Response) {
 
 async function registerHandler(req: Request, res: Response) {
     try {
-        const { email, password, name, role } = req.body;
+        const registrationRequest = plainToClass(RegistrationRequest, req.body);
+        const errors = await validate(registrationRequest);
+
+        if (errors.length > 0) {
+            const message = "Invalid request body: " + errors.map((error: any) => Object.values(error.constraints)).join(', ');
+            logger.warn(message);
+            return res.status(400).json(message);
+        }
+
+        const { username, password, name, role } = req.body;
+
+        // Check if the user already exists
+        const userExists = await User.exists({ username });
+        if (userExists) {
+            return res.status(400).json({ message: 'User already exists' });
+        }
+
         const passwordHash = await bcrypt.hash(password, 10);
-        const user = await User.create({ email, password: passwordHash, name, role });
-        // login(req, res, user);
+        const user = await User.create({ username, password: passwordHash, name, role });
+
+        // Generate a JWT token
+        const { token, expiration } = generateAuthToken(user);
+        res.status(201).json({ token, expiration });
     } catch (error) {
         logger.error("Error registering: " + error);
         res.status(500).json({ message: 'Internal Server Error' });
@@ -92,3 +110,22 @@ class LoginRequest {
 }
 
 export { registerHandler, loginHandler, deleteHandler, meHandler };
+
+class RegistrationRequest {
+    @IsString()
+    @IsNotEmpty()
+    username!: string;
+
+    @IsString()
+    @IsNotEmpty()
+    @MinLength(8)
+    password!: string;
+
+    @IsString()
+    @IsNotEmpty()
+    name!: string;
+
+    @IsString()
+    @IsNotEmpty()
+    role!: string;
+}
