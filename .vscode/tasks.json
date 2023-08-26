@@ -41,7 +41,7 @@
                 "kind": "build",
                 "isDefault": true
             },
-            "label": "npm: start",
+            "label": "Serve Frontend",
             "options": {
                 "cwd": "${workspaceFolder}/ui"
             }

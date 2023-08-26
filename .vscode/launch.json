@@ -26,12 +26,16 @@
             "name": "Launch UI",
             "type": "chrome",
             "request": "launch",
-            "preLaunchTask": "npm: start",
+            "preLaunchTask": "Serve Frontend",
             "url": "http://localhost:4200/",
             "webRoot": "${workspaceFolder}/ui",
             "sourceMaps": true,
             "sourceMapPathOverrides": {
-                "webpack:///./*": "${webRoot}/*"
+                "webpack:/*": "${webRoot}/*",
+                "/./*": "${webRoot}/*",
+                "/src/*": "${webRoot}/src/*",
+                "/*": "*",
+                "/./~/*": "${workspaceFolder}/ui/node_modules/*"
             },
         }
     ]
