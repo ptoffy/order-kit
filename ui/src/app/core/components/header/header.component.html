@@ -10,8 +10,8 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" routerLink="/">Home</a>
         </li>
-        <li *ngIf="currentUserRole == UserRole.Cashier" class="nav-item">
-          <a class="nav-link" routerLink="/user/list">Users</a>
+        <li *ngIf="isLoggedIn" class="nav-item">
+          <a *ngIf="currentUserRole == UserRole.Cashier" class="nav-link" routerLink="/user/list">Users</a>
         </li>
       </ul>
       <div *ngIf="!isLoggedIn" class="d-lg-flex col-lg-3 justify-content-lg-end">

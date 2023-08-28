@@ -6,10 +6,20 @@ import { jwtUtil } from '../utils/jwt.util';
 // This middleware checks if the user has the required role to access a resource
 function checkRole(requiredRole: UserRole) {
     return function (req: Request, res: Response, next: Function) {
-        const header = req.headers['authorization'];
-        const token = header && header.split(' ')[1];
+        const token = req.headers['x-auth-token'];
 
-        if (!token) {
+        // The `x-requested-with` header acts as a secondary check alongside the authentication token. 
+        // If an attacker tries to exploit a potential CSRF vulnerability, 
+        // they would need to know both the user's token and the fact that they need to include 
+        // the `x-requested-with` header with the specific value XMLHttpRequest.
+        const header = req.headers['x-requested-with'];
+
+        // For a malicious site to add this header using JavaScript, 
+        // it would need to make an XMLHttpRequest or Fetch API call. 
+        // However, due to the Same-Origin Policy, 
+        // the malicious site cannot make arbitrary requests to another domain 
+        // with custom headers unless the target domain explicitly allows it via CORS.
+        if (Array.isArray(token) || !token || header !== 'XMLHttpRequest') {
             return res.status(401).json({ message: 'Please provide an authentication token!' });
         }
 

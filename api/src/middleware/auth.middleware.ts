@@ -5,8 +5,13 @@ import { UserJwtPayload } from '../models/jwt.model';
 
 // This middleware checks if the user is logged in
 function checkAuth(req: Request, res: Response, next: Function) {
-    const header = req.headers['authorization'];
-    const token = header && header.split(' ')[1];
+    const header = req.get('X-Orders-Auth-Token');
+
+    if (!header) {
+        return res.status(403).json({ message: 'Invalid token!' });
+    }
+
+    const token = header
 
     if (!token) {
         return res.status(401).json({ message: 'Please provide an authentication token!' });

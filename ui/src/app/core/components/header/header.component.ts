@@ -23,7 +23,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private subscription!: Subscription;
 
-  constructor(@Inject(AuthService) authService: AuthService) {
+  constructor(@Inject(AuthService) authService: AuthService, private router: Router) {
     this.authService = authService;
     this.isLoggedIn = this.authService.isAuthenticated();
     if (this.isLoggedIn) {
@@ -49,6 +49,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   logout() {
     this.authService.logout();
     this.isLoggedIn = false;
+    this.router.navigate(['/']);
   }
 }
 

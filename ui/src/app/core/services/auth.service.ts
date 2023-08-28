@@ -67,6 +67,7 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem(this.jwtExpirationStorageName);
     localStorage.removeItem(this.jwtTokenStorageName);
+    localStorage.removeItem(this.currentUserRoleStorageName);
     this.isAuthenticatedSubject.next(false);
   }
 
