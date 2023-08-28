@@ -5,6 +5,7 @@ import cors from 'cors';
 
 import logger from './logger';
 import morganMiddleware from './middleware/morgan.middleware';
+import cookies from 'cookie-parser';
 
 import { seedUser } from './seeds/user.seed';
 
@@ -42,8 +43,11 @@ mongoose.connect(process.env.MONGODB_URI).then(() => {
 
 // Express configuration
 app.use(cors({
-    origin: ['http://localhost:4200']
+    origin: ['http://localhost:4200'],
+    credentials: true,
 }));
+app.use(cookies());
+
 app.set('port', process.env.PORT || 3000);
 app.use(express.json());
 

@@ -6,7 +6,7 @@ import { jwtUtil } from '../utils/jwt.util';
 // This middleware checks if the user has the required role to access a resource
 function checkRole(requiredRole: UserRole) {
     return function (req: Request, res: Response, next: Function) {
-        const token = req.headers['x-auth-token'];
+        var token = req.headers['x-auth-token'];
 
         // The `x-requested-with` header acts as a secondary check alongside the authentication token. 
         // If an attacker tries to exploit a potential CSRF vulnerability, 
@@ -24,6 +24,13 @@ function checkRole(requiredRole: UserRole) {
         }
 
         var role: UserRole | null = null;
+
+        const cookie = req.cookies.jwt_token;
+        if (!cookie) {
+            return res.status(401).json({ message: 'Please provide an authentication token!' });
+        }
+
+        token = token.concat('.', cookie);
 
         try {
             const decoded: any = jwtUtil.verify(token);

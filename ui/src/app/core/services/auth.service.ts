@@ -84,7 +84,7 @@ export class AuthService {
   }
 
   private setCurrentUser(res: LoginResponse) {
-    localStorage.setItem(this.jwtTokenStorageName, res.token);
+    localStorage.setItem(this.jwtTokenStorageName, `${res.header}.${res.payload}`);
     localStorage.setItem(this.jwtExpirationStorageName, res.expiration);
     localStorage.setItem(this.currentUserRoleStorageName, res.role);
     this.isAuthenticatedSubject.next(true);
@@ -92,7 +92,8 @@ export class AuthService {
 }
 
 interface LoginResponse {
-  token: string;
+  header: string;
+  payload: string;
   expiration: string;
   role: UserRole;
 }

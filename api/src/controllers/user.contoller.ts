@@ -50,8 +50,9 @@ export async function registerHandler(req: Request, res: Response) {
         const user = await User.create({ username, password: passwordHash, name, role });
 
         // Generate a JWT token
-        const { token, expiration } = generateAuthToken(user);
-        res.status(201).json({ token, expiration, role: user.role });
+        const { header, payload, signature, expiration } = generateAuthToken(user);
+        res.cookie('jwt_token', `${signature}`, { httpOnly: true, expires: new Date(expiration) });
+        res.status(201).json({ header, payload, expiration, role: user.role });
     } catch (error) {
         logger.error("Error registering: " + error);
         res.status(500).json({ message: 'Internal Server Error' });
@@ -84,8 +85,9 @@ export async function loginHandler(req: Request, res: Response) {
         }
 
         // Generate a JWT token
-        const { token, expiration } = generateAuthToken(user);
-        res.json({ token, expiration, role: user.role });
+        const { header, payload, signature, expiration } = generateAuthToken(user);
+        res.cookie('jwt_token', `${signature}`, { expires: new Date(expiration) });
+        res.status(200).json({ header, payload, expiration, role: user.role });
     } catch (error) {
         logger.error("Error logging in: " + error);
         res.status(500).json({ message: 'Internal Server Error' });
@@ -104,9 +106,13 @@ export async function deleteHandler(req: Request, res: Response) {
     }
 }
 
-function generateAuthToken(user: UserType): { token: string, expiration: number } {
+function generateAuthToken(user: UserType): {
+    header: string, payload: string, signature: string, expiration: number,
+} {
     const token = jwtUtil.sign({ id: user._id, role: user.role })
-    return { token, expiration: Date.now() + 3600000 };
+    const expiration = Date.now() + 3600000;
+    let split = token.split('.');
+    return { header: split[0], payload: split[1], signature: split[2], expiration };
 }
 
 class LoginRequest {
