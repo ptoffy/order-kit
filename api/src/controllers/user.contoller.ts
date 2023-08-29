@@ -5,10 +5,13 @@ import logger from '../logger';
 import { plainToClass } from 'class-transformer';
 import { IsString, IsNotEmpty, MinLength, validate } from 'class-validator';
 import { jwtUtil } from '../utils/jwt.util';
+import mongoose from 'mongoose';
 
 export async function usersHandler(req: Request, res: Response) {
     try {
-        const users = await User.find();
+        logger.info("Getting users without user id: " + req.userId);
+        const userId = mongoose.mongo.ObjectId.createFromHexString(req.userId!)
+        const users = await User.find({ _id: { $ne: userId } });
         res.json(users);
     } catch (error) {
         logger.error("Error getting users: " + error);

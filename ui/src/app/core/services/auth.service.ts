@@ -72,9 +72,9 @@ export class AuthService {
   }
 
   // write a method to get the current user from the backend
-  getCurrentUser(): Observable<User | null> {
+  getCurrentUser(): Observable<User> {
     if (!this.isAuthenticated()) {
-      return new Observable<null>();
+      throw new Error('User is not authenticated');
     }
     return this.apiService.get('users/me');
   }
