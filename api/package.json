@@ -12,6 +12,7 @@
   "author": "Paul Toffoloni",
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
+    "@types/cookie-parser": "^1.4.3",
     "@types/cors": "^2.8.13",
     "@types/express-session": "^1.17.7",
     "typescript": "^5.0.4"

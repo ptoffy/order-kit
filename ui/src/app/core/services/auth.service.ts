@@ -67,13 +67,14 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem(this.jwtExpirationStorageName);
     localStorage.removeItem(this.jwtTokenStorageName);
+    localStorage.removeItem(this.currentUserRoleStorageName);
     this.isAuthenticatedSubject.next(false);
   }
 
   // write a method to get the current user from the backend
-  getCurrentUser(): Observable<User | null> {
+  getCurrentUser(): Observable<User> {
     if (!this.isAuthenticated()) {
-      return new Observable<null>();
+      throw new Error('User is not authenticated');
     }
     return this.apiService.get('users/me');
   }
@@ -83,7 +84,7 @@ export class AuthService {
   }
 
   private setCurrentUser(res: LoginResponse) {
-    localStorage.setItem(this.jwtTokenStorageName, res.token);
+    localStorage.setItem(this.jwtTokenStorageName, `${res.header}.${res.payload}`);
     localStorage.setItem(this.jwtExpirationStorageName, res.expiration);
     localStorage.setItem(this.currentUserRoleStorageName, res.role);
     this.isAuthenticatedSubject.next(true);
@@ -91,7 +92,8 @@ export class AuthService {
 }
 
 interface LoginResponse {
-  token: string;
+  header: string;
+  payload: string;
   expiration: string;
   role: UserRole;
 }
