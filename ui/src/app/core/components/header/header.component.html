@@ -12,14 +12,15 @@
         </li>
         <li *ngIf="isLoggedIn" class="nav-item">
           <a *ngIf="currentUserRole == UserRole.Cashier" class="nav-link" routerLink="/user/list">Users</a>
+          <a *ngIf="currentUserRole == UserRole.Waiter" class="nav-link" routerLink="/table/list">Tables</a>
         </li>
       </ul>
       <div *ngIf="!isLoggedIn" class="d-lg-flex col-lg-3 justify-content-lg-end">
-        <a routerLink="/user/login" class="btn btn-outline-success btn-sm me-2">Login</a>
+        <a routerLink="/user/login" class="btn btn-outline btn-sm me-2">Login</a>
         <a routerLink="/user/register" class="btn btn-success btn-sm">Register</a>
       </div>
       <div *ngIf="isLoggedIn" class="d-lg-flex col-lg-3 justify-content-lg-end">
-        <button (click)="logout()" class="btn btn-primary btn-sm me-2">Logout</button>
+        <button (click)="logout()" class="btn btn-sm me-2">Logout</button>
       </div>
     </div>
     </nav>

@@ -9,10 +9,9 @@ import mongoose from 'mongoose';
 
 export async function usersHandler(req: Request, res: Response) {
     try {
-        logger.info("Getting users without user id: " + req.userId);
         const userId = mongoose.mongo.ObjectId.createFromHexString(req.userId!)
-        const users = await User.find({ _id: { $ne: userId } });
-        res.json(users);
+        const users = await User.find({ _id: { $ne: userId } })
+        res.json(users)
     } catch (error) {
         logger.error("Error getting users: " + error);
         res.status(500).json({ message: 'Internal Server Error' });
@@ -55,7 +54,7 @@ export async function registerHandler(req: Request, res: Response) {
         // Generate a JWT token
         const { header, payload, signature, expiration } = generateAuthToken(user);
         res.cookie('jwt_token', `${signature}`, { httpOnly: true, expires: new Date(expiration) });
-        res.status(201).json({ header, payload, expiration, role: user.role });
+        res.status(201).json(new LoginResponse(header, payload, expiration, user.role, user._id.toHexString()));
     } catch (error) {
         logger.error("Error registering: " + error);
         res.status(500).json({ message: 'Internal Server Error' });
@@ -90,7 +89,7 @@ export async function loginHandler(req: Request, res: Response) {
         // Generate a JWT token
         const { header, payload, signature, expiration } = generateAuthToken(user);
         res.cookie('jwt_token', `${signature}`, { expires: new Date(expiration) });
-        res.status(200).json({ header, payload, expiration, role: user.role });
+        res.status(200).json(new LoginResponse(header, payload, expiration, user.role, user._id.toHexString()));
     } catch (error) {
         logger.error("Error logging in: " + error);
         res.status(500).json({ message: 'Internal Server Error' });
@@ -145,4 +144,20 @@ class RegistrationRequest {
     @IsString()
     @IsNotEmpty()
     role!: string;
+}
+
+class LoginResponse {
+    header!: string;
+    payload!: string;
+    expiration!: number;
+    role!: string;
+    id!: string;
+
+    constructor(header: string, payload: string, expiration: number, role: string, id: string) {
+        this.header = header;
+        this.payload = payload;
+        this.expiration = expiration;
+        this.role = role;
+        this.id = id;
+    }
 }

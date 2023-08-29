@@ -36,6 +36,7 @@ if (!process.env.JWT_PRIVATE_KEY) {
 mongoose.connect(process.env.MONGODB_URI).then(() => {
     logger.info('🐱 Connected to MongoDB');
     seedUser();
+    seedTables();
 }).catch((err) => {
     logger.error('❌ MongoDB connection error: ' + err);
     process.exit(1);
@@ -78,7 +79,10 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 import userRouter from './routers/user.router';
+import { seedTables } from './seeds/table.seeds';
+import tableRouter from './routers/table.router';
 app.use('/users', userRouter);
+app.use('/table', tableRouter);
 
 
 export default app;
