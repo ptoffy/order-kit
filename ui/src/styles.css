@@ -9,7 +9,7 @@ body {
 .btn {
     border-radius: 6px;
     border: 1px solid #444c56;
-    padding: 6px 12px;
+    /* padding: 6px 12px; */
     font-size: 14px;
     font-weight: 500;
     line-height: 20px;
@@ -25,7 +25,7 @@ body {
 }
 
 .btn-success {
-    background-color: #46954a;
+    background-color: #347d39;
     border: none;
     color: white;
 }
@@ -109,6 +109,23 @@ body {
 .btn-warning {
     background-color: #f66d0a;
     border: none;
+    color: white;
+}
+
+.btn-warning:hover {
+    background-color: #f66d0a;
+    color: white;
+}
+
+.btn-outline-warning {
+    color: #f66d0a;
+    background-color: transparent;
+    border: 1px solid #f66d0a;
+}
+
+.btn-outline-warning:hover {
+    background-color: #f66d0a;
+    border: 1px solid #f66d0a;
     color: white;
 }
 

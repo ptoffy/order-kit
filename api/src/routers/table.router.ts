@@ -1,8 +1,10 @@
-import { listTables } from "../controllers/table.controller";
+import { freeTable, listTables, occupyTable } from "../controllers/table.controller"
 
-const router = require('express')();
+const router = require('express')()
 
-router.get('/', listTables);
+router.get('/', listTables)
+router.post('/:tableNumber/occupy', occupyTable)
+router.post('/:tableNumber/free', freeTable)
 
-export default router;
-module.exports = router;
+export default router
+module.exports = router
