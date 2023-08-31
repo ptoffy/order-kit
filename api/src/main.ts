@@ -63,8 +63,19 @@ app.use(session({
 }));
 
 // Logger
-
 app.use(morganMiddleware);
+
+// Socket.io
+import { Server } from 'socket.io';
+const io = new Server<
+    ClientToServerEvents,
+    ServerToClientEvents,
+    InterServerEvents,
+    SocketData
+>();
+io.on('connection', (socket) => {
+    console.log('a user connected');
+});
 
 // Routes
 
