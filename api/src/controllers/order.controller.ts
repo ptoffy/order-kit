@@ -4,9 +4,15 @@ import { CreateOrderRequest } from "../DTOs/order.dto"
 import { plainToClass } from "class-transformer"
 import logger from "../logger"
 import { validate } from "class-validator"
-import { MenuItem, MenuItemCategory } from "../models/item.model"
+import { MenuItemCategory } from "../models/item.model"
 import { UserRole } from "../models/user.model"
 
+/**
+ * Create an order.
+ * @param req The request object.
+ * @param res The response object.
+ * @returns The created order.
+ */
 export async function createOrder(req: Request, res: Response) {
     try {
         const orderRequest = plainToClass(CreateOrderRequest, req.body)
@@ -26,6 +32,15 @@ export async function createOrder(req: Request, res: Response) {
     }
 }
 
+/**
+ * Get orders by status based on the logged in user's role:
+ * - Bartender: Drink orders
+ * - Chef: Food orders
+ * Finally, sort the orders by creation date by FIFO: the oldest orders are at the top.
+ * @param req The request object.
+ * @param res The response object.
+ * @returns The orders.
+ */
 export async function getOrders(req: Request, res: Response) {
     try {
         const status = req.query.status as OrderStatus | undefined
@@ -34,13 +49,14 @@ export async function getOrders(req: Request, res: Response) {
 
         const orders = await Order.find(status ? { status, type } : { type })
             .populate('items.item', 'name price category')
+            .sort({ createdAt: 1 })
 
         if (!orders) {
             logger.warn("Orders not found")
             return res.status(404).json({ message: 'Orders not found' })
         }
 
-        res.json(orders)
+        res.status(200).json(orders)
     } catch (err) {
         logger.error("Error getting orders: " + err)
         res.status(400).json(err)
