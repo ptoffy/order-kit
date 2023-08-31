@@ -1,11 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { MenuItem } from 'src/app/core/models/item.model';
+import { OrderMenuItem } from '../core/models/order.model';
 
 @Pipe({
   name: 'groupItems'
 })
 export class GroupItemsPipe implements PipeTransform {
-  transform(items: MenuItem[]): { name: string, count: number }[] {
+  transform(items: OrderMenuItem[]): { name: string, count: number }[] {
     const grouped: { [key: string]: number } = {};
 
     items.forEach(item => {

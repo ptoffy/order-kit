@@ -8,11 +8,21 @@ export enum OrderStatus {
     Served = "served"
 }
 
+export enum OrderMenuItemStatus {
+    New = "new",
+    Preparing = "preparing",
+    Done = "done"
+}
+
 export interface Order extends BaseModel {
     id: number;
     table: number
-    items: MenuItem[]
+    items: OrderMenuItem[]
     status: OrderStatus
     createdAt: Date
     updatedAt: Date
+}
+
+export interface OrderMenuItem extends MenuItem {
+    status: OrderMenuItemStatus
 }

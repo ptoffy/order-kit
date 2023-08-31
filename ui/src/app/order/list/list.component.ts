@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { MenuItem, MenuItemCategory } from 'src/app/core/models/item.model';
-import { Order, OrderStatus } from 'src/app/core/models/order.model';
+import { Order, OrderMenuItem, OrderMenuItemStatus, OrderStatus } from 'src/app/core/models/order.model';
 import { OrderService } from 'src/app/core/services/order.service';
 
 @Component({
@@ -29,12 +28,25 @@ export class ListComponent {
         this.orders = orders.map((order: any) => ({
           id: order.id,
           table: order.table,
-          items: order.items.map((item: any) => item.item as MenuItem),
+          items: order.items.map((item: any) => {
+            const orderItem = item.item as OrderMenuItem
+            orderItem.status = item.status as OrderMenuItemStatus
+            return orderItem
+          }),
           status: order.status as OrderStatus,
           createdAt: new Date(order.createdAt),
-          updatedAt: new Date(order.updatedAt)
+          updatedAt: new Date(order.updatedAt),
         }));
       },
     })
+  }
+
+  getPreparationProgress(order: Order) {
+    const total = order.items.length
+    const completed = order.items.filter(item => item.status === OrderMenuItemStatus.Done).length
+    const preparing = order.items.filter(item => item.status === OrderMenuItemStatus.Preparing).length
+    const remaining = completed + preparing * 0.5
+    const progress = remaining / total * 100
+    return `${progress}%`
   }
 }

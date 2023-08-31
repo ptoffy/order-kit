@@ -29,12 +29,19 @@
               </svg>
               {{order.createdAt | date:'HH:MM'}}
             </small>
-            <h5 class="card-title mt-2">Table #{{order.table}}</h5>
+            <h5 class="card-title mt-3">Table #{{order.table}}</h5>
             <div *ngFor="let item of order.items | groupItems">
               <div class="d-flex justify-content-between">
                 <p class="card-text">{{item.count}}x {{item.name}}</p>
               </div>
               <div class="d-flex justify-content-between">
+              </div>
+            </div>
+            <div class="progress mt-2" style="height: 10px;">
+              <div class="progress-bar bg-success" role="progressbar" 
+                [style]="{width: getPreparationProgress(order)}"
+                [attr.aria-valuenow]="getPreparationProgress(order)" 
+                aria-valuemin="0" aria-valuemax="100">
               </div>
             </div>
         </div>
