@@ -12,6 +12,6 @@ export function guardRole(role: UserRole): CanActivateFn {
       return true;
     }
 
-    return router.navigate(['/login']);
+    return router.navigate(['/user/login']);
   };
 }

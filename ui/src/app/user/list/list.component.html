@@ -2,7 +2,7 @@
   <ul *ngFor="let user of users" class="list-group">
     <li class="list-group-item mb-3 p-3 rounded">
       <div class="row">
-        <div class="col-1">
+        <div class="col">
           <img
             src="https://ui-avatars.com/api/?name={{ user.name }}&background=random"
             alt="user avatar"
@@ -11,7 +11,7 @@
             height="50"
           />
         </div>
-        <div class="col-11">
+        <div class="col">
           <div class="row">
             <div class="col-6">
               <h5 class="mb-0">{{ user.name }}</h5>

@@ -1,0 +1,28 @@
+<div class="modal-content rounded-4 shadow">
+  <div class="modal-header p-5 pb-4 border-bottom-0">
+    <h4 class="fw-bold mb-0 fs-2">Occupy Table</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body p-5 pt-0">
+    <form (submit)="onOccupyTable()">
+      <div class="form-floating mb-3">
+        <input 
+          type="number" 
+          class="form-control rounded-3" 
+          [ngClass]="!isValid() ? 'is-invalid form-control rounded-3': 'form-control rounded-3'" 
+          id="peopleCount" 
+          [(ngModel)]="peopleCount" 
+          name="peopleCount" 
+          required
+          value="2"
+          >
+        <div *ngIf="!isValid()" class="invalid-feedback">
+          Invalid input. Maximum allowed is {{ tableCapacity }}.
+        </div>
+        <label for="peopleCount">Number of People</label>
+      </div>
+      <button type="submit" class="w-100 mb-2 btn btn-lg rounded-3 btn-success">Occupy</button>
+      <button type="button" class="w-100 mb-2 btn btn-lg rounded-3" (click)="activeModal.dismiss('Cross click')">Cancel</button>
+    </form>
+  </div>      
+</div>

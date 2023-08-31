@@ -8,6 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
 import { HomeModule } from './home/home.module';
 import { HeaderComponent } from './core/components/header/header.component';
+import { TableModule } from './table/table.module';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { HeaderComponent } from './core/components/header/header.component';
     CoreModule,
     HomeModule,
     UserModule,
+    TableModule,
     AppRoutingModule
   ],
   providers: [],

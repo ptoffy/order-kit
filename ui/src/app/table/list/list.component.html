@@ -1,0 +1,56 @@
+<div class="container mt-5">
+  <ul class="list-group">
+    <li *ngFor="let table of tables" class="list-group-item mb-3 p-3 rounded border">
+      <div class="row">
+        <div class="col-auto">
+          <img
+            src="https://ui-avatars.com/api/?name={{ table.number }}&background=b86f52"
+            alt="user avatar"
+            class="rounded-3 img-fluid"
+          />
+        </div>
+        <div class="col">
+          <div class="row">
+            <div class="col-6">
+              <h5 class="mb-0">Table {{ table.number }} - {{ table.occupancy === 0 ? 'Empty' : 'Occupied' }}</h5>
+
+              <small *ngIf="table.occupancy === 0" class="text-muted">Seats: {{ table.seats }}</small>
+              <small *ngIf="table.occupancy !== 0" class="text-muted">People: {{ table.occupancy }}</small>
+              <br />
+              <small class="text-muted">
+                Waiter: {{ table.waiterId === null ? 'None' : table.waiterId }}
+              </small>
+            </div>
+            <div class="col-6">
+              <div class="d-flex justify-content-end align-items-center">
+                <button *ngIf="table.waiterId === null && table.occupancy !== 0"
+                  class="btn btn-sm btn-outline-info"
+                  (click)="onAssign(table.number)"
+                >
+                  Assign Yourself
+                </button>
+                <button *ngIf="table.waiterId !== null"
+                  class="btn btn-sm disabled"
+                >
+                  Assigned
+                </button>
+                <button *ngIf="table.occupancy === 0"
+                  class="btn btn-sm btn-outline-info"
+                  (click)="onOccupyModal(table.number)"
+                >
+                  Occupy
+                </button>
+                <button *ngIf="table.occupancy !== 0"
+                  class="btn btn-sm ms-2 btn-outline-warning"
+                  (click)="onFree(table.number)"
+                >
+                  Free
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> 
+    </li>
+  </ul>
+</div>
