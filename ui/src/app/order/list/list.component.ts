@@ -24,7 +24,7 @@ export class ListComponent {
 
   getOrders(status: OrderStatus) {
     this.activeTab = status
-    this.orderService.list(status, MenuItemCategory.Food).subscribe({
+    this.orderService.list(status).subscribe({
       next: (orders) => {
         this.orders = orders.map((order: any) => ({
           id: order.id,

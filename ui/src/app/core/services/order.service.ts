@@ -10,8 +10,8 @@ import { MenuItemCategory } from "../models/item.model"
 export class OrderService {
   constructor(private apiService: ApiService) { }
 
-  list(status: OrderStatus, category: MenuItemCategory): Observable<any> {
-    return this.apiService.get(`order?status=${status}&category=${category}`)
+  list(status: OrderStatus): Observable<any> {
+    return this.apiService.get(`order?status=${status}`)
   }
 
   create(order: Order): Observable<void> {

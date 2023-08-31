@@ -8,7 +8,7 @@ const routes: Routes = [
   {
     path: 'order',
     children: [
-      { path: 'list', component: ListComponent, canActivate: [guardRole(UserRole.Cook)] }
+      { path: 'list', component: ListComponent, canActivate: [guardRole([UserRole.Cook, UserRole.Bartender])] }
     ]
   }
 ];

@@ -4,7 +4,7 @@ import { UserRole } from "../models/user.model"
 
 const router = require('express')()
 
-router.get('/', checkAuth(UserRole.Cook), getOrders)
+router.get('/', checkAuth([UserRole.Cook, UserRole.Bartender]), getOrders)
 
 export default router
 module.exports = router

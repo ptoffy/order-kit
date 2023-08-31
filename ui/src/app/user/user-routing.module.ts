@@ -13,7 +13,7 @@ const routes: Routes = [
     children: [
       { path: 'login', component: LoginComponent, canActivate: [guardAuth] },
       { path: 'register', component: RegistrationComponent },
-      { path: 'list', component: ListComponent, canActivate: [guardRole(UserRole.Cashier)] }
+      { path: 'list', component: ListComponent, canActivate: [guardRole([UserRole.Cashier])] }
     ]
   }
 ];

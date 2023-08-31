@@ -5,6 +5,7 @@ import { plainToClass } from "class-transformer"
 import logger from "../logger"
 import { validate } from "class-validator"
 import { MenuItem, MenuItemCategory } from "../models/item.model"
+import { UserRole } from "../models/user.model"
 
 export async function createOrder(req: Request, res: Response) {
     try {
@@ -28,7 +29,9 @@ export async function createOrder(req: Request, res: Response) {
 export async function getOrders(req: Request, res: Response) {
     try {
         const status = req.query.status as OrderStatus | undefined
-        const type = req.query.category as MenuItemCategory
+
+        const type = req.role === UserRole.Bartender ? MenuItemCategory.Drink : MenuItemCategory.Food
+
         const orders = await Order.find(status ? { status, type } : { type })
             .populate('items.item', 'name price category')
 

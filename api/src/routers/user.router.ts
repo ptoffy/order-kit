@@ -6,9 +6,9 @@ const router = require('express')();
 
 router.post('/register', registerHandler);
 router.post('/login', loginHandler);
-router.delete('/:username', checkAuth(UserRole.Cashier), deleteHandler);
+router.delete('/:username', checkAuth([UserRole.Cashier]), deleteHandler);
 router.get('/me', checkAuth, meHandler);
-router.get('/', checkAuth(UserRole.Cashier), usersHandler);
+router.get('/', checkAuth([UserRole.Cashier]), usersHandler);
 
 export default router;
 module.exports = router;
