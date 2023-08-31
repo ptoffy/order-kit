@@ -3,8 +3,14 @@ import logger from "../logger";
 import { Table, TableType } from "../models/table.model";
 import { Types } from 'mongoose';
 
-// Get all tables
+/**
+ * Lists all tables.
+ * @param req The request.
+ * @param res The response.
+ * @returns The list of tables.
+ */
 export async function listTables(req: Request, res: Response) {
+    logger.debug("Listing tables")
     try {
         const tables = await Table.find()
         res.json(tables)
@@ -14,14 +20,26 @@ export async function listTables(req: Request, res: Response) {
     }
 }
 
-// Assign a waiter to a table
+/**
+ * Assigns a table to the current waiter.
+ * @param req The request.
+ * @param res The response.
+ * @returns The assigned table.
+ */
 export async function assignTable(req: Request, res: Response) {
+    logger.debug("Assigning table: " + req.params.tableNumber)
     try {
-        const table = await Table.findById(req.params.id)
-        if (!table) return res.status(404).json({ message: 'Table not found' })
+        const table = await Table.findOne({ number: req.params.tableNumber })
+        if (!table) {
+            logger.warn("Error assigning table: Table not found")
+            return res.status(404).json({ message: 'Table not found' })
+        }
 
         const waiterId = req.userId
-        if (!waiterId) return res.status(400).json({ message: 'Invalid waiter ID' })
+        if (!waiterId) {
+            logger.warn("Error assigning table: No waiter ID")
+            return res.status(400).json({ message: 'Invalid waiter ID' })
+        }
 
         table.waiterId = new Types.ObjectId(waiterId);
         await table.save()
@@ -33,18 +51,24 @@ export async function assignTable(req: Request, res: Response) {
     }
 }
 
+/**
+ * Occupies a table by setting its occupancy to the given people count.
+ * @param req The request.
+ * @param res The response.
+ * @returns The occupied table.
+ */
 export async function occupyTable(req: Request, res: Response) {
     logger.debug("Occupying table: " + req.params.tableNumber + " with " + req.body.peopleCount + " people")
     try {
         const table = await Table.findOne({ number: req.params.tableNumber })
         if (!table) {
-            logger.debug("Error occupying table: Table not found")
+            logger.warn("Error occupying table: Table not found")
             return res.status(404).json({ message: 'Table not found' })
         }
 
         const peopleCount = req.body.peopleCount
         if (!peopleCount || peopleCount > table.seats || peopleCount < 0) {
-            logger.debug("Error occupying table: Invalid people count: " + peopleCount)
+            logger.warn("Error occupying table: Invalid people count: " + peopleCount)
             return res.status(400).json({ message: 'Invalid people count' })
         }
 
@@ -58,13 +82,23 @@ export async function occupyTable(req: Request, res: Response) {
     }
 }
 
+/**
+ * Frees a table by setting its occupancy to 0.
+ * @param req The request.
+ * @param res The response.
+ * @returns The freed table.
+ */
 export async function freeTable(req: Request, res: Response) {
     logger.debug("Freeing table: " + req.params.tableNumber)
     try {
         const table = await Table.findOne({ number: req.params.tableNumber })
-        if (!table) return res.status(404).json({ message: 'Table not found' })
+        if (!table) {
+            logger.warn("Error freeing table: Table not found: " + req.params.tableNumber)
+            return res.status(404).json({ message: 'Table not found' })
+        }
 
         table.occupancy = 0
+        table.waiterId = null
         await table.save()
 
         res.json(table)

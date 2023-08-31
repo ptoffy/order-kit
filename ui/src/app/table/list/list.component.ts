@@ -22,7 +22,10 @@ export class ListComponent {
   }
 
   onAssign(tableNumber: number): void {
-    console.log('onAssign', tableNumber)
+    this.tableService.assign(tableNumber).subscribe({
+      next: () => this.updateList(),
+      error: this.handleError.bind(this)
+    })
   }
 
   onOccupyModal(tableNumber: number): void {

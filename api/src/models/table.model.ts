@@ -5,8 +5,8 @@ interface TableType extends BaseModelType {
     number: number;
     seats: number;
     occupancy: number;
-    waiterId?: Types.ObjectId;
-    orders: Types.ObjectId[];
+    waiterId?: Types.ObjectId | null;
+    orders: Types.ObjectId[] | null;
 }
 
 const tableSchema = new Schema<TableType>({

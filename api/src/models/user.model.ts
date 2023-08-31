@@ -3,10 +3,10 @@ import { BaseModelType, baseSchema } from "./base.model";
 import { IsString, IsNotEmpty, Length, IsIn } from 'class-validator';
 
 enum UserRole {
-    WAITER = "waiter",
-    COOK = "cook",
-    BARTENDER = "bartender",
-    CASHIER = "cashier"
+    Waiter = "waiter",
+    Cook = "cook",
+    Bartender = "bartender",
+    Cashier = "cashier"
 }
 
 interface UserType extends BaseModelType {
