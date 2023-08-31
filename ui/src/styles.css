@@ -9,7 +9,6 @@ body {
 .btn {
     border-radius: 6px;
     border: 1px solid #444c56;
-    /* padding: 6px 12px; */
     font-size: 14px;
     font-weight: 500;
     line-height: 20px;
@@ -132,6 +131,11 @@ body {
 a {
     text-decoration: none;
     color: #adbac7;
+}
+
+.nav-tabs .nav-link {
+    color: #adbac7;
+    cursor: pointer;
 }
 
 .nav-link.active {

@@ -1,10 +1,15 @@
-import { Schema, model } from "mongoose";
-import { baseSchema, BaseModelType } from "./base.model";
+import { Schema, model } from "mongoose"
+import { baseSchema, BaseModelType } from "./base.model"
+
+export enum MenuItemCategory {
+    Food = "food",
+    Drink = "drink"
+}
 
 interface MenuItemType extends BaseModelType {
-    name: string;
-    price: number;
-    category: string;
+    name: string
+    price: number
+    category: string
 }
 
 const menuItemSchema = new Schema<MenuItemType>({
@@ -14,6 +19,6 @@ const menuItemSchema = new Schema<MenuItemType>({
     category: { type: String, required: true }
 });
 
-const MenuItem = model<MenuItemType>("MenuItem", menuItemSchema);
+const MenuItem = model<MenuItemType>("MenuItem", menuItemSchema)
 
-export { MenuItem, MenuItemType };
+export { MenuItem, MenuItemType }

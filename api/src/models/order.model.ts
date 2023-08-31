@@ -1,31 +1,52 @@
-import { Schema, model } from "mongoose";
-import { baseSchema, BaseModelType } from "./base.model";
+import { Schema, model } from "mongoose"
+import { baseSchema, BaseModelType } from "./base.model"
+import { MenuItemCategory, MenuItemType } from "./item.model"
 
-enum OrderStatus {
-    NEW = "new",
-    PREPARING = "preparing",
-    DONE = "done",
-    SERVED = "served"
+export enum OrderStatus {
+    New = "new",
+    Preparing = "preparing",
+    Done = "done",
+    Served = "served"
+}
+
+export enum OrderMenuItemStatus {
+    New = "new",
+    Preparing = "preparing",
+    Done = "done"
+}
+
+interface OrderMenuItemType {
+    item: MenuItemType
+    status: OrderMenuItemStatus
 }
 
 interface OrderType extends BaseModelType {
-    table: number;
-    items: { itemId: string, name: string, quantity: number, price: number }[];
-    status: OrderStatus;
+    table: number
+    items: OrderMenuItemType[]
+    status: OrderStatus
+    type: MenuItemCategory
 }
+
+const orderItemSchema = new Schema<OrderMenuItemType>({
+    item: { type: Schema.Types.ObjectId, ref: 'MenuItem', required: true },
+    status: {
+        type: String, enum: Object.values(OrderMenuItemStatus),
+        required: true, default: OrderMenuItemStatus.New
+    }
+})
 
 const orderSchema = new Schema<OrderType>({
     ...baseSchema.obj,
     table: { type: Number, required: true },
-    items: { type: [String], required: true },
+    items: { type: [orderItemSchema], required: true },
+    type: {
+        type: String, enum: Object.values(MenuItemCategory),
+        required: true, default: MenuItemCategory.Food
+    },
     status: {
         type: String, enum: Object.values(OrderStatus),
-        required: true, default: OrderStatus.NEW
-    },
-    createdAt: { type: Date, required: true },
-    updatedAt: { type: Date, required: true }
-});
+        required: true, default: OrderStatus.New
+    }
+})
 
-const Order = model<OrderType>("Order", orderSchema);
-
-export { Order, OrderStatus };
+export const Order = model<OrderType>("Order", orderSchema)

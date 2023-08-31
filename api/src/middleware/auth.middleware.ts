@@ -37,7 +37,6 @@ export function checkAuth(requiredRole: UserRole | null = null) {
 
         try {
             const decoded: UserJwtPayload = jwtUtil.verify(token) as UserJwtPayload
-            logger.debug(`Decoded token: ${JSON.stringify(decoded)}`)
             role = decoded.role as UserRole
             req.userId = decoded.id
         } catch (error) {

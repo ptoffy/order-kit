@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { HomeModule } from './home/home.module';
 import { HeaderComponent } from './core/components/header/header.component';
 import { TableModule } from './table/table.module';
+import { OrderModule } from './order/order.module';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { TableModule } from './table/table.module';
     HomeModule,
     UserModule,
     TableModule,
+    OrderModule,
     AppRoutingModule
   ],
   providers: [],
