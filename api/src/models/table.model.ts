@@ -10,13 +10,12 @@ interface TableType extends BaseModelType {
 }
 
 const tableSchema = new Schema<TableType>({
-    ...baseSchema.obj,
     number: { type: Number, required: true, unique: true },
     seats: { type: Number, required: true },
     occupancy: { type: Number, default: 0 },
     waiterId: { type: Types.ObjectId, ref: "User" },
     orders: [{ type: Types.ObjectId, ref: "Order" }]
-});
+}, { timestamps: true });
 
 const Table: Model<TableType> = model("Table", tableSchema);
 

@@ -1,6 +1,6 @@
 interface BaseModel {
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: Date
+    updatedAt: Date
 }
 
-export { BaseModel };
+export { BaseModel }

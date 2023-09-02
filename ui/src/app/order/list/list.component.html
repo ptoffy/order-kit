@@ -34,7 +34,7 @@
         Ready
       </a>
     </li>
-    <li class="nav-item">
+    <!-- <li class="nav-item">
       <a class="nav-link d-flex align-items-center" [class.active]="activeTab === 'served'"
         (click)="getOrders(OrderStatus.Served)">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-all me-2"
@@ -45,71 +45,75 @@
         </svg>
         Served
       </a>
-    </li>
+    </li> -->
   </ul>
   <div class="container mt-4">
-    <div class="row">
-      <p *ngIf="orders.length === 0">
-        No orders here!
-      </p>
-      <div *ngIf="orders.length > 0" class="row">
-        <h4>Next one:</h4>
-        <div class="col-sm-6 col-md-4 col-lg-3 mt-2 mb-3">
-          <div class="card">
-            <div class="card-header d-flex justify-content-between">
-              <small class="text-muted d-flex align-items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                  class="bi bi-clock me-2" viewBox="0 0 16 16">
-                  <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
-                  <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
-                </svg>
-                {{orders[0].createdAt | date:'HH:MM'}}
-              </small>
-              <button *ngIf="activeTab === 'new'" type="button" class="btn btn-sm" (click)="prepare(orders[0]._id)">
-                Prepare
-              </button>
+    <p *ngIf="orders.length === 0">
+      No more orders here!
+    </p>
+    <div *ngIf="orders.length > 0" class="row">
+      <div class="col-sm-6 col-md-4 col-lg-3 mt-2" *ngFor="let order of orders; let i = index">
+        <div class="card mb-3">
+          <div class="card-header d-flex justify-content-between" [ngClass]="{ 'bg-success': activeTab === 'done' }">
+            <small class="text-muted d-flex align-items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                [ngStyle]="{ 'color': activeTab === 'done' ? 'white' : null }" class="bi bi-clock me-2"
+                viewBox="0 0 16 16">
+                <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
+                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
+              </svg>
+              <span [ngStyle]="{ 'color': activeTab === 'done' ? 'white' : null }">
+                {{order.createdAt | date: 'shortTime'}}
+              </span>
+            </small>
+            <button *ngIf="activeTab === 'new'" type="button" class="btn btn-sm btn-info" (click)="prepare(order._id)"
+              [ngClass]="{ 'disabled': i !== 0 }">
+              Prepare
+            </button>
+            <small *ngIf="activeTab === 'done'" class="text-muted d-flex align-items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                [ngStyle]="{ 'color': activeTab === 'done' ? 'white' : null }" class="bi bi-clock me-2"
+                viewBox="0 0 16 16">
+                <path
+                  d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z" />
+              </svg>
+              <span [ngStyle]="{ 'color': activeTab === 'done' ? 'white' : null }">
+                {{order.updatedAt | date:'shortTime'}}
+              </span>
+            </small>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Order #{{order.number}}</h5>
+            <div *ngIf="activeTab === 'new' || activeTab === 'done'" class="mt-2">
+              <div *ngFor="let item of order.items | groupItems" class="d-flex justify-content-between">
+                <p class="card-text">{{item.count}}x {{item.name}}</p>
+              </div>
             </div>
-            <div class="card-body">
-              <h5 class="card-title mt">Table #{{orders[0].table}}</h5>
-              <div *ngFor="let item of orders[0].items | groupItems">
-                <div class="d-flex justify-content-between">
-                  <p class="card-text">{{item.count}}x {{item.name}}</p>
-                </div>
+            <div *ngIf="activeTab === 'preparing'" class="progress mt-2" style="height: 10px;">
+              <div class="progress-bar" role="progressbar" [style.width.%]="getPreparationProgress(orders[0])"
+                [style.backgroundColor]="getProgressBarColour(orders[0])"
+                [attr.aria-valuenow]="'getPreparationProgress(orders[0])'" aria-valuemin="0" aria-valuemax="100">
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      <hr class="mt-2">
-      <div *ngIf="orders.length > 0" class="row">
-        <h4>Then:</h4>
-        <div class="col-sm-6 col-md-4 col-lg-3 mt-2" *ngFor="let order of orders; let i = index" [hidden]="i === 0">
-          <div class="card mb-3">
-            <div class="card-header d-flex justify-content-between">
-              <small class="text-muted d-flex align-items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                  class="bi bi-clock me-2" viewBox="0 0 16 16">
-                  <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
-                  <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
+          <ul *ngIf="activeTab === 'preparing'" class="list-group list-group-flush">
+            <li *ngFor="let item of order.items" class="list-group-item">
+              <div class="d-flex justify-content-between align-items-center">
+                <p class="m-0">{{item.name}}</p>
+                <button *ngIf="item.status === 'new'" type="button" class="btn btn-sm btn-success"
+                  (click)="done(item._id)">
+                  Done
+                </button>
+                <svg *ngIf="item.status === 'done'" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                  fill="green" class="bi bi-check-lg me-2" viewBox="0 0 16 16">
+                  <path
+                    d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z" />
                 </svg>
-                {{order.createdAt | date:'HH:MM'}}
-              </small>
-            </div>
-            <div class="card-body">
-              <h5 class="card-title">Table #{{order.table}}</h5>
-              <div *ngFor="let item of order.items | groupItems">
-                <div class="d-flex justify-content-between">
-                  <p class="card-text">{{item.count}}x {{item.name}}</p>
-                </div>
               </div>
-              <div *ngIf="activeTab === 'preparing'" class="progress mt-2" style="height: 10px;">
-                <div class="progress-bar bg-success" role="progressbar" [style]="{width: getPreparationProgress(order)}"
-                  [attr.aria-valuenow]="getPreparationProgress(order)" aria-valuemin="0" aria-valuemax="100">
-                </div>
-              </div>
-            </div>
-          </div>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
   </div>
+</div>

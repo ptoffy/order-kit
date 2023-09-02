@@ -16,6 +16,7 @@ export enum OrderMenuItemStatus {
 
 export interface Order extends BaseModel {
     _id: string
+    number: number
     table: number
     items: OrderMenuItem[]
     status: OrderStatus

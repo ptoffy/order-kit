@@ -63,6 +63,7 @@ export async function getOrders(req: Request, res: Response) {
 
         const transformedData: OrderType[] = orders.map(order => ({
             _id: order._id,
+            number: order.number,
             createdAt: order.createdAt,
             updatedAt: order.updatedAt,
             table: order.table,
@@ -93,8 +94,6 @@ export async function updateOrder(req: Request, res: Response) {
             return res.status(404).json({ message: 'Order not found' })
         }
 
-        logger.info("Updating order: " + JSON.stringify(req.body, null, 2))
-
         const orderRequest = plainToClass(UpdateOrderRequest, req.body)
         const errors = await validate(orderRequest)
 
@@ -103,8 +102,6 @@ export async function updateOrder(req: Request, res: Response) {
             logger.warn(message)
             return res.status(400).json(message)
         }
-
-        logger.info("Updating order: " + JSON.stringify(orderRequest, null, 2))
 
         order.status = orderRequest.status
         order.items = orderRequest.items

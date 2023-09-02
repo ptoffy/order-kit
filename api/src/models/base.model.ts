@@ -5,14 +5,14 @@ import mongoose, { Schema, Types } from "mongoose"
  */
 interface BaseModelType extends mongoose.Document {
     _id: Types.ObjectId
-    createdAt: Date
-    updatedAt: Date
 }
 
 const baseSchema = new mongoose.Schema<BaseModelType>({
     _id: { type: Schema.Types.ObjectId, required: true, auto: true },
-    createdAt: { type: Date, required: true, default: Date.now },
-    updatedAt: { type: Date, required: true, default: Date.now }
-})
+},
+    { timestamps: true }
+)
 
-export { baseSchema, BaseModelType }
+const Base = mongoose.model<BaseModelType>('Base', baseSchema)
+
+export { baseSchema, BaseModelType, Base }

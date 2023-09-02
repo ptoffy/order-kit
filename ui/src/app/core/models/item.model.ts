@@ -6,6 +6,7 @@ export enum MenuItemCategory {
 }
 
 export interface MenuItem extends BaseModel {
+    _id: string
     name: string
     price: number
     category: MenuItemCategory

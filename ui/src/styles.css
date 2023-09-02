@@ -84,12 +84,13 @@ body {
 
 .btn-info {
     background-color: #007bff;
-    border: none;
+    border: 1px solid #007bff;
     color: white;
 }
 
 .btn-info:hover {
-    background-color: #007bff;
+    background-color: #2a8ef9;
+    border: 1px solid #2a8ef9;
     color: white;
 }
 
@@ -186,4 +187,11 @@ a {
     background-color: #2b3036 !important;
     border-color: #2b3036 !important;
     color: white !important;
+}
+
+.btn.disabled {
+    background-color: #2b3036 !important;
+    color: #adbac7 !important;
+    opacity: 0.5;
+    cursor: not-allowed;
 }

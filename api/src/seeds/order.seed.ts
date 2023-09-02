@@ -59,7 +59,12 @@ export async function seedOrders() {
         }
     ]
 
-    await Order.insertMany(orders)
+    // await Order.insertMany(orders)
+
+    // This is to make sure that there's a different createdAt date for each order
+    for (const order of orders) {
+        await Order.create(order)
+    }
 
     logger.info('🌳 Order collection seeded!')
 }

@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose"
-import { baseSchema, BaseModelType } from "./base.model"
+import { BaseModelType, Base, baseSchema } from "./base.model"
 import { MenuItemCategory, MenuItemType } from "./item.model"
 
 export enum OrderStatus {
@@ -20,10 +20,13 @@ export interface OrderMenuItemType extends MenuItemType {
 }
 
 export interface OrderType extends BaseModelType {
+    number: number
     table: number
     items: OrderMenuItemType[]
     status: OrderStatus
     type: MenuItemCategory
+    createdAt: Date
+    updatedAt: Date
 }
 
 const orderItemSchema = new Schema<OrderMenuItemType>({
@@ -35,9 +38,9 @@ const orderItemSchema = new Schema<OrderMenuItemType>({
 })
 
 const orderSchema = new Schema<OrderType>({
-    ...baseSchema.obj,
     table: { type: Number, required: true },
     items: { type: [orderItemSchema], required: true },
+    number: { type: Number, required: true, default: 1 },
     type: {
         type: String, enum: Object.values(MenuItemCategory),
         required: true, default: MenuItemCategory.Food
@@ -46,6 +49,17 @@ const orderSchema = new Schema<OrderType>({
         type: String, enum: Object.values(OrderStatus),
         required: true, default: OrderStatus.New
     }
+}, { timestamps: true })
+
+orderSchema.pre<OrderType>("save", function (next) {
+    if (!this.isNew) return next()
+    const startOfDay = new Date()
+    startOfDay.setHours(0, 0, 0, 0)
+    const latest = Order.findOne({ createdAt: { $gte: startOfDay } }).sort({ number: -1 })
+    latest.then((order) => {
+        this.number = order ? order.number + 1 : 1
+        next()
+    })
 })
 
 export const Order = model<OrderType>("Order", orderSchema)
