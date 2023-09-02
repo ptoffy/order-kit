@@ -15,12 +15,11 @@ export enum OrderMenuItemStatus {
     Done = "done"
 }
 
-interface OrderMenuItemType {
-    item: MenuItemType
+export interface OrderMenuItemType extends MenuItemType {
     status: OrderMenuItemStatus
 }
 
-interface OrderType extends BaseModelType {
+export interface OrderType extends BaseModelType {
     table: number
     items: OrderMenuItemType[]
     status: OrderStatus
@@ -28,7 +27,7 @@ interface OrderType extends BaseModelType {
 }
 
 const orderItemSchema = new Schema<OrderMenuItemType>({
-    item: { type: Schema.Types.ObjectId, ref: 'MenuItem', required: true },
+    _id: { type: Schema.Types.ObjectId, ref: 'MenuItem', required: true },
     status: {
         type: String, enum: Object.values(OrderMenuItemStatus),
         required: true, default: OrderMenuItemStatus.New

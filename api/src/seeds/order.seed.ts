@@ -17,9 +17,9 @@ export async function seedOrders() {
         {
             table: 1,
             items: [
-                { item: drinks[0]._id, status: OrderMenuItemStatus.New },
-                { item: drinks[0]._id, status: OrderMenuItemStatus.New },
-                { item: drinks[1]._id, status: OrderMenuItemStatus.New },
+                { _id: drinks[0]._id, status: OrderMenuItemStatus.New },
+                { _id: drinks[0]._id, status: OrderMenuItemStatus.New },
+                { _id: drinks[1]._id, status: OrderMenuItemStatus.New },
             ],
             status: OrderMenuItemStatus.New,
             type: MenuItemCategory.Drink
@@ -27,9 +27,9 @@ export async function seedOrders() {
         {
             table: 2,
             items: [
-                { item: foods[0]._id, status: OrderMenuItemStatus.New },
-                { item: foods[1]._id, status: OrderMenuItemStatus.New },
-                { item: foods[2]._id, status: OrderMenuItemStatus.New },
+                { _id: foods[0]._id, status: OrderMenuItemStatus.New },
+                { _id: foods[1]._id, status: OrderMenuItemStatus.New },
+                { _id: foods[2]._id, status: OrderMenuItemStatus.New },
             ],
             status: OrderMenuItemStatus.New,
             type: MenuItemCategory.Food
@@ -37,11 +37,11 @@ export async function seedOrders() {
         {
             table: 3,
             items: [
-                { item: foods[0]._id, status: OrderMenuItemStatus.New },
-                { item: foods[1]._id, status: OrderMenuItemStatus.New },
-                { item: foods[2]._id, status: OrderMenuItemStatus.New },
-                { item: foods[3]._id, status: OrderMenuItemStatus.New },
-                { item: foods[4]._id, status: OrderMenuItemStatus.New },
+                { _id: foods[0]._id, status: OrderMenuItemStatus.New },
+                { _id: foods[1]._id, status: OrderMenuItemStatus.New },
+                { _id: foods[2]._id, status: OrderMenuItemStatus.New },
+                { _id: foods[3]._id, status: OrderMenuItemStatus.New },
+                { _id: foods[4]._id, status: OrderMenuItemStatus.New },
             ],
             status: OrderMenuItemStatus.New,
             type: MenuItemCategory.Food
@@ -49,10 +49,10 @@ export async function seedOrders() {
         {
             table: 4,
             items: [
-                { item: drinks[0]._id, status: OrderMenuItemStatus.New },
-                { item: drinks[1]._id, status: OrderMenuItemStatus.New },
-                { item: drinks[2]._id, status: OrderMenuItemStatus.New },
-                { item: drinks[3]._id, status: OrderMenuItemStatus.New },
+                { _id: drinks[0]._id, status: OrderMenuItemStatus.New },
+                { _id: drinks[1]._id, status: OrderMenuItemStatus.New },
+                { _id: drinks[2]._id, status: OrderMenuItemStatus.New },
+                { _id: drinks[3]._id, status: OrderMenuItemStatus.New },
             ],
             status: OrderMenuItemStatus.New,
             type: MenuItemCategory.Drink

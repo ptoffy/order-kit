@@ -1,6 +1,6 @@
-import { Order, OrderStatus } from "../models/order.model"
+import { Order, OrderMenuItemStatus, OrderMenuItemType, OrderStatus, OrderType } from "../models/order.model"
 import { Request, Response } from "express"
-import { CreateOrderRequest } from "../DTOs/order.dto"
+import { CreateOrderRequest, UpdateOrderRequest } from "../DTOs/order.dto"
 import { plainToClass } from "class-transformer"
 import logger from "../logger"
 import { validate } from "class-validator"
@@ -47,18 +47,73 @@ export async function getOrders(req: Request, res: Response) {
 
         const type = req.role === UserRole.Bartender ? MenuItemCategory.Drink : MenuItemCategory.Food
 
-        const orders = await Order.find(status ? { status, type } : { type })
-            .populate('items.item', 'name price category')
+        var orders = await Order.find(status ? { status, type } : { type })
+            .populate({
+                path: 'items._id',
+                model: 'MenuItem',
+                select: 'name price category',
+            })
             .sort({ createdAt: 1 })
+            .lean()
 
         if (!orders) {
             logger.warn("Orders not found")
             return res.status(404).json({ message: 'Orders not found' })
         }
 
-        res.status(200).json(orders)
+        const transformedData: OrderType[] = orders.map(order => ({
+            _id: order._id,
+            createdAt: order.createdAt,
+            updatedAt: order.updatedAt,
+            table: order.table,
+            status: order.status as OrderStatus,
+            type: order.type as MenuItemCategory,
+            items: order.items.map((item: any) => ({
+                _id: item._id._id,
+                name: item._id.name,
+                price: item._id.price,
+                category: item._id.category,
+                status: item.status as OrderMenuItemStatus
+            }))
+        })) as OrderType[]
+
+        res.status(200).json(transformedData)
     } catch (err) {
         logger.error("Error getting orders: " + err)
+        res.status(400).json(err)
+    }
+}
+
+export async function updateOrder(req: Request, res: Response) {
+    try {
+        const order = await Order.findById(req.params.id)
+
+        if (!order) {
+            logger.warn("Order not found: " + req.params.id)
+            return res.status(404).json({ message: 'Order not found' })
+        }
+
+        logger.info("Updating order: " + JSON.stringify(req.body, null, 2))
+
+        const orderRequest = plainToClass(UpdateOrderRequest, req.body)
+        const errors = await validate(orderRequest)
+
+        if (errors.length > 0) {
+            const message = "Invalid request body: " + errors.map((error: any) => Object.values(error.constraints)).join(', ')
+            logger.warn(message)
+            return res.status(400).json(message)
+        }
+
+        logger.info("Updating order: " + JSON.stringify(orderRequest, null, 2))
+
+        order.status = orderRequest.status
+        order.items = orderRequest.items
+
+        await order.save()
+
+        res.status(200).json(order)
+    } catch (err) {
+        logger.error("Error updating order: " + err)
         res.status(400).json(err)
     }
 }

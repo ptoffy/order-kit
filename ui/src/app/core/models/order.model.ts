@@ -1,5 +1,5 @@
-import { BaseModel } from "./base.model";
-import { MenuItem } from "./item.model";
+import { BaseModel } from "./base.model"
+import { MenuItem } from "./item.model"
 
 export enum OrderStatus {
     New = "new",
@@ -15,7 +15,7 @@ export enum OrderMenuItemStatus {
 }
 
 export interface Order extends BaseModel {
-    id: number;
+    _id: string
     table: number
     items: OrderMenuItem[]
     status: OrderStatus

@@ -1,5 +1,6 @@
-import { IsNotEmpty, IsNumber, Matches } from "class-validator"
-import { OrderStatus } from "../models/order.model"
+import { IsEnum, IsNotEmpty, IsNumber, Matches, ValidateNested } from "class-validator"
+import { OrderMenuItemType, OrderStatus } from "../models/order.model"
+import { Type } from "class-transformer"
 
 export class CreateOrderRequest {
     @IsNumber()
@@ -7,9 +8,16 @@ export class CreateOrderRequest {
     table!: number
 
     @IsNotEmpty()
-    items!: { itemId: string, name: string, quantity: number, price: number }[]
+    items!: OrderMenuItemType[]
 
     @IsNotEmpty()
-    @Matches(/^${Object.values(OrderStatus).join('|')}/)
+    @IsEnum(OrderStatus)
+    status!: OrderStatus
+}
+
+export class UpdateOrderRequest {
+    items!: OrderMenuItemType[]
+
+    @IsEnum(OrderStatus)
     status!: OrderStatus
 }

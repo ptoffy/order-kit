@@ -1,35 +1,47 @@
-<div class="mt-4 pt-2 container-sm">
+<div class="mt-4 pt-2 container">
   <h2 class="pb-3">Orders</h2>
   <ul class="nav nav-tabs">
     <li class="nav-item">
-      <a class="nav-link active d-flex align-items-center" [class.active]="activeTab === 'new'" (click)="getOrders(OrderStatus.New)">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg me-2" viewBox="0 0 16 16">
-          <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+      <a class="nav-link active d-flex align-items-center" [class.active]="activeTab === 'new'"
+        (click)="getOrders(OrderStatus.New)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg me-2"
+          viewBox="0 0 16 16">
+          <path fill-rule="evenodd"
+            d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
         </svg>
         New
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link d-flex align-items-center" [class.active]="activeTab === 'preparing'" (click)="getOrders(OrderStatus.Preparing)">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-stopwatch-fill me-2" viewBox="0 0 16 16">
-          <path d="M6.5 0a.5.5 0 0 0 0 1H7v1.07A7.001 7.001 0 0 0 8 16a7 7 0 0 0 5.29-11.584.531.531 0 0 0 .013-.012l.354-.354.353.354a.5.5 0 1 0 .707-.707l-1.414-1.415a.5.5 0 1 0-.707.707l.354.354-.354.354a.717.717 0 0 0-.012.012A6.973 6.973 0 0 0 9 2.071V1h.5a.5.5 0 0 0 0-1h-3zm2 5.6V9a.5.5 0 0 1-.5.5H4.5a.5.5 0 0 1 0-1h3V5.6a.5.5 0 1 1 1 0z"/>
+      <a class="nav-link d-flex align-items-center" [class.active]="activeTab === 'preparing'"
+        (click)="getOrders(OrderStatus.Preparing)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+          class="bi bi-stopwatch-fill me-2" viewBox="0 0 16 16">
+          <path
+            d="M6.5 0a.5.5 0 0 0 0 1H7v1.07A7.001 7.001 0 0 0 8 16a7 7 0 0 0 5.29-11.584.531.531 0 0 0 .013-.012l.354-.354.353.354a.5.5 0 1 0 .707-.707l-1.414-1.415a.5.5 0 1 0-.707.707l.354.354-.354.354a.717.717 0 0 0-.012.012A6.973 6.973 0 0 0 9 2.071V1h.5a.5.5 0 0 0 0-1h-3zm2 5.6V9a.5.5 0 0 1-.5.5H4.5a.5.5 0 0 1 0-1h3V5.6a.5.5 0 1 1 1 0z" />
         </svg>
         In Preparation
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link d-flex align-items-center" [class.active]="activeTab === 'done'" (click)="getOrders(OrderStatus.Done)">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg me-2" viewBox="0 0 16 16">
-          <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+      <a class="nav-link d-flex align-items-center" [class.active]="activeTab === 'done'"
+        (click)="getOrders(OrderStatus.Done)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg me-2"
+          viewBox="0 0 16 16">
+          <path
+            d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z" />
         </svg>
         Ready
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link d-flex align-items-center" [class.active]="activeTab === 'served'" (click)="getOrders(OrderStatus.Served)">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-all me-2" viewBox="0 0 16 16">
-          <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l7-7zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0z"/>
-          <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708z"/>
+      <a class="nav-link d-flex align-items-center" [class.active]="activeTab === 'served'"
+        (click)="getOrders(OrderStatus.Served)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-all me-2"
+          viewBox="0 0 16 16">
+          <path
+            d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l7-7zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0z" />
+          <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708z" />
         </svg>
         Served
       </a>
@@ -44,15 +56,21 @@
         <h4>Next one:</h4>
         <div class="col-sm-6 col-md-4 col-lg-3 mt-2 mb-3">
           <div class="card">
-            <div class="card-body">
+            <div class="card-header d-flex justify-content-between">
               <small class="text-muted d-flex align-items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock me-2" viewBox="0 0 16 16">
-                  <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
-                  <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                  class="bi bi-clock me-2" viewBox="0 0 16 16">
+                  <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
+                  <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
                 </svg>
                 {{orders[0].createdAt | date:'HH:MM'}}
               </small>
-              <h5 class="card-title mt-3">Table #{{orders[0].table}}</h5>
+              <button *ngIf="activeTab === 'new'" type="button" class="btn btn-sm" (click)="prepare(orders[0]._id)">
+                Prepare
+              </button>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title mt">Table #{{orders[0].table}}</h5>
               <div *ngFor="let item of orders[0].items | groupItems">
                 <div class="d-flex justify-content-between">
                   <p class="card-text">{{item.count}}x {{item.name}}</p>
@@ -67,30 +85,31 @@
         <h4>Then:</h4>
         <div class="col-sm-6 col-md-4 col-lg-3 mt-2" *ngFor="let order of orders; let i = index" [hidden]="i === 0">
           <div class="card mb-3">
-            <div class="card-body">
+            <div class="card-header d-flex justify-content-between">
               <small class="text-muted d-flex align-items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock me-2" viewBox="0 0 16 16">
-                  <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
-                  <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                  class="bi bi-clock me-2" viewBox="0 0 16 16">
+                  <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
+                  <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
                 </svg>
                 {{order.createdAt | date:'HH:MM'}}
               </small>
-              <h5 class="card-title mt-3">Table #{{order.table}}</h5>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">Table #{{order.table}}</h5>
               <div *ngFor="let item of order.items | groupItems">
                 <div class="d-flex justify-content-between">
                   <p class="card-text">{{item.count}}x {{item.name}}</p>
                 </div>
               </div>
               <div *ngIf="activeTab === 'preparing'" class="progress mt-2" style="height: 10px;">
-                <div class="progress-bar bg-success" role="progressbar" 
-                  [style]="{width: getPreparationProgress(order)}"
-                  [attr.aria-valuenow]="getPreparationProgress(order)" 
-                  aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar bg-success" role="progressbar" [style]="{width: getPreparationProgress(order)}"
+                  [attr.aria-valuenow]="getPreparationProgress(order)" aria-valuemin="0" aria-valuemax="100">
                 </div>
               </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>

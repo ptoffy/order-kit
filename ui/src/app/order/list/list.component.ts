@@ -25,19 +25,8 @@ export class ListComponent {
     this.activeTab = status
     this.orderService.list(status).subscribe({
       next: (orders) => {
-        this.orders = orders.map((order: any) => ({
-          id: order.id,
-          table: order.table,
-          items: order.items.map((item: any) => {
-            const orderItem = item.item as OrderMenuItem
-            orderItem.status = item.status as OrderMenuItemStatus
-            return orderItem
-          }),
-          status: order.status as OrderStatus,
-          createdAt: new Date(order.createdAt),
-          updatedAt: new Date(order.updatedAt),
-        }));
-      },
+        this.orders = orders
+      }
     })
   }
 
@@ -48,5 +37,15 @@ export class ListComponent {
     const remaining = completed + preparing * 0.5
     const progress = remaining / total * 100
     return `${progress}%`
+  }
+
+  prepare(orderId: string) {
+    const order = this.orders.find(order => order._id === orderId)
+    if (!order) return
+    order.status = OrderStatus.Preparing
+
+    this.orderService.update(order).subscribe({
+      next: () => this.getOrders(OrderStatus.New)
+    })
   }
 }
