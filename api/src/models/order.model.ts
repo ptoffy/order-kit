@@ -27,6 +27,7 @@ export interface OrderType extends BaseModelType {
     type: MenuItemCategory
     createdAt: Date
     updatedAt: Date
+    paid: boolean
 }
 
 const orderItemSchema = new Schema<OrderMenuItemType>({
@@ -48,7 +49,8 @@ const orderSchema = new Schema<OrderType>({
     status: {
         type: String, enum: Object.values(OrderStatus),
         required: true, default: OrderStatus.New
-    }
+    },
+    paid: { type: Boolean, required: true, default: false }
 }, { timestamps: true })
 
 orderSchema.pre<OrderType>("save", function (next) {

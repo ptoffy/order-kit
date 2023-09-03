@@ -191,6 +191,7 @@ a {
 
 .btn.disabled {
     background-color: #2b3036 !important;
+    border: 1px solid #2b3036 !important;
     color: #adbac7 !important;
     opacity: 0.5;
     cursor: not-allowed;

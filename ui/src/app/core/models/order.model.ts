@@ -22,6 +22,7 @@ export interface Order extends BaseModel {
     status: OrderStatus
     createdAt: Date
     updatedAt: Date
+    paid: boolean
 }
 
 export interface OrderMenuItem extends MenuItem {
