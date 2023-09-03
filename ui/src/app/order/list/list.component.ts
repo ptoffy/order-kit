@@ -1,12 +1,11 @@
-import { Component } from '@angular/core';
-import { Order, OrderMenuItem, OrderMenuItemStatus, OrderStatus } from 'src/app/core/models/order.model';
-import { OrderService } from 'src/app/core/services/order.service';
+import { Component } from '@angular/core'
+import { Order, OrderMenuItemStatus, OrderStatus } from 'src/app/core/models/order.model'
+import { OrderService } from 'src/app/core/services/order.service'
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
-  styles: [
-  ]
+  styles: []
 })
 export class ListComponent {
   orders: Order[] = []
@@ -14,7 +13,7 @@ export class ListComponent {
   OrderStatus = OrderStatus
 
   constructor(
-    private orderService: OrderService,
+    private orderService: OrderService
   ) { }
 
   ngOnInit(): void {
@@ -56,9 +55,9 @@ export class ListComponent {
     })
   }
 
-  done(itemId: string) {
+  done(orderId: string, itemId: string) {
     if (!itemId) return
-    const order = this.orders.find(order => order.items.find(item => item._id === itemId))
+    const order = this.orders.find(order => order._id === orderId)
     if (!order) return
     const item = order.items.find(item => item._id === itemId)
     if (!item) return

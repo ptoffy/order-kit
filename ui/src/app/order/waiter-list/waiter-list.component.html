@@ -1,0 +1,108 @@
+<div class="container full-height-minus-navbar d-flex flex-column">
+  <div class="d-flex justify-content-between align-items-center">
+    <h2>Orders you're managing</h2>
+    <button class="btn btn-info">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg"
+        viewBox="0 0 16 16">
+        <path fill-rule="evenodd"
+          d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
+      </svg>
+      Add new order
+    </button>
+  </div>
+  <div class="row mt-4 rounded border p-3 bg-secondary flex-grow-1">
+    <div class="col border rounded bg-primary p-3 me-3 orders-col">
+      <h4>New</h4>
+      <small class="text-muted d-flex align-items-center mb-3">
+        This order has not entered preparation yet
+      </small>
+      <div *ngFor="let order of getSpecificOrders(OrderStatus.New)" class="rounded bg-light p-2 border mt-3">
+        <div class="d-flex justify-content-between">
+          <small class="text-muted d-flex align-items-center">
+            Table #{{ order.table }}
+          </small>
+          <small class="text-muted d-flex align-items-center">
+            #{{ order.number }}
+          </small>
+        </div>
+        <h5 class="mt-2 fw-bold">
+          {{ order.type.charAt(0).toUpperCase() + order.type.slice(1) }}
+        </h5>
+        <span *ngFor="let item of order.items | groupItems" class="d-flex justify-content-between">
+          <span>{{ item.count }}x {{ item.name }}</span>
+        </span>
+      </div>
+    </div>
+    <div class="col border rounded bg-primary p-3 me-3 orders-col">
+      <h4>In Preparation</h4>
+      <small class="text-muted d-flex align-items-center mb-3">
+        This order is being prepared
+      </small>
+      <div *ngFor="let order of getSpecificOrders(OrderStatus.Preparing)" class="rounded bg-light p-2 border mt-3">
+        <div class="d-flex justify-content-between">
+          <small class="text-muted d-flex align-items-center">
+            Table #{{ order.table }}
+          </small>
+          <small class="text-muted d-flex align-items-center">
+            #{{ order.number }}
+          </small>
+        </div>
+        <h5 class="mt-2 fw-bold">
+          {{ order.type.charAt(0).toUpperCase() + order.type.slice(1) }}
+        </h5>
+        <div class="progress mt-2 mb-2" style="height: 10px;">
+          <div class="progress-bar" role="progressbar" [style.width.%]="getPreparationProgress(order)"
+            [style.backgroundColor]="getProgressBarColour(order)" [attr.aria-valuenow]="getPreparationProgress(order)"
+            aria-valuemin="0" aria-valuemax="100">
+          </div>
+        </div>
+        <span *ngFor="let item of order.items">
+          <div class="d-flex justify-content-between align-items-center">
+            <p class="m-0">{{item.name}}</p>
+            <svg *ngIf="item.status === 'done'" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#46954a"
+              class="bi bi-check-lg" viewBox="0 0 16 16">
+              <path
+                d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z" />
+            </svg>
+          </div>
+        </span>
+      </div>
+    </div>
+    <div class="col border rounded bg-primary p-3 me-3 orders-col">
+      <h4>Ready</h4>
+      <small class="text-muted d-flex align-items-center">
+        This order is ready to be served
+      </small>
+      <div *ngFor="let order of getSpecificOrders(OrderStatus.Done)" class="rounded bg-light p-2 mt-3 ready-order-card">
+        <div class="d-flex justify-content-between">
+          <small class="text-muted d-flex align-items-center">
+            Table #{{ order.table }}
+          </small>
+          <small class="text-muted d-flex align-items-center">
+            #{{ order.number }}
+          </small>
+        </div>
+        <div class="d-flex justify-content-between align-items-center mt-2 mb-2">
+          <h5 class="m-0">{{ order.type.charAt(0).toUpperCase() + order.type.slice(1) }}</h5>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#46954a" class="bi bi-check-lg"
+            viewBox="0 0 16 16">
+            <path
+              d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z" />
+          </svg>
+        </div>
+        <span *ngFor="let item of order.items">
+          <p class="m-0 text-muted">{{item.name}}</p>
+        </span>
+      </div>
+    </div>
+    <div class="col border rounded bg-primary p-3 orders-col">
+      <h4>Served</h4>
+      <small class="text-muted d-flex align-items-center">
+        This order has been served
+      </small>
+      <div *ngFor="let order of getSpecificOrders(OrderStatus.Served)">
+        {{ order.table }}
+      </div>
+    </div>
+  </div>
+</div>

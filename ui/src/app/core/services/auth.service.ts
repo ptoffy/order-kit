@@ -90,6 +90,10 @@ export class AuthService {
     localStorage.setItem(this.currentUserIdStorageName, res.id)
     this.isAuthenticatedSubject.next(true)
   }
+
+  getCurrentUserId(): string | null {
+    return localStorage.getItem(this.currentUserIdStorageName)
+  }
 }
 
 interface LoginResponse {

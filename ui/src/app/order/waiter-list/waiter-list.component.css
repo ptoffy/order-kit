@@ -1,0 +1,12 @@
+.orders-col {
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.ready-order-card {
+    border: 1px solid #46954a;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}

@@ -196,3 +196,19 @@ a {
     opacity: 0.5;
     cursor: not-allowed;
 }
+
+.bg-primary {
+    background-color: #1C2128 !important;
+}
+
+.bg-secondary {
+    background-color: #22272E !important;
+}
+
+.bg-light {
+    background-color: #2D333B !important;
+}
+
+.full-height-minus-navbar {
+    height: calc(100% - 120px);
+}

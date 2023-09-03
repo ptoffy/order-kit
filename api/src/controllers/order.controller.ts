@@ -1,11 +1,13 @@
 import { Order, OrderMenuItemStatus, OrderMenuItemType, OrderStatus, OrderType } from "../models/order.model"
 import { Request, Response } from "express"
 import { CreateOrderRequest, UpdateOrderRequest } from "../DTOs/order.dto"
-import { plainToClass } from "class-transformer"
+import { Type, plainToClass } from "class-transformer"
 import logger from "../logger"
 import { validate } from "class-validator"
 import { MenuItemCategory } from "../models/item.model"
 import { UserRole } from "../models/user.model"
+import { Table } from "../models/table.model"
+import { Types } from "mongoose"
 
 /**
  * Create an order.
@@ -44,10 +46,23 @@ export async function createOrder(req: Request, res: Response) {
 export async function getOrders(req: Request, res: Response) {
     try {
         const status = req.query.status as OrderStatus | undefined
+        const waiterId = req.query.waiterId
 
         const type = req.role === UserRole.Bartender ? MenuItemCategory.Drink : MenuItemCategory.Food
 
-        var orders = await Order.find(status ? { status, type } : { type })
+        const query: any = { type }
+
+        if (waiterId) {
+            const tables = await Table.find({ waiterId }).select('number')
+            const tableNumbers = tables.map(table => table.number)
+            query.table = { $in: tableNumbers }
+        }
+
+        if (status) {
+            query.status = status
+        }
+
+        var orders = await Order.find(query)
             .populate({
                 path: 'items._id',
                 model: 'MenuItem',

@@ -21,4 +21,8 @@ export class OrderService {
   update(order: Order): Observable<void> {
     return this.apiService.post(`order/${order._id}/update`, order)
   }
+
+  listForWaiter(waiterId: string): Observable<Order[]> {
+    return this.apiService.get(`order?waiterId=${waiterId}`)
+  }
 }

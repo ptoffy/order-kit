@@ -1,4 +1,4 @@
-import { BaseModel } from "src/app/core/models/base.model";
+import { BaseModel } from "src/app/core/models/base.model"
 
 enum UserRole {
     Waiter = "waiter",
@@ -8,14 +8,15 @@ enum UserRole {
 }
 
 interface User extends BaseModel {
-    username: string;
-    password: string;
-    name: string;
-    role: UserRole;
+    _id: string
+    username: string
+    password: string
+    name: string
+    role: UserRole
     statistics: {
-        orders?: number;
-        revenue?: number;
+        orders?: number
+        revenue?: number
     };
 }
 
-export { User, UserRole };
+export { User, UserRole }
