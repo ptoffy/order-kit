@@ -1,6 +1,7 @@
 declare namespace Express {
     export interface Request {
-        userId?: string;
+        userId?: string
+        role: UserRole
     }
 }
 
@@ -13,14 +14,14 @@ interface ServerToClientEvents {
 }
 
 interface ClientToServerEvents {
-    hello: () => void;
+    hello: () => void
 }
 
 interface InterServerEvents {
-    ping: () => void;
+    ping: () => void
 }
 
 interface SocketData {
-    name: string;
-    age: number;
+    name: string
+    age: number
 }

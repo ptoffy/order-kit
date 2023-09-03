@@ -1,6 +1,6 @@
-import { Schema, Document, Model, model } from "mongoose";
-import { BaseModelType, baseSchema } from "./base.model";
-import { IsString, IsNotEmpty, Length, IsIn } from 'class-validator';
+import { Schema, Model, model } from "mongoose"
+import { BaseModelType } from "./base.model"
+import { IsString, IsNotEmpty, IsIn } from 'class-validator'
 
 enum UserRole {
     Waiter = "waiter",
@@ -10,36 +10,35 @@ enum UserRole {
 }
 
 interface UserType extends BaseModelType {
-    username: string;
-    password: string;
-    name: string;
-    role: UserRole;
+    username: string
+    password: string
+    name: string
+    role: UserRole
     statistics: {
-        orders?: number;
-        revenue?: number;
-    };
+        orders?: number
+        revenue?: number
+    }
 }
 
 class CreateUserDTO {
     @IsString()
     @IsNotEmpty()
-    username!: string;
+    username!: string
 
     @IsString()
     @IsNotEmpty()
-    password!: string;
+    password!: string
 
     @IsString()
     @IsNotEmpty()
-    name!: string;
+    name!: string
 
     @IsString()
     @IsIn(Object.values(UserRole))
-    role!: UserRole;
+    role!: UserRole
 }
 
 const userSchema = new Schema<UserType>({
-    ...baseSchema.obj,
     username: { type: String, unique: true, required: true },
     password: { type: String, required: true },
     name: { type: String, required: true },
@@ -48,8 +47,8 @@ const userSchema = new Schema<UserType>({
         orders: { type: Number, default: 0 },
         revenue: { type: Number, default: 0 }
     }
-});
+}, { timestamps: true })
 
-const User: Model<UserType> = model("User", userSchema);
+const User: Model<UserType> = model("User", userSchema)
 
-export { UserType, User, UserRole };
+export { UserType, User, UserRole }

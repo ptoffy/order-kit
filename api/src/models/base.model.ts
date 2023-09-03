@@ -1,19 +1,18 @@
-import mongoose, { Schema, Types } from "mongoose";
+import mongoose, { Schema, Types } from "mongoose"
 
-// This is the base model that all other models will inherit from.
+/**
+ * Base model type all models should extend.
+ */
 interface BaseModelType extends mongoose.Document {
-    _id: Types.ObjectId;
-    createdAt: Date;
-    updatedAt: Date;
+    _id: Types.ObjectId
 }
 
-const baseSchema = new mongoose.Schema<BaseModelType>(
-    {
-        _id: { type: Schema.Types.ObjectId, required: true, auto: true },
-    },
-    {
-        timestamps: true
-    }
-);
+const baseSchema = new mongoose.Schema<BaseModelType>({
+    _id: { type: Schema.Types.ObjectId, required: true, auto: true },
+},
+    { timestamps: true }
+)
 
-export { baseSchema, BaseModelType };
+const Base = mongoose.model<BaseModelType>('Base', baseSchema)
+
+export { baseSchema, BaseModelType, Base }

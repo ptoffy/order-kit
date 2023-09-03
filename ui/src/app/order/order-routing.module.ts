@@ -1,14 +1,14 @@
 import { RouterModule, Routes } from "@angular/router";
 import { UserRole } from "../core/models/user.model";
 import { guardRole } from "../core/guards/role.guard";
-import { ListComponent } from "./list/list.component";
 import { NgModule } from "@angular/core";
+import { ListComponent } from "./list/list.component";
 
 const routes: Routes = [
   {
-    path: 'table',
+    path: 'order',
     children: [
-      { path: 'list', component: ListComponent, canActivate: [guardRole([UserRole.Waiter])] }
+      { path: 'list', component: ListComponent, canActivate: [guardRole([UserRole.Cook, UserRole.Bartender])] }
     ]
   }
 ];
@@ -17,4 +17,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class TableRoutingModule { }
+export class OrderRoutingModule { }

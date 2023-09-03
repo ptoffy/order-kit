@@ -1,12 +1,12 @@
-import logger from "../logger";
-import { Table } from "../models/table.model";
+import logger from "../logger"
+import { Table } from "../models/table.model"
 
-async function seedTables() {
-    const count = await Table.countDocuments();
+export async function seedTables() {
+    const count = await Table.countDocuments()
 
-    if (count > 0) return;
+    if (count > 0) return
 
-    logger.info('🌱 Seeding table collection...');
+    logger.info('🌱 Seeding table collection...')
 
     const tables = [
         { number: 1, seats: 4, occupancy: 0, waiterId: null, orders: [] },
@@ -17,8 +17,6 @@ async function seedTables() {
         { number: 6, seats: 4, occupancy: 0, waiterId: null, orders: [] },
     ]
 
-    await Table.insertMany(tables);
-    logger.info('🌳 Table collection seeded!');
+    await Table.insertMany(tables)
+    logger.info('🌳 Table collection seeded!')
 }
-
-export { seedTables };

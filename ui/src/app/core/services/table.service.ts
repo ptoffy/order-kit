@@ -25,5 +25,4 @@ export class TableService {
   assign(tableNumber: number): Observable<void> {
     return this.apiService.post(`table/${tableNumber}/assign`, {})
   }
-
 }

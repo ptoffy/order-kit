@@ -5,7 +5,7 @@ import { jwtUtil } from '../utils/jwt.util';
 import { UserJwtPayload } from '../models/jwt.model';
 
 // This middleware checks if the user has the required role to access a resource
-export function checkAuth(requiredRole: UserRole | null = null) {
+export function checkAuth(requiredRole: UserRole[] | null = null) {
     return function (req: Request, res: Response, next: Function) {
         var token = req.headers['x-auth-token']
 
@@ -37,15 +37,15 @@ export function checkAuth(requiredRole: UserRole | null = null) {
 
         try {
             const decoded: UserJwtPayload = jwtUtil.verify(token) as UserJwtPayload
-            logger.debug(`Decoded token: ${JSON.stringify(decoded)}`)
             role = decoded.role as UserRole
             req.userId = decoded.id
+            req.role = role
         } catch (error) {
             logger.warn(`Invalid token: ${error}`)
             res.status(400).json({ message: 'Invalid token' })
         }
 
-        if (role !== requiredRole) {
+        if (role && requiredRole && !requiredRole.includes(role)) {
             logger.warn(`User with role ${role} tried to access a resource that requires role ${requiredRole}`)
             return res.status(403).json({ message: 'Forbidden' })
         }

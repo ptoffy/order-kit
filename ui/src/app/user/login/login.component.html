@@ -1,42 +1,27 @@
 <div class="container mt-5 mb-2">
   <div class="row justify-content-center">
-    <div class="col-4">
+    <div class="col-8 col-md-4">
       <div class="width: 350px;">
         <div class="card shadow mt-2 p-4 login-container">
           <h2 class="fs-4 font-medium text-center">Login</h2>
           <div *ngIf="errorMessage" class="alert alert-danger mt-2" style="white-space: pre-wrap;">
             {{ errorMessage }}
           </div>
-          <form
-            #loginForm="ngForm"
-            (submit)="loginForm.form.valid && onLogin()"
-          >
+          <form #loginForm="ngForm" (submit)="loginForm.form.valid && onLogin()">
             <div class="mb-3 mt-3">
               <label for="email-input" class="form-label">Username</label>
-              <input 
-                type="text" 
-                name="username" 
-                class="form-control" 
-                id="username-input" 
-                [(ngModel)]="loginRequest.username" 
-                required
-                [ngClass]="{ 'is-invalid': loginForm.submitted && loginForm.controls['username'].invalid }"
-              />
+              <input type="text" name="username" class="form-control" id="username-input"
+                [(ngModel)]="loginRequest.username" required
+                [ngClass]="{ 'is-invalid': loginForm.submitted && loginForm.controls['username'].invalid }" />
               <div *ngIf="loginForm.submitted && loginForm.controls['username'].invalid" class="invalid-feedback">
                 <div *ngIf="loginForm.controls['username'].errors">Username is required</div>
               </div>
             </div>
             <div class="mb-3">
               <label for="password-input" class="form-label">Password</label>
-              <input 
-                type="password" 
-                class="form-control" 
-                id="password-input" 
-                [(ngModel)]="loginRequest.password"
-                name="password" 
-                required
-                [ngClass]="{ 'is-invalid': loginForm.submitted && loginForm.controls['password'].invalid }"
-              />
+              <input type="password" class="form-control" id="password-input" [(ngModel)]="loginRequest.password"
+                name="password" required
+                [ngClass]="{ 'is-invalid': loginForm.submitted && loginForm.controls['password'].invalid }" />
               <div *ngIf="loginForm.submitted && loginForm.controls['password'].invalid" class="invalid-feedback">
                 <div *ngIf="loginForm.controls['password'].errors">Password is required</div>
               </div>
