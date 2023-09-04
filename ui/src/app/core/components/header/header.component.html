@@ -30,6 +30,25 @@
         <a routerLink="/user/register" class="btn btn-success btn-sm">Register</a>
       </div>
       <div *ngIf="isLoggedIn" class="d-lg-flex col-lg-3 justify-content-lg-end">
+        <div class="dropdown me-2">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="notificationDropdown"
+            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Notifications <span *ngIf="notifications.length > 0"
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              {{ notifications.length }}
+              <span class="visually-hidden">unread messages</span>
+            </span>
+          </button>
+          <div class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown">
+            <a class="dropdown-item top-text-block" *ngFor="let notification of notifications"
+              (click)="removeNotification(notification)">
+              {{ notification }}
+            </a>
+            <div *ngIf="notifications.length === 0" class="dropdown-item text-muted">
+              No notifications
+            </div>
+          </div>
+        </div>
         <button (click)="logout()" class="btn btn-sm me-2">Logout</button>
       </div>
     </div>

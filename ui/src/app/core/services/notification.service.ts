@@ -1,36 +1,71 @@
-import { Injectable } from '@angular/core';
-import { Socket, io } from "socket.io-client";
+import { Injectable } from '@angular/core'
+import { BehaviorSubject, Observable } from 'rxjs'
+import { Socket, io } from "socket.io-client"
+import { Order } from '../models/order.model'
+import { AuthService } from './auth.service'
+import { UserRole } from '../models/user.model'
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationService {
-  socket: Socket
-  constructor() {
+  private socket: Socket
+  private _notifications = new BehaviorSubject<string[]>([])
+  public readonly notifications$ = this._notifications.asObservable()
+
+  constructor(
+    private authService: AuthService
+  ) {
     this.socket = io('http://localhost:3000')
+  }
+
+  showNotification(message: string) {
+    const currentNotifications = [...this._notifications.value, message]
+    this._notifications.next(currentNotifications)
+  }
+
+  removeNotification(message: string) {
+    const currentNotifications = this._notifications.value
+    const index = currentNotifications.indexOf(message)
+    if (index > -1) {
+      currentNotifications.splice(index, 1)
+      this._notifications.next(currentNotifications)
+    }
   }
 
   /**
    * Notify the cooks that a new food order has been placed.
-   * @param tableNumber The table number that placed the order.
    */
-  notifyCooks(tableNumber: number) {
-    this.socket.emit('newFoodOrder', tableNumber)
+  onNewFoodOrder() {
+    return new Observable((observer) => {
+      this.socket.on('new-food-order', (order) => {
+        if (this.authService.getCurrentUserRole() === UserRole.Cook)
+          observer.next(order)
+      })
+    })
   }
 
   /**
    * Notify the bartenders that a new drink order has been placed.
-   * @param tableNumber The table number that placed the order.
    */
-  notifyBartenders(tableNumber: number) {
-    this.socket.emit('newDrinkOrder', tableNumber)
+  onNewDrinkOrder() {
+    return new Observable((observer) => {
+      this.socket.on('new-drink-order', (order) => {
+        if (this.authService.getCurrentUserRole() === UserRole.Bartender)
+          observer.next(order)
+      })
+    })
   }
 
   /**
-   * Notify the waiters 
-   * @param tableNumber 
+   * Notify the waiters that an order is ready to be served.
    */
-  notifyWaiters(tableNumber: number) {
-    this.socket.emit('orderReady', tableNumber)
+  onOrderReady(): Observable<Order> {
+    return new Observable((observer) => {
+      this.socket.on('order-ready', (order: Order) => {
+        if (this.authService.getCurrentUserRole() === UserRole.Waiter)
+          observer.next(order)
+      })
+    })
   }
 }

@@ -39,9 +39,7 @@ export class WaiterListComponent {
   getPreparationProgress(order: Order): number {
     const total = order.items.length
     const completed = order.items.filter(item => item.status === OrderMenuItemStatus.Done).length
-    const preparing = order.items.filter(item => item.status === OrderMenuItemStatus.Preparing).length
-    const remaining = completed + preparing * 0.5
-    const progress = remaining / total * 100
+    const progress = completed / total * 100
     return progress
   }
 

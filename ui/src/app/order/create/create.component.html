@@ -16,12 +16,8 @@
             <button class="btn btn-lg btn-block w-100" type="button" (click)="selectedCategory='drink'"
               [ngClass]="{'btn-primary': selectedCategory === 'drink'}">
               <div>
-                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor"
-                  [attr.fill]="selectedCategory === 'drink' ? '#46954a' : 'currentColor'" class="bi bi-cup-straw"
-                  viewBox="0 0 16 16">
-                  <path
-                    d="M13.902.334a.5.5 0 0 1-.28.65l-2.254.902-.4 1.927c.376.095.715.215.972.367.228.135.56.396.56.82 0 .046-.004.09-.011.132l-.962 9.068a1.28 1.28 0 0 1-.524.93c-.488.34-1.494.87-3.01.87-1.516 0-2.522-.53-3.01-.87a1.28 1.28 0 0 1-.524-.93L3.51 5.132A.78.78 0 0 1 3.5 5c0-.424.332-.685.56-.82.262-.154.607-.276.99-.372C5.824 3.614 6.867 3.5 8 3.5c.712 0 1.389.045 1.985.127l.464-2.215a.5.5 0 0 1 .303-.356l2.5-1a.5.5 0 0 1 .65.278zM9.768 4.607A13.991 13.991 0 0 0 8 4.5c-1.076 0-2.033.11-2.707.278A3.284 3.284 0 0 0 4.645 5c.146.073.362.15.648.222C5.967 5.39 6.924 5.5 8 5.5c.571 0 1.109-.03 1.588-.085l.18-.808zm.292 1.756C9.445 6.45 8.742 6.5 8 6.5c-1.133 0-2.176-.114-2.95-.308a5.514 5.514 0 0 1-.435-.127l.838 8.03c.013.121.06.186.102.215.357.249 1.168.69 2.438.69 1.27 0 2.081-.441 2.438-.69.042-.029.09-.094.102-.215l.852-8.03a5.517 5.517 0 0 1-.435.127 8.88 8.88 0 0 1-.89.17zM4.467 4.884s.003.002.005.006l-.005-.006zm7.066 0-.005.006c.002-.004.005-.006.005-.006zM11.354 5a3.174 3.174 0 0 0-.604-.21l-.099.445.055-.013c.286-.072.502-.149.648-.222z" />
-                </svg>
+                <i class="bi bi-cup-straw" style="font-size: 48px;"
+                  [ngStyle]="selectedCategory === 'drink' ? {'color': '#46954a'} : null"></i>
               </div>
               <div class="mt-2">Drink</div>
             </button>
@@ -30,6 +26,7 @@
             <button class="btn btn-lg btn-block w-100" (click)="selectedCategory='food'" type="button"
               [ngClass]="{'btn-primary': selectedCategory === 'food'}">
               <div>
+                <!-- Colored egg SVG -->
                 <svg *ngIf="selectedCategory === 'food'" xmlns="http://www.w3.org/2000/svg" width="48" height="48"
                   viewBox="0 0 16 16">
                   <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" fill="#FFC107" />
@@ -37,12 +34,7 @@
                     d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z"
                     fill="#FFFFFF" />
                 </svg>
-                <svg *ngIf="selectedCategory !== 'food'" xmlns="http://www.w3.org/2000/svg" width="48" height="48"
-                  fill="currentColor" class="bi bi-egg-fried" viewBox="0 0 16 16">
-                  <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
-                  <path
-                    d="M13.997 5.17a5 5 0 0 0-8.101-4.09A5 5 0 0 0 1.28 9.342a5 5 0 0 0 8.336 5.109 3.5 3.5 0 0 0 5.201-4.065 3.001 3.001 0 0 0-.822-5.216zm-1-.034a1 1 0 0 0 .668.977 2.001 2.001 0 0 1 .547 3.478 1 1 0 0 0-.341 1.113 2.5 2.5 0 0 1-3.715 2.905 1 1 0 0 0-1.262.152 4 4 0 0 1-6.67-4.087 1 1 0 0 0-.2-1 4 4 0 0 1 3.693-6.61 1 1 0 0 0 .8-.2 4 4 0 0 1 6.48 3.273z" />
-                </svg>
+                <i *ngIf="selectedCategory !== 'food'" class="bi bi-egg-fried" style="font-size: 48px;"></i>
               </div>
               <div class="mt-2">
                 Food
@@ -60,11 +52,7 @@
                 </button>
                 <button class="btn btn-danger btn-lg input-group-text d-flex align-items-center"
                   (click)="removeItem(item)" type="button">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg"
-                    viewBox="0 0 16 16">
-                    <path
-                      d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
-                  </svg>
+                  <i class="bi bi-x-lg"></i>
                 </button>
               </div>
             </div>

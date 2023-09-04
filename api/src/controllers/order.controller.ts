@@ -28,12 +28,6 @@ export async function createOrder(req: Request, res: Response) {
 
         const items: { _id: Types.ObjectId, status: OrderMenuItemStatus }[] = []
 
-        logger.info("Creating order: " + JSON.stringify(orderRequest))
-        logger.info("Creating order items: " + JSON.stringify(orderRequest.items))
-        logger.info("IDIIDIID: " + orderRequest.items[0]._id)
-        logger.info("ID: " + new Types.ObjectId(orderRequest.items[0]._id))
-        logger.info("Other ID: " + Types.ObjectId.createFromHexString(orderRequest.items[0]._id))
-
         orderRequest.items.forEach(item => {
             items.push(...Array(item.count).fill({
                 _id: new Types.ObjectId(item._id),
@@ -46,6 +40,8 @@ export async function createOrder(req: Request, res: Response) {
             type: orderRequest.type,
             items: items
         })
+
+        req.io.emit(order.type === MenuItemCategory.Food ? 'new-food-order' : 'new-drink-order', order)
 
         res.status(201).json(order)
     } catch (err) {
@@ -140,6 +136,11 @@ export async function updateOrder(req: Request, res: Response) {
 
         order.status = orderRequest.status
         order.items = orderRequest.items
+
+        if (order.status === OrderStatus.Done) {
+            logger.info("Order " + order._id + " is ready, emitting event")
+            req.io.emit('order-ready', order)
+        }
 
         await order.save()
 
