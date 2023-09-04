@@ -1,6 +1,6 @@
 import logger from "../logger"
 import { MenuItem, MenuItemCategory } from "../models/item.model"
-import { Order, OrderMenuItemStatus } from "../models/order.model"
+import { Order, OrderMenuItemStatus, OrderType } from "../models/order.model"
 
 export async function seedOrders() {
     const count = await Order.countDocuments()
@@ -9,9 +9,9 @@ export async function seedOrders() {
 
     logger.info('🌱 Seeding order collection...')
 
-    const drinks = await MenuItem.find({ category: MenuItemCategory.Drink }).limit(5);
+    const drinks = await MenuItem.find({ category: MenuItemCategory.Drink }).limit(5)
 
-    const foods = await MenuItem.find({ category: MenuItemCategory.Food }).limit(5);
+    const foods = await MenuItem.find({ category: MenuItemCategory.Food }).limit(5)
 
     const orders = [
         {

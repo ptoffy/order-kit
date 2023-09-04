@@ -97,10 +97,10 @@ app.get('/', (req: Request, res: Response) => {
 import userRouter from './routers/user.router'
 import tableRouter from './routers/table.router'
 import orderRouter from './routers/order.router'
+import itemRouter from './routers/item.router'
 app.use('/users', userRouter)
 app.use('/table', tableRouter)
 app.use('/order', orderRouter)
-
-
+app.use('/item', itemRouter)
 
 export default app

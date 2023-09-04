@@ -1,7 +1,7 @@
 import { Order, OrderMenuItemStatus, OrderMenuItemType, OrderStatus, OrderType } from "../models/order.model"
 import { Request, Response } from "express"
 import { CreateOrderRequest, UpdateOrderRequest } from "../DTOs/order.dto"
-import { Type, plainToClass } from "class-transformer"
+import { plainToClass } from "class-transformer"
 import logger from "../logger"
 import { validate } from "class-validator"
 import { MenuItemCategory } from "../models/item.model"
@@ -26,7 +26,27 @@ export async function createOrder(req: Request, res: Response) {
             return res.status(400).json(message)
         }
 
-        const order = await Order.create(req.body)
+        const items: { _id: Types.ObjectId, status: OrderMenuItemStatus }[] = []
+
+        logger.info("Creating order: " + JSON.stringify(orderRequest))
+        logger.info("Creating order items: " + JSON.stringify(orderRequest.items))
+        logger.info("IDIIDIID: " + orderRequest.items[0]._id)
+        logger.info("ID: " + new Types.ObjectId(orderRequest.items[0]._id))
+        logger.info("Other ID: " + Types.ObjectId.createFromHexString(orderRequest.items[0]._id))
+
+        orderRequest.items.forEach(item => {
+            items.push(...Array(item.count).fill({
+                _id: new Types.ObjectId(item._id),
+                status: OrderMenuItemStatus.New
+            }))
+        })
+
+        const order = await Order.create({
+            table: orderRequest.table,
+            type: orderRequest.type,
+            items: items
+        })
+
         res.status(201).json(order)
     } catch (err) {
         logger.error("Error creating order: " + err)

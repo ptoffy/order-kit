@@ -25,14 +25,14 @@ body {
 
 .btn-success {
     background-color: #347d39;
-    border: none;
+    border: 1px solid #46954a;
     color: white;
 }
 
 .btn-success:hover {
     background-color: #46954a;
     color: white;
-    border: none;
+    border: 1px solid #46954a;
 }
 
 .btn-outline {
