@@ -1,4 +1,4 @@
-# Orders
+# OrderKit
 
 
 This repository contains the source code for the TAW 2023 project. The project is a web application for managing orders in a restaurant. 

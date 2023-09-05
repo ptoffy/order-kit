@@ -5,6 +5,7 @@ import { Types } from 'mongoose';
 
 /**
  * Lists all tables.
+ * If the waiterOnly query parameter is set to true, only tables assigned to the current waiter are returned.
  * @param req The request.
  * @param res The response.
  * @returns The list of tables.
@@ -12,7 +13,20 @@ import { Types } from 'mongoose';
 export async function listTables(req: Request, res: Response) {
     logger.debug("Listing tables")
     try {
-        const tables = await Table.find()
+        const waiterOnly = req.query.waiterOnly ?? false
+
+        const query = Table.find()
+
+        if (waiterOnly === 'true') {
+            const waiterId = req.userId
+            if (!waiterId) {
+                logger.warn("Error listing tables: No waiter ID")
+                return res.status(400).json({ message: 'Invalid waiter ID' })
+            }
+            query.where('waiterId').equals(new Types.ObjectId(waiterId))
+        }
+
+        const tables = await query.exec()
         res.json(tables)
     } catch (error) {
         logger.error("Error listing tables: " + error)

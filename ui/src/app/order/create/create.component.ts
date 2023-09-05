@@ -13,16 +13,9 @@ import { TableService } from 'src/app/core/services/table.service';
 export class CreateComponent {
   MenuItemCategory = MenuItemCategory
   tables!: number[]
-  createOrderRequest: CreateOrderRequest = {
-    table: 1,
-    items: [],
-    type: 'food',
-  }
-  selectedCategory: 'food' | 'drink' | null = null
-  items: { food: MenuItem[], drink: MenuItem[] } = {
-    food: [],
-    drink: [],
-  }
+  createOrderRequest: CreateOrderRequest = { table: 1, items: [], type: 'food' }
+  private _selectedCategory: 'food' | 'drink' | null = null
+  items: { food: MenuItem[], drink: MenuItem[] } = { food: [], drink: [] }
   selectedItems: { item: MenuItem, count: number }[] = []
 
   orderTypes = Object.values(MenuItemCategory)
@@ -35,11 +28,16 @@ export class CreateComponent {
   ) { }
 
   ngOnInit(): void {
-    this.tableService.list().subscribe(tables => this.tables = tables.map(t => t.number))
+    this.tableService.list(true).subscribe(tables => {
+      this.tables = tables.map(t => t.number)
+      this.createOrderRequest.table = this.tables[0]
+    })
     this.itemService.list().subscribe(items => {
       this.items.food = items.filter(item => item.category === MenuItemCategory.Food)
       this.items.drink = items.filter(item => item.category === MenuItemCategory.Drink)
     })
+
+    this.selectedItems.filter(item => item.item.category === this.selectedCategory)
   }
 
   createOrder() {
@@ -52,14 +50,22 @@ export class CreateComponent {
     }
     this.orderService.create(order).subscribe(() => {
       this.createOrderRequest = {
-        table: 1,
+        table: this.tables[0],
         items: [],
         type: 'food',
       }
       this.selectedItems = []
       this.router.navigate(['/order/waiter-list'])
     })
+  }
 
+  get selectedCategory(): 'food' | 'drink' | null {
+    return this._selectedCategory
+  }
+
+  set selectedCategory(category: 'food' | 'drink' | null) {
+    this._selectedCategory = category
+    this.selectedItems = this.selectedItems.filter(item => item.item.category === category)
   }
 
   addItem(item: MenuItem) {

@@ -5,10 +5,13 @@
       <form #createOrderForm="ngForm" (submit)="createOrder()">
         <div class="mb-3 mt-3">
           <label for="table" class="form-label">Table</label>
-          <select type="number" class="form-select" id="table" name="table" required
+          <select type="number" class="form-select" id="table" name="table" required aria-describedby="tableHelp"
             [(ngModel)]="createOrderRequest.table">
             <option *ngFor="let table of tables" [value]="table">{{table}}</option>
           </select>
+          <div id="tableHelp" class="form-text">If you don't find the table you are
+            looking for, please assign
+            yourself <a routerLink="/table/list">here</a></div>
         </div>
         <div class="row">
           <span class="form-label mb-3">Order Type</span>

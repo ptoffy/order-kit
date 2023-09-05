@@ -50,7 +50,7 @@ export class ListComponent {
     order.status = OrderStatus.Preparing
 
     this.orderService.update(order).subscribe({
-      next: () => this.getOrders(OrderStatus.New)
+      next: () => this.getOrders(OrderStatus.Preparing)
     })
   }
 

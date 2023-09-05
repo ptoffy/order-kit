@@ -23,15 +23,14 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.notificationService.onNewFoodOrder().subscribe(() => {
-      this.notificationService.showNotification('New food order received')
+      this.notificationService.showNotification('New food order received!')
     })
 
     this.notificationService.onNewDrinkOrder().subscribe(() => {
-      this.notificationService.showNotification('New drink order received')
+      this.notificationService.showNotification('New drink order received!')
     })
 
     this.notificationService.onOrderReady().subscribe((order: Order) => {
-      console.log("New Messages: " + order.number + " is ready")
       this.notificationService.showNotification(`Order #${order.number} for table #${order.table} is ready!`)
     })
 
