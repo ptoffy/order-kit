@@ -23,7 +23,6 @@ export class WaiterListComponent {
     this.getOrders()
   }
 
-
   getOrders() {
     const id = this.authService.getCurrentUserId()
     if (!id) return
@@ -48,5 +47,12 @@ export class WaiterListComponent {
     const red = Math.min(255, Math.floor(255 - (percent * 1.5)))
     const green = Math.min(255, Math.floor(percent * 2.55))
     return `rgb(${red}, ${green}, 0)`
+  }
+
+  serveOrder(order: Order) {
+    order.status = OrderStatus.Served
+    this.orderService.update(order).subscribe({
+      next: () => this.getOrders()
+    })
   }
 }

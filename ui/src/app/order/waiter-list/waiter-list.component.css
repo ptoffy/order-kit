@@ -1,9 +1,14 @@
-.orders-col {
-    height: 100%;
+.orders-list {
+    max-height: calc(100vh - 340px);
     overflow-y: scroll;
+    position: relative;
 }
 
 .ready-order-card {
+    border: 1px solid #007bff;
+}
+
+.served-order-card {
     border: 1px solid #46954a;
 }
 

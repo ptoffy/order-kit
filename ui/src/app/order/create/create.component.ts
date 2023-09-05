@@ -14,8 +14,8 @@ export class CreateComponent {
   MenuItemCategory = MenuItemCategory
   tables!: number[]
   createOrderRequest: CreateOrderRequest = { table: 1, items: [], type: 'food' }
-  private _selectedCategory: 'food' | 'drink' | null = null
-  items: { food: MenuItem[], drink: MenuItem[] } = { food: [], drink: [] }
+  private _selectedCategory: 'food' | 'drinks' | null = null
+  items: { food: MenuItem[], drinks: MenuItem[] } = { food: [], drinks: [] }
   selectedItems: { item: MenuItem, count: number }[] = []
 
   orderTypes = Object.values(MenuItemCategory)
@@ -34,7 +34,7 @@ export class CreateComponent {
     })
     this.itemService.list().subscribe(items => {
       this.items.food = items.filter(item => item.category === MenuItemCategory.Food)
-      this.items.drink = items.filter(item => item.category === MenuItemCategory.Drink)
+      this.items.drinks = items.filter(item => item.category === MenuItemCategory.Drinks)
     })
 
     this.selectedItems.filter(item => item.item.category === this.selectedCategory)
@@ -59,11 +59,11 @@ export class CreateComponent {
     })
   }
 
-  get selectedCategory(): 'food' | 'drink' | null {
+  get selectedCategory(): 'food' | 'drinks' | null {
     return this._selectedCategory
   }
 
-  set selectedCategory(category: 'food' | 'drink' | null) {
+  set selectedCategory(category: 'food' | 'drinks' | null) {
     this._selectedCategory = category
     this.selectedItems = this.selectedItems.filter(item => item.item.category === category)
   }

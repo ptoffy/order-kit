@@ -54,6 +54,8 @@ export async function createOrder(req: Request, res: Response) {
  * Get orders by status based on the logged in user's role:
  * - Bartender: Drink orders
  * - Chef: Food orders
+ * - Waiter: All orders for their tables
+ * Then, filter the orders by status (if specified) and by creation date: only show orders created today.
  * Finally, sort the orders by creation date by FIFO: the oldest orders are at the top.
  * @param req The request object.
  * @param res The response object.
@@ -64,20 +66,31 @@ export async function getOrders(req: Request, res: Response) {
         const status = req.query.status as OrderStatus | undefined
         const waiterId = req.query.waiterId
 
-        const type = req.role === UserRole.Bartender ? MenuItemCategory.Drink : MenuItemCategory.Food
+        const query = Order.find()
 
-        const query: any = { type }
+        // If the user is a bartender, only show drink orders
+        if (req.role == UserRole.Bartender)
+            query.where('type', MenuItemCategory.Drinks)
+        // If the user is a cook, only show food orders
+        else if (req.role == UserRole.Cook)
+            query.where('type', MenuItemCategory.Food)
 
+        // If the user is a waiter, only show orders for their tables
         if (waiterId) {
             const tables = await Table.find({ waiterId }).select('number')
             const tableNumbers = tables.map(table => table.number)
-            query.table = { $in: tableNumbers }
+            query.where('table').in(tableNumbers)
         }
 
+        // If a status is specified, only show orders with that status
         if (status) {
-            query.status = status
+            query.where('status', status)
         }
 
+        // Show only orders created today
+        query.where('createdAt').gte(new Date().setHours(0, 0, 0, 0))
+
+        // Populate the items with the menu item data
         var orders = await Order.find(query)
             .populate({
                 path: 'items._id',
@@ -92,6 +105,7 @@ export async function getOrders(req: Request, res: Response) {
             return res.status(404).json({ message: 'Orders not found' })
         }
 
+        // Transform the data to the format expected by the UI
         const transformedData: OrderType[] = orders.map(order => ({
             _id: order._id,
             number: order.number,

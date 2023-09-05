@@ -12,21 +12,24 @@
       <small class="text-muted d-flex align-items-center mb-3">
         This order has not entered preparation yet
       </small>
-      <div *ngFor="let order of getSpecificOrders(OrderStatus.New)" class="rounded bg-light p-2 border mt-3">
-        <div class="d-flex justify-content-between">
-          <small class="text-muted d-flex align-items-center">
-            Table #{{ order.table }}
-          </small>
-          <small class="text-muted d-flex align-items-center">
-            #{{ order.number }}
-          </small>
+      <div class="orders-list">
+        <div *ngFor="let order of getSpecificOrders(OrderStatus.New); let i = index" class="rounded bg-light p-2 border"
+          [ngClass]="{'mt-3': i !== 0}">
+          <div class="d-flex justify-content-between">
+            <small class="text-muted d-flex align-items-center">
+              Table #{{ order.table }}
+            </small>
+            <small class="text-muted d-flex align-items-center">
+              #{{ order.number }}
+            </small>
+          </div>
+          <h5 class="mt-2">
+            {{ order.type.charAt(0).toUpperCase() + order.type.slice(1) }}
+          </h5>
+          <span *ngFor="let item of order.items | groupItems" class="d-flex justify-content-between">
+            <span>{{ item.count }}x {{ item.name }}</span>
+          </span>
         </div>
-        <h5 class="mt-2">
-          {{ order.type.charAt(0).toUpperCase() + order.type.slice(1) }}
-        </h5>
-        <span *ngFor="let item of order.items | groupItems" class="d-flex justify-content-between">
-          <span>{{ item.count }}x {{ item.name }}</span>
-        </span>
       </div>
     </div>
     <div class="col border rounded bg-primary p-3 me-3 orders-col">
@@ -34,53 +37,60 @@
       <small class="text-muted d-flex align-items-center mb-3">
         This order is being prepared
       </small>
-      <div *ngFor="let order of getSpecificOrders(OrderStatus.Preparing)" class="rounded bg-light p-2 border mt-3">
-        <div class="d-flex justify-content-between">
-          <small class="text-muted d-flex align-items-center">
-            Table #{{ order.table }}
-          </small>
-          <small class="text-muted d-flex align-items-center">
-            #{{ order.number }}
-          </small>
-        </div>
-        <h5 class="mt-2 fw-bold">
-          {{ order.type.charAt(0).toUpperCase() + order.type.slice(1) }}
-        </h5>
-        <div class="progress mt-2 mb-2" style="height: 10px;">
-          <div class="progress-bar" role="progressbar" [style.width.%]="getPreparationProgress(order)"
-            [style.backgroundColor]="getProgressBarColour(order)" [attr.aria-valuenow]="getPreparationProgress(order)"
-            aria-valuemin="0" aria-valuemax="100">
+      <div class="orders-list">
+        <div *ngFor="let order of getSpecificOrders(OrderStatus.Preparing); let i = index"
+          class="rounded bg-light p-2 border" [ngClass]="{'mt-3': i !== 0}">
+          <div class="d-flex justify-content-between">
+            <small class="text-muted d-flex align-items-center">
+              Table #{{ order.table }}
+            </small>
+            <small class="text-muted d-flex align-items-center">
+              #{{ order.number }}
+            </small>
           </div>
-        </div>
-        <span *ngFor="let item of order.items">
-          <div class="d-flex justify-content-between align-items-center">
-            <p class="m-0">{{item.name}}</p>
-            <i *ngIf="item.status === 'done'" class="bi bi-check-lg green"></i>
+          <h5 class="mt-2 fw-bold">
+            {{ order.type.charAt(0).toUpperCase() + order.type.slice(1) }}
+          </h5>
+          <div class="progress mt-2 mb-2" style="height: 10px;">
+            <div class="progress-bar" role="progressbar" [style.width.%]="getPreparationProgress(order)"
+              [style.backgroundColor]="getProgressBarColour(order)" [attr.aria-valuenow]="getPreparationProgress(order)"
+              aria-valuemin="0" aria-valuemax="100">
+            </div>
           </div>
-        </span>
+          <span *ngFor="let item of order.items">
+            <div class="d-flex justify-content-between align-items-center">
+              <p class="m-0">{{item.name}}</p>
+              <i *ngIf="item.status === 'done'" class="bi bi-check-lg green"></i>
+            </div>
+          </span>
+        </div>
       </div>
     </div>
     <div class="col border rounded bg-primary p-3 me-3 orders-col">
       <h4>Ready</h4>
-      <small class="text-muted d-flex align-items-center">
+      <small class="text-muted d-flex align-items-center pb-3">
         This order is ready to be served
       </small>
-      <div *ngFor="let order of getSpecificOrders(OrderStatus.Done)" class="rounded bg-light p-2 mt-3 ready-order-card">
-        <div class="d-flex justify-content-between">
-          <small class="text-muted d-flex align-items-center">
-            Table #{{ order.table }}
-          </small>
-          <small class="text-muted d-flex align-items-center">
-            #{{ order.number }}
-          </small>
+      <div class="orders-list">
+        <div *ngFor="let order of getSpecificOrders(OrderStatus.Done); let i = index"
+          class="rounded bg-light p-2 ready-order-card" [ngClass]="{'mt-3': i !== 0}">
+          <div class="d-flex justify-content-between">
+            <small class="text-muted d-flex align-items-center">
+              Table #{{ order.table }}
+            </small>
+            <small class="text-muted d-flex align-items-center">
+              #{{ order.number }}
+            </small>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mt-2 mb-2">
+            <h5 class="m-0">{{ order.type.charAt(0).toUpperCase() + order.type.slice(1) }}</h5>
+            <i class="bi bi-check-lg blue"></i>
+          </div>
+          <span *ngFor="let item of order.items">
+            <p class="m-0 text-muted">{{item.name}}</p>
+          </span>
+          <button class="btn btn-sm btn-info mt-2 w-100" (click)="serveOrder(order)">Mark as Served</button>
         </div>
-        <div class="d-flex justify-content-between align-items-center mt-2 mb-2">
-          <h5 class="m-0">{{ order.type.charAt(0).toUpperCase() + order.type.slice(1) }}</h5>
-          <i class="bi bi-check-lg green"></i>
-        </div>
-        <span *ngFor="let item of order.items">
-          <p class="m-0 text-muted">{{item.name}}</p>
-        </span>
       </div>
     </div>
     <div class="col border rounded bg-primary p-3 orders-col">
@@ -88,8 +98,18 @@
       <small class="text-muted d-flex align-items-center">
         This order has been served
       </small>
-      <div *ngFor="let order of getSpecificOrders(OrderStatus.Served)">
-        {{ order.table }}
+      <div class="orders-list">
+        <div *ngFor="let order of getSpecificOrders(OrderStatus.Served); let i = index"
+          class="rounded bg-light p-2 served-order-card" [ngClass]="{'mt-3': i !== 0}">
+          <div class="d-flex justify-content-between">
+            <small class="text-muted d-flex align-items-center">
+              Table #{{ order.table }}
+            </small>
+            <small class="text-muted d-flex align-items-center">
+              #{{ order.number }}
+            </small>
+          </div>
+        </div>
       </div>
     </div>
   </div>

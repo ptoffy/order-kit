@@ -1,7 +1,7 @@
 import { BaseModel } from "./base.model"
 
 export enum MenuItemCategory {
-    Drink = "drink",
+    Drinks = "drinks",
     Food = "food"
 }
 
