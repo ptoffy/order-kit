@@ -27,7 +27,7 @@
             {{ order.type.charAt(0).toUpperCase() + order.type.slice(1) }}
           </h5>
           <span *ngFor="let item of order.items | groupItems" class="d-flex justify-content-between">
-            <span>{{ item.count }}x {{ item.name }}</span>
+            <span>{{ item.count }}x {{ item.item.name }}</span>
           </span>
         </div>
       </div>
@@ -95,7 +95,7 @@
     </div>
     <div class="col border rounded bg-primary p-3 orders-col">
       <h4>Served</h4>
-      <small class="text-muted d-flex align-items-center">
+      <small class="text-muted d-flex align-items-center mb-3">
         This order has been served
       </small>
       <div class="orders-list">
@@ -109,6 +109,13 @@
               #{{ order.number }}
             </small>
           </div>
+          <div class="d-flex justify-content-between align-items-center mt-2 mb-2">
+            <h5 class="m-0">{{ order.type.charAt(0).toUpperCase() + order.type.slice(1) }}</h5>
+            <i class="bi bi-check-lg blue"></i>
+          </div>
+          <span *ngFor="let item of order.items">
+            <p class="m-0 text-muted">{{item.name}}</p>
+          </span>
         </div>
       </div>
     </div>

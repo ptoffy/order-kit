@@ -6,7 +6,8 @@ export enum OrderStatus {
     New = "new",
     Preparing = "preparing",
     Done = "done",
-    Served = "served"
+    Served = "served",
+    Paid = "paid"
 }
 
 export enum OrderMenuItemStatus {
@@ -50,7 +51,6 @@ const orderSchema = new Schema<OrderType>({
         type: String, enum: Object.values(OrderStatus),
         required: true, default: OrderStatus.New
     },
-    paid: { type: Boolean, required: true, default: false }
 }, { timestamps: true })
 
 orderSchema.pre<OrderType>("save", function (next) {

@@ -10,8 +10,11 @@ import { CreateOrderRequest } from "../dtos/order.dto"
 export class OrderService {
   constructor(private apiService: ApiService) { }
 
-  list(status: OrderStatus): Observable<Order[]> {
-    return this.apiService.get(`order?status=${status}`)
+  list(status: OrderStatus, tableNumber: number | null = null): Observable<Order[]> {
+    var query = `order?status=${status}`
+    if (tableNumber !== null)
+      query += `&tableNumber=${tableNumber}`
+    return this.apiService.get(query)
   }
 
   create(order: CreateOrderRequest): Observable<void> {
@@ -20,6 +23,10 @@ export class OrderService {
 
   update(order: Order): Observable<void> {
     return this.apiService.post(`order/${order._id}/update`, order)
+  }
+
+  updateBulk(orders: Order[]): Observable<void> {
+    return this.apiService.post(`order/update-bulk`, { orders })
   }
 
   listForWaiter(waiterId: string): Observable<Order[]> {

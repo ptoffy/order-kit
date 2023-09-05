@@ -15,10 +15,10 @@
         <li *ngIf="currentUserRole == UserRole.Cashier" class="nav-item">
           <a class="nav-link" routerLink="/user/list" routerLinkActive="active">Users</a>
         </li>
-        <li *ngIf="currentUserRole == UserRole.Waiter">
+        <li *ngIf="currentUserRole == UserRole.Waiter || currentUserRole == UserRole.Cashier" class="nav-item">
           <a class="nav-link" routerLink="/table/list" routerLinkActive="active">Tables</a>
         </li>
-        <li *ngIf="currentUserRole == UserRole.Cook || currentUserRole == UserRole.Bartender">
+        <li *ngIf="currentUserRole == UserRole.Cook || currentUserRole == UserRole.Bartender" class="nav-item">
           <a class="nav-link" routerLink="/order/list" routerLinkActive="active">Orders</a>
         </li>
         <li *ngIf="currentUserRole == UserRole.Waiter">

@@ -1,6 +1,6 @@
 import { Order, OrderMenuItemStatus, OrderMenuItemType, OrderStatus, OrderType } from "../models/order.model"
 import { Request, Response } from "express"
-import { CreateOrderRequest, UpdateOrderRequest } from "../DTOs/order.dto"
+import { CreateOrderRequest, UpdateBulkOrderRequest, UpdateOrderRequest } from "../DTOs/order.dto"
 import { plainToClass } from "class-transformer"
 import logger from "../logger"
 import { validate } from "class-validator"
@@ -75,6 +75,11 @@ export async function getOrders(req: Request, res: Response) {
         else if (req.role == UserRole.Cook)
             query.where('type', MenuItemCategory.Food)
 
+        // If a table number is specified, only show orders for that table
+        logger.info("Table number: " + req.query.tableNumber)
+        if (req.query.tableNumber)
+            query.where('table', req.query.tableNumber)
+
         // If the user is a waiter, only show orders for their tables
         if (waiterId) {
             const tables = await Table.find({ waiterId }).select('number')
@@ -83,15 +88,15 @@ export async function getOrders(req: Request, res: Response) {
         }
 
         // If a status is specified, only show orders with that status
-        if (status) {
+        logger.info("Status: " + status)
+        if (status)
             query.where('status', status)
-        }
 
         // Show only orders created today
         query.where('createdAt').gte(new Date().setHours(0, 0, 0, 0))
 
         // Populate the items with the menu item data
-        var orders = await Order.find(query)
+        var orders = await query
             .populate({
                 path: 'items._id',
                 model: 'MenuItem',
@@ -99,6 +104,8 @@ export async function getOrders(req: Request, res: Response) {
             })
             .sort({ createdAt: 1 })
             .lean()
+
+        logger.info("Orders: " + JSON.stringify(orders))
 
         if (!orders) {
             logger.warn("Orders not found")
@@ -161,6 +168,44 @@ export async function updateOrder(req: Request, res: Response) {
         res.status(200).json(order)
     } catch (err) {
         logger.error("Error updating order: " + err)
+        res.status(400).json(err)
+    }
+}
+
+export async function updateOrdersBulk(req: Request, res: Response) {
+    try {
+        const updateBulkOrderRequest = plainToClass(UpdateBulkOrderRequest, req.body)
+        const errors = await validate(updateBulkOrderRequest)
+
+        if (errors.length > 0) {
+            const message = "Invalid request body: " + errors
+            logger.warn(message)
+            return res.status(400).json(message)
+        }
+
+        const orders = await Order.find({ _id: { $in: updateBulkOrderRequest.orders.map(order => order._id) } })
+
+        if (!orders) {
+            logger.warn("Orders not found")
+            return res.status(404).json({ message: 'Orders not found' })
+        }
+
+        orders.forEach(order => {
+            const updatedOrder = updateBulkOrderRequest.orders.find((o: OrderType) => o._id == order._id)!
+            order.status = updatedOrder.status
+            order.items = updatedOrder.items
+
+            if (order.status === OrderStatus.Done) {
+                logger.info("Order " + order._id + " is ready, emitting event")
+                req.io.emit('order-ready', order)
+            }
+        })
+
+        await Promise.all(orders.map(order => order.save()))
+
+        res.status(200).json(orders)
+    } catch (err) {
+        logger.error("Error updating orders: " + err)
         res.status(400).json(err)
     }
 }
