@@ -1,4 +1,3 @@
-/* You can add global styles to this file, and also import other style files */
 html,
 body {
     height: 100%;
@@ -25,14 +24,14 @@ body {
 
 .btn-success {
     background-color: #347d39;
-    border: none;
+    border: 1px solid #46954a;
     color: white;
 }
 
 .btn-success:hover {
     background-color: #46954a;
     color: white;
-    border: none;
+    border: 1px solid #46954a;
 }
 
 .btn-outline {
@@ -195,4 +194,32 @@ a {
     color: #adbac7 !important;
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+.bg-primary {
+    background-color: #1C2128 !important;
+}
+
+.bg-secondary {
+    background-color: #22272E !important;
+}
+
+.bg-light {
+    background-color: #2D333B !important;
+}
+
+.full-height-minus-navbar {
+    height: calc(100% - 120px);
+}
+
+.green {
+    color: #46954a;
+}
+
+.blue {
+    color: #007bff
+}
+
+.form-text {
+    color: rgb(118, 131, 144);
 }

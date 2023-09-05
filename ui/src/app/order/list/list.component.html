@@ -4,47 +4,24 @@
     <li class="nav-item">
       <a class="nav-link active d-flex align-items-center" [class.active]="activeTab === 'new'"
         (click)="getOrders(OrderStatus.New)">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-          class="bi bi-plus-circle-fill me-2" viewBox="0 0 16 16">
-          <path
-            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
-        </svg>
+        <i class="bi bi-plus-circle-fill me-2"></i>
         New
       </a>
     </li>
     <li class="nav-item">
       <a class="nav-link d-flex align-items-center" [class.active]="activeTab === 'preparing'"
         (click)="getOrders(OrderStatus.Preparing)">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-          class="bi bi-stopwatch-fill me-2" viewBox="0 0 16 16">
-          <path
-            d="M6.5 0a.5.5 0 0 0 0 1H7v1.07A7.001 7.001 0 0 0 8 16a7 7 0 0 0 5.29-11.584.531.531 0 0 0 .013-.012l.354-.354.353.354a.5.5 0 1 0 .707-.707l-1.414-1.415a.5.5 0 1 0-.707.707l.354.354-.354.354a.717.717 0 0 0-.012.012A6.973 6.973 0 0 0 9 2.071V1h.5a.5.5 0 0 0 0-1h-3zm2 5.6V9a.5.5 0 0 1-.5.5H4.5a.5.5 0 0 1 0-1h3V5.6a.5.5 0 1 1 1 0z" />
-        </svg>
+        <i class="bi bi-stopwatch-fill me-2"></i>
         In Preparation
       </a>
     </li>
     <li class="nav-item">
       <a class="nav-link d-flex align-items-center" [class.active]="activeTab === 'done'"
         (click)="getOrders(OrderStatus.Done)">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-          class="bi bi-check-circle-fill me-2" viewBox="0 0 16 16">
-          <path
-            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
-        </svg>
+        <i class="bi bi-check-circle-fill me-2"></i>
         Ready
       </a>
     </li>
-    <!-- <li class="nav-item">
-      <a class="nav-link d-flex align-items-center" [class.active]="activeTab === 'served'"
-        (click)="getOrders(OrderStatus.Served)">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-          class="bi bi-emoji-smile-fill me-2" viewBox="0 0 16 16">
-          <path
-            d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zM4.285 9.567a.5.5 0 0 1 .683.183A3.498 3.498 0 0 0 8 11.5a3.498 3.498 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.498 4.498 0 0 1 8 12.5a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683zM10 8c-.552 0-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5S10.552 8 10 8z" />
-        </svg>
-        Served
-      </a>
-    </li> -->
   </ul>
   <div class="container mt-4">
     <p *ngIf="orders.length === 0">
@@ -55,12 +32,7 @@
         <div class="card mb-3">
           <div class="card-header d-flex justify-content-between" [ngClass]="{ 'bg-success': activeTab === 'done' }">
             <small class="text-muted d-flex align-items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                [ngStyle]="{ 'color': activeTab === 'done' ? 'white' : null }" class="bi bi-clock me-2"
-                viewBox="0 0 16 16">
-                <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
-                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
-              </svg>
+              <i class="bi bi-clock me-1" [ngStyle]="{ 'color': activeTab === 'done' ? 'white' : null }"></i>
               <span [ngStyle]="{ 'color': activeTab === 'done' ? 'white' : null }">
                 {{order.createdAt | date: 'shortTime'}}
               </span>
@@ -70,12 +42,7 @@
               Prepare
             </button>
             <small *ngIf="activeTab === 'done'" class="text-muted d-flex align-items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                [ngStyle]="{ 'color': activeTab === 'done' ? 'white' : null }" class="bi bi-clock me-2"
-                viewBox="0 0 16 16">
-                <path
-                  d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z" />
-              </svg>
+              <i class="bi bi-clock me-1" [ngStyle]="{ 'color': activeTab === 'done' ? 'white' : null }"></i>
               <span [ngStyle]="{ 'color': activeTab === 'done' ? 'white' : null }">
                 {{order.updatedAt | date:'shortTime'}}
               </span>
@@ -89,9 +56,9 @@
               </div>
             </div>
             <div *ngIf="activeTab === 'preparing'" class="progress mt-2" style="height: 10px;">
-              <div class="progress-bar" role="progressbar" [style.width.%]="getPreparationProgress(orders[0])"
-                [style.backgroundColor]="getProgressBarColour(orders[0])"
-                [attr.aria-valuenow]="'getPreparationProgress(orders[0])'" aria-valuemin="0" aria-valuemax="100">
+              <div class="progress-bar" role="progressbar" [style.width.%]="getPreparationProgress(order)"
+                [style.backgroundColor]="getProgressBarColour(order)"
+                [attr.aria-valuenow]="'getPreparationProgress(order)'" aria-valuemin="0" aria-valuemax="100">
               </div>
             </div>
           </div>
@@ -99,15 +66,11 @@
             <li *ngFor="let item of order.items" class="list-group-item">
               <div class="d-flex justify-content-between align-items-center">
                 <p class="m-0">{{item.name}}</p>
-                <button *ngIf="item.status === 'new'" type="button" class="btn btn-sm btn-success"
-                  (click)="done(item._id)">
+                <button *ngIf="item.status === 'preparing'" type="button" class="btn btn-sm btn-success"
+                  (click)="done(order._id, item._id)">
                   Done
                 </button>
-                <svg *ngIf="item.status === 'done'" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                  fill="green" class="bi bi-check-lg me-2" viewBox="0 0 16 16">
-                  <path
-                    d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z" />
-                </svg>
+                <i *ngIf="item.status === 'done'" class="bi bi-check-lg" style="color: #46954a"></i>
               </div>
             </li>
           </ul>

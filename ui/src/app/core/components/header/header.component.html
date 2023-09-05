@@ -1,24 +1,28 @@
 <div class="container">
-  <nav class="navbar navbar-expand-lg rounded" aria-label="Thirteenth navbar example">
+  <nav class="navbar navbar-expand-lg mb-4 py-3" aria-label="Thirteenth navbar example">
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample11"
       aria-controls="navbarsExample11" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse d-lg-flex" id="navbarsExample11">
-      <a class="navbar-brand col-lg-3 me-0" href="#">🍔 Orders</a>
-      <ul class="navbar-nav col-lg-6 justify-content-lg-center">
+    <div class="collapse navbar-collapse d-lg-flex justify-content-between" id="navbarsExample11">
+      <a class="navbar-brand col-lg-3 me-0" href="#">🍔 OrderKit</a>
+      <ul *ngIf="isLoggedIn" class="navbar-nav col-lg-6 justify-content-lg-center">
         <li class="nav-item">
           <a class="nav-link" aria-current="page" routerLink="/" routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }">Home</a>
         </li>
-        <li *ngIf="isLoggedIn" class="nav-item">
-          <a *ngIf="currentUserRole == UserRole.Cashier" class="nav-link" routerLink="/user/list"
-            routerLinkActive="active">Users</a>
-          <a *ngIf="currentUserRole == UserRole.Waiter" class="nav-link" routerLink="/table/list"
-            routerLinkActive="active">Tables</a>
-          <a *ngIf="currentUserRole == UserRole.Cook || currentUserRole == UserRole.Bartender" class="nav-link"
-            routerLink="/order/list" routerLinkActive="active">Orders</a>
+        <li *ngIf="currentUserRole == UserRole.Cashier" class="nav-item">
+          <a class="nav-link" routerLink="/user/list" routerLinkActive="active">Users</a>
+        </li>
+        <li *ngIf="currentUserRole == UserRole.Waiter">
+          <a class="nav-link" routerLink="/table/list" routerLinkActive="active">Tables</a>
+        </li>
+        <li *ngIf="currentUserRole == UserRole.Cook || currentUserRole == UserRole.Bartender">
+          <a class="nav-link" routerLink="/order/list" routerLinkActive="active">Orders</a>
+        </li>
+        <li *ngIf="currentUserRole == UserRole.Waiter">
+          <a class="nav-link" routerLink="/order/waiter-list" routerLinkActive="active">Orders</a>
         </li>
       </ul>
       <div *ngIf="!isLoggedIn" class="d-lg-flex col-lg-3 justify-content-lg-end">
@@ -26,6 +30,25 @@
         <a routerLink="/user/register" class="btn btn-success btn-sm">Register</a>
       </div>
       <div *ngIf="isLoggedIn" class="d-lg-flex col-lg-3 justify-content-lg-end">
+        <div class="dropdown me-2">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="notificationDropdown"
+            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Notifications <span *ngIf="notifications.length > 0"
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              {{ notifications.length }}
+              <span class="visually-hidden">unread messages</span>
+            </span>
+          </button>
+          <div class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown">
+            <a class="dropdown-item top-text-block" *ngFor="let notification of notifications"
+              (click)="removeNotification(notification)">
+              {{ notification }}
+            </a>
+            <div *ngIf="notifications.length === 0" class="dropdown-item text-muted">
+              No notifications
+            </div>
+          </div>
+        </div>
         <button (click)="logout()" class="btn btn-sm me-2">Logout</button>
       </div>
     </div>

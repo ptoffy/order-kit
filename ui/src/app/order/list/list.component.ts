@@ -1,12 +1,11 @@
-import { Component } from '@angular/core';
-import { Order, OrderMenuItem, OrderMenuItemStatus, OrderStatus } from 'src/app/core/models/order.model';
-import { OrderService } from 'src/app/core/services/order.service';
+import { Component } from '@angular/core'
+import { Order, OrderMenuItemStatus, OrderStatus } from 'src/app/core/models/order.model'
+import { OrderService } from 'src/app/core/services/order.service'
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
-  styles: [
-  ]
+  styles: []
 })
 export class ListComponent {
   orders: Order[] = []
@@ -14,7 +13,7 @@ export class ListComponent {
   OrderStatus = OrderStatus
 
   constructor(
-    private orderService: OrderService,
+    private orderService: OrderService
   ) { }
 
   ngOnInit(): void {
@@ -33,9 +32,7 @@ export class ListComponent {
   getPreparationProgress(order: Order): number {
     const total = order.items.length
     const completed = order.items.filter(item => item.status === OrderMenuItemStatus.Done).length
-    const preparing = order.items.filter(item => item.status === OrderMenuItemStatus.Preparing).length
-    const remaining = completed + preparing * 0.5
-    const progress = remaining / total * 100
+    const progress = completed / total * 100
     return progress
   }
 
@@ -49,18 +46,21 @@ export class ListComponent {
   prepare(orderId: string) {
     const order = this.orders.find(order => order._id === orderId)
     if (!order) return
+    order.items.forEach(item => item.status = OrderMenuItemStatus.Preparing)
     order.status = OrderStatus.Preparing
 
     this.orderService.update(order).subscribe({
-      next: () => this.getOrders(OrderStatus.New)
+      next: () => this.getOrders(OrderStatus.Preparing)
     })
   }
 
-  done(itemId: string) {
+  done(orderId: string, itemId: string) {
     if (!itemId) return
-    const order = this.orders.find(order => order.items.find(item => item._id === itemId))
+    const order = this.orders.find(order => order._id === orderId)
     if (!order) return
-    const item = order.items.find(item => item._id === itemId)
+    const item = order.items
+      .filter(item => item.status !== OrderMenuItemStatus.Done)
+      .find(item => item._id === itemId)
     if (!item) return
     item.status = OrderMenuItemStatus.Done
 

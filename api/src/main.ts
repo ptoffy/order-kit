@@ -72,35 +72,42 @@ app.use(morganMiddleware)
 
 // Socket.io
 import { Server } from 'socket.io'
+const server = require('http').createServer(app)
 const io = new Server<
     ClientToServerEvents,
     ServerToClientEvents,
     InterServerEvents,
     SocketData
->()
-io.on('connection', (socket) => {
-    console.log('a user connected')
+>(server, {
+    cors: {
+        origin: ['http://localhost:4200'],
+        methods: ['GET', 'POST'],
+    }
 })
+app.use((req, _, next) => {
+    req.io = io
+    next()
+})
+
+io.listen(server)
 
 // Routes
 
-app.listen(app.get("port"), '0.0.0.0', () => {
-    logger.info(
-        '⏱️ Orders API is running at http://localhost:' + app.get("port") + ' in ' + app.get("env") + ' mode',
-    )
+server.listen(app.get("port"), '0.0.0.0', () => {
+    logger.info(`⏱️ Orders API is running at http://localhost:${app.get("port")} in ${app.get("env")} mode`)
 })
 
-app.get('/', (req: Request, res: Response) => {
+app.get('/', (_: Request, res: Response) => {
     res.send('Hello World!')
 })
 
 import userRouter from './routers/user.router'
 import tableRouter from './routers/table.router'
 import orderRouter from './routers/order.router'
+import itemRouter from './routers/item.router'
 app.use('/users', userRouter)
 app.use('/table', tableRouter)
 app.use('/order', orderRouter)
-
-
+app.use('/item', itemRouter)
 
 export default app

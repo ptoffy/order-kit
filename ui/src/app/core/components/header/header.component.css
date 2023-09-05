@@ -1,0 +1,45 @@
+.top-text-block {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: 400;
+  line-height: 1.42857143;
+  white-space: inherit !important;
+  border-bottom: 1px solid #f4f4f4;
+  position: relative;
+
+  &:hover {
+    &:before {
+      content: '';
+      width: 4px;
+      background: #f05a1a;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      position: absolute;
+    }
+  }
+
+  .top-text-light {
+    color: #999;
+    font-size: 0.8em;
+  }
+}
+
+.top-head-dropdown {
+  .dropdown-menu {
+    width: 350px;
+    height: 300px;
+    overflow: auto;
+  }
+
+  li:last-child {
+    .top-text-block {
+      border-bottom: 0;
+    }
+  }
+}
+
+.topbar-align-center {
+  text-align: center;
+}

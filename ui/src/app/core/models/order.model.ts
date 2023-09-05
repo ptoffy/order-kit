@@ -1,5 +1,5 @@
 import { BaseModel } from "./base.model"
-import { MenuItem } from "./item.model"
+import { MenuItem, MenuItemCategory } from "./item.model"
 
 export enum OrderStatus {
     New = "new",
@@ -23,6 +23,7 @@ export interface Order extends BaseModel {
     createdAt: Date
     updatedAt: Date
     paid: boolean
+    type: MenuItemCategory
 }
 
 export interface OrderMenuItem extends MenuItem {

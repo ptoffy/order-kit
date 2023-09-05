@@ -8,10 +8,10 @@ export async function seedMenuItems() {
 
     logger.info('🌱 Seeding item collection...')
     const items = [
-        { name: "Coca Cola", price: 2.50, category: MenuItemCategory.Drink },
-        { name: "Fanta", price: 2.50, category: MenuItemCategory.Drink },
-        { name: "Sprite", price: 2.50, category: MenuItemCategory.Drink },
-        { name: "Water", price: 2.00, category: MenuItemCategory.Drink },
+        { name: "Coca Cola", price: 2.50, category: MenuItemCategory.Drinks },
+        { name: "Fanta", price: 2.50, category: MenuItemCategory.Drinks },
+        { name: "Sprite", price: 2.50, category: MenuItemCategory.Drinks },
+        { name: "Water", price: 2.00, category: MenuItemCategory.Drinks },
         { name: "Burger", price: 5.00, category: MenuItemCategory.Food },
         { name: "Pizza", price: 7.50, category: MenuItemCategory.Food },
         { name: "Pasta", price: 6.00, category: MenuItemCategory.Food },

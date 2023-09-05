@@ -3,7 +3,7 @@ import { baseSchema, BaseModelType } from "./base.model"
 
 export enum MenuItemCategory {
     Food = "food",
-    Drink = "drink"
+    Drinks = "drinks"
 }
 
 interface MenuItemType extends BaseModelType {

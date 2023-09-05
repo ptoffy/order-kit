@@ -1,5 +1,5 @@
 {
-  "name": "orders",
+  "name": "orders-kit",
   "version": "1.0.0",
   "description": "Manages the orders of a restaurant",
   "main": "src/main.ts",
