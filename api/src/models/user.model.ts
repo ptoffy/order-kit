@@ -14,8 +14,8 @@ export interface UserType extends BaseModelType {
     name: string
     role: UserRole
     statistics: {
-        orders?: number
-        revenue?: number
+        orders: number
+        revenue: number
     }
 }
 

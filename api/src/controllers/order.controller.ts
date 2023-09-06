@@ -5,7 +5,7 @@ import { plainToClass } from "class-transformer"
 import logger from "../logger"
 import { validate } from "class-validator"
 import { MenuItemCategory } from "../models/item.model"
-import { UserRole } from "../models/user.model"
+import { User, UserRole } from "../models/user.model"
 import { Table } from "../models/table.model"
 import { Types } from "mongoose"
 
@@ -158,8 +158,24 @@ export async function updateOrder(req: Request, res: Response) {
 
         req.io.emit('order-status-change', order)
 
-        if (orderRequest.status === OrderStatus.Done)
+        if (orderRequest.status === OrderStatus.Done) {
             req.io.emit('order-ready', order)
+
+            const user = await User.findById(req.userId)
+            if (!user) {
+                logger.warn("User not found: " + req.userId)
+                return res.status(404).json({ message: 'User not found' })
+            }
+            user.statistics.orders += 1
+
+            const profit = orderRequest.items.reduce((acc, item) => {
+                return acc + item.price - item.cost
+            }, 0)
+
+            user.statistics.revenue += profit
+
+            await user.save()
+        }
 
         await order.save()
 
