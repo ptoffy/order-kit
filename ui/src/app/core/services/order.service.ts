@@ -10,12 +10,24 @@ import { CreateOrderRequest } from "../dtos/order.dto"
 export class OrderService {
   constructor(private apiService: ApiService) { }
 
-  list(status: OrderStatus, tableNumber: number | null = null): Observable<Order[]> {
-    var query = `order?status=${status}`
-    if (tableNumber !== null)
-      query += `&tableNumber=${tableNumber}`
-    return this.apiService.get(query)
+  list(
+    status: OrderStatus | null = null,
+    tableNumber: number | null = null
+  ): Observable<Order[]> {
+    let query = 'order'
+    const queryParams = []
+    if (status !== null) {
+      queryParams.push(`status=${status}`)
+    }
+    if (tableNumber !== null) {
+      queryParams.push(`tableNumber=${tableNumber}`)
+    }
+    if (queryParams.length) {
+      query += `?${queryParams.join('&')}`
+    }
+    return this.apiService.get(query);
   }
+
 
   create(order: CreateOrderRequest): Observable<void> {
     return this.apiService.post(`order`, order)
@@ -27,9 +39,5 @@ export class OrderService {
 
   updateBulk(orders: Order[]): Observable<void> {
     return this.apiService.post(`order/update-bulk`, { orders })
-  }
-
-  listForWaiter(waiterId: string): Observable<Order[]> {
-    return this.apiService.get(`order?waiterId=${waiterId}`)
   }
 }

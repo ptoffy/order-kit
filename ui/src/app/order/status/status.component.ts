@@ -1,32 +1,51 @@
-import { Component } from '@angular/core'
+import { Component, OnDestroy, OnInit } from '@angular/core'
+import { Subject, takeUntil } from 'rxjs'
 import { Order, OrderMenuItemStatus, OrderStatus } from 'src/app/core/models/order.model'
-import { User } from 'src/app/core/models/user.model'
+import { UserRole } from 'src/app/core/models/user.model'
 import { AuthService } from 'src/app/core/services/auth.service'
+import { NotificationService } from 'src/app/core/services/notification.service'
 import { OrderService } from 'src/app/core/services/order.service'
 
 @Component({
-  selector: 'app-waiter-list',
-  templateUrl: './waiter-list.component.html',
-  styleUrls: ['./waiter-list.component.css']
+  selector: 'app-order-status',
+  templateUrl: './status.component.html',
+  styleUrls: ['./status.component.css']
 })
-export class WaiterListComponent {
+export class StatusComponent implements OnInit, OnDestroy {
   orders: Order[] = []
   OrderStatus = OrderStatus
-  waiter!: User
+  UserRole = UserRole
+  currentUserRole!: UserRole
+  private destroy$ = new Subject<void>();
+
 
   constructor(
     private orderService: OrderService,
-    private authService: AuthService
-  ) { }
+    private authService: AuthService,
+    private notificationService: NotificationService
+  ) {
+    this.currentUserRole = this.authService.getCurrentUserRole()!
+  }
 
   ngOnInit(): void {
     this.getOrders()
+
+    this.notificationService.orderUpdate$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.getOrders()
+      })
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next()
+    this.destroy$.complete()
   }
 
   getOrders() {
     const id = this.authService.getCurrentUserId()
     if (!id) return
-    this.orderService.listForWaiter(id).subscribe({
+    this.orderService.list().subscribe({
       next: (orders) => this.orders = orders
     })
   }
@@ -40,6 +59,13 @@ export class WaiterListComponent {
     const completed = order.items.filter(item => item.status === OrderMenuItemStatus.Done).length
     const progress = completed / total * 100
     return progress
+  }
+
+  getPreparationEstimatedTime(order: Order): string {
+    const total = order.items
+      .filter(item => item.status === OrderMenuItemStatus.Preparing)
+      .reduce((total, item) => total + item.estimatedPrepTime, 0)
+    return `${total} min`
   }
 
   getProgressBarColour(order: Order): string {

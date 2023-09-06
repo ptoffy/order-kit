@@ -64,7 +64,6 @@ export async function createOrder(req: Request, res: Response) {
 export async function getOrders(req: Request, res: Response) {
     try {
         const status = req.query.status as OrderStatus | undefined
-        const waiterId = req.query.waiterId
 
         const query = Order.find()
 
@@ -76,19 +75,17 @@ export async function getOrders(req: Request, res: Response) {
             query.where('type', MenuItemCategory.Food)
 
         // If a table number is specified, only show orders for that table
-        logger.info("Table number: " + req.query.tableNumber)
         if (req.query.tableNumber)
             query.where('table', req.query.tableNumber)
 
         // If the user is a waiter, only show orders for their tables
-        if (waiterId) {
-            const tables = await Table.find({ waiterId }).select('number')
+        if (req.role === UserRole.Waiter) {
+            const tables = await Table.find({ waiterId: req.userId }).select('number')
             const tableNumbers = tables.map(table => table.number)
             query.where('table').in(tableNumbers)
         }
 
         // If a status is specified, only show orders with that status
-        logger.info("Status: " + status)
         if (status)
             query.where('status', status)
 
@@ -100,12 +97,10 @@ export async function getOrders(req: Request, res: Response) {
             .populate({
                 path: 'items._id',
                 model: 'MenuItem',
-                select: 'name price category',
+                select: 'name price category estimatedPrepTime',
             })
             .sort({ createdAt: 1 })
             .lean()
-
-        logger.info("Orders: " + JSON.stringify(orders))
 
         if (!orders) {
             logger.warn("Orders not found")
@@ -126,6 +121,7 @@ export async function getOrders(req: Request, res: Response) {
                 name: item._id.name,
                 price: item._id.price,
                 category: item._id.category,
+                estimatedPrepTime: item._id.estimatedPrepTime,
                 status: item.status as OrderMenuItemStatus
             }))
         })) as OrderType[]
@@ -158,10 +154,10 @@ export async function updateOrder(req: Request, res: Response) {
         order.status = orderRequest.status
         order.items = orderRequest.items
 
-        if (order.status === OrderStatus.Done) {
-            logger.info("Order " + order._id + " is ready, emitting event")
+        req.io.emit('order-status-change', order)
+
+        if (orderRequest.status === OrderStatus.Done)
             req.io.emit('order-ready', order)
-        }
 
         await order.save()
 

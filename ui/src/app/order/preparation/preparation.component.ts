@@ -3,11 +3,11 @@ import { Order, OrderMenuItemStatus, OrderStatus } from 'src/app/core/models/ord
 import { OrderService } from 'src/app/core/services/order.service'
 
 @Component({
-  selector: 'app-list',
-  templateUrl: './list.component.html',
+  selector: 'app-order-preparation',
+  templateUrl: './preparation.component.html',
   styles: []
 })
-export class ListComponent {
+export class PreparationComponent {
   orders: Order[] = []
   activeTab: string = 'new'
   OrderStatus = OrderStatus
