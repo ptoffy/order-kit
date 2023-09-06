@@ -70,6 +70,7 @@ export async function getOrders(req: Request, res: Response) {
         // If the user is a bartender, only show drink orders
         if (req.role == UserRole.Bartender)
             query.where('type', MenuItemCategory.Drinks)
+
         // If the user is a cook, only show food orders
         else if (req.role == UserRole.Cook)
             query.where('type', MenuItemCategory.Food)
@@ -97,7 +98,7 @@ export async function getOrders(req: Request, res: Response) {
             .populate({
                 path: 'items._id',
                 model: 'MenuItem',
-                select: 'name price category estimatedPrepTime',
+                select: 'name price category estimatedPrepTime cost',
             })
             .sort({ createdAt: 1 })
             .lean()
@@ -122,7 +123,8 @@ export async function getOrders(req: Request, res: Response) {
                 price: item._id.price,
                 category: item._id.category,
                 estimatedPrepTime: item._id.estimatedPrepTime,
-                status: item.status as OrderMenuItemStatus
+                status: item.status as OrderMenuItemStatus,
+                cost: item._id.cost
             }))
         })) as OrderType[]
 
@@ -202,6 +204,54 @@ export async function updateOrdersBulk(req: Request, res: Response) {
         res.status(200).json(orders)
     } catch (err) {
         logger.error("Error updating orders: " + err)
+        res.status(400).json(err)
+    }
+}
+
+/**
+ * Fetch the profit for a specific day.
+ * The profit is calculated by subtracting the cost of the ingredients from the price of the menu items.
+ * @param req 
+ * @param res 
+ * @returns The profit for the day.
+ */
+export async function fetchProfitForDay(req: Request, res: Response) {
+    try {
+        const date = new Date(req.query.date as string)
+        date.setHours(0, 0, 0, 0)
+        const nextDay = new Date(date)
+        nextDay.setDate(nextDay.getDate() + 1)
+
+        const orders = await Order.find({
+            status: OrderStatus.Paid,
+            updatedAt: {
+                $gte: date,
+                $lt: nextDay
+            }
+        }).populate({
+            path: 'items._id',
+            model: 'MenuItem',
+            select: 'name price category estimatedPrepTime cost',
+        }).lean()
+
+        if (!orders) {
+            logger.warn("Orders not found")
+            return res.status(404).json({ message: 'Orders not found' })
+        }
+
+        logger.info("Orders found: " + JSON.stringify(orders, null, 2))
+
+        const profit = orders.reduce((acc, order) => {
+            return acc + order.items.reduce((acc, item: any) => {
+                return acc + item._id.price - item._id.cost
+            }, 0)
+        }, 0)
+
+        logger.info("Budget for day " + date + ": " + profit)
+
+        res.status(200).json(profit)
+    } catch (err) {
+        logger.error("Error fetching profit for day: " + err)
         res.status(400).json(err)
     }
 }

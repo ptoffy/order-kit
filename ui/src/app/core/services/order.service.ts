@@ -40,4 +40,8 @@ export class OrderService {
   updateBulk(orders: Order[]): Observable<void> {
     return this.apiService.post(`order/update-bulk`, { orders })
   }
+
+  fetchBudgetForDay(date: string): Observable<number> {
+    return this.apiService.get(`order/budget?date=${date}`)
+  }
 }

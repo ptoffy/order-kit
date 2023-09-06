@@ -11,4 +11,5 @@ export interface MenuItem extends BaseModel {
     price: number
     category: MenuItemCategory
     estimatedPrepTime: number
+    cost: number
 }

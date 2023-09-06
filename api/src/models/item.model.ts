@@ -11,6 +11,7 @@ interface MenuItemType extends BaseModelType {
     price: number
     category: string
     estimatedPrepTime: number
+    cost: number
 }
 
 const menuItemSchema = new Schema<MenuItemType>({
@@ -19,6 +20,7 @@ const menuItemSchema = new Schema<MenuItemType>({
     price: { type: Number, required: true },
     category: { type: String, required: true },
     estimatedPrepTime: { type: Number, required: true },
+    cost: { type: Number, required: true },
 }, { timestamps: true });
 
 const MenuItem = model<MenuItemType>("MenuItem", menuItemSchema)

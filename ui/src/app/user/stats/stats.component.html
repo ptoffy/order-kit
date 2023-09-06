@@ -1,0 +1,14 @@
+<div class="container">
+  <h3>Statistics</h3>
+  <div class="container mt-3 border p-4 rounded profit-calculator-container">
+    <h4>Profit Calculator</h4>
+    <div class="budget-widget">
+      <label for="date-profit" class="form-label">Select a date</label>
+      <input id="date-profit" type="date" class="form-control" [(ngModel)]="selectedDate"
+        (change)="fetchBudgetForDate()" />
+      <hr>
+      <h5>Total Profit for {{ selectedDate | date }}</h5>
+      <p>{{ totalBudget | currency }}</p>
+    </div>
+  </div>
+</div>
