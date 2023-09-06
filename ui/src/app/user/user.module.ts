@@ -6,12 +6,14 @@ import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UserRoutingModule } from './user-routing.module';
 import { ListComponent } from './list/list.component';
+import { StatsComponent } from './stats/stats.component';
 
 @NgModule({
   declarations: [
     LoginComponent,
     RegistrationComponent,
-    ListComponent
+    ListComponent,
+    StatsComponent
   ],
   imports: [
     FormsModule,

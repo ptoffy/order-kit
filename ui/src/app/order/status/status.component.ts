@@ -16,8 +16,7 @@ export class StatusComponent implements OnInit, OnDestroy {
   OrderStatus = OrderStatus
   UserRole = UserRole
   currentUserRole!: UserRole
-  private destroy$ = new Subject<void>();
-
+  private destroy$ = new Subject<void>()
 
   constructor(
     private orderService: OrderService,
@@ -66,6 +65,30 @@ export class StatusComponent implements OnInit, OnDestroy {
       .filter(item => item.status === OrderMenuItemStatus.Preparing)
       .reduce((total, item) => total + item.estimatedPrepTime, 0)
     return `${total} min`
+  }
+
+  calculateEstimatedPrepTime(order: Order) {
+    const groupedItems: { [key: string]: number } = {}
+
+    for (const orderItem of order.items) {
+      if (!groupedItems[orderItem.category])
+        groupedItems[orderItem.category] = 0
+
+      if (orderItem.status === OrderMenuItemStatus.Preparing)
+        groupedItems[orderItem.category] += orderItem.estimatedPrepTime
+    }
+
+    // Calculate time for each group
+    let totalPrepTime = 0
+    for (const category in groupedItems) {
+      const groupTime = groupedItems[category]
+      // Assuming 50% efficiency for parallel cooking
+      // This is a simple formula; you can adjust based on real-world observations
+      const efficiencyFactor = 1 + 0.5 * (groupTime / groupTime - 1)
+      totalPrepTime += groupTime * efficiencyFactor
+    }
+
+    return totalPrepTime
   }
 
   getProgressBarColour(order: Order): string {
