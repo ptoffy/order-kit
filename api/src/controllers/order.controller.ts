@@ -255,15 +255,11 @@ export async function fetchProfitForDay(req: Request, res: Response) {
             return res.status(404).json({ message: 'Orders not found' })
         }
 
-        logger.info("Orders found: " + JSON.stringify(orders, null, 2))
-
         const profit = orders.reduce((acc, order) => {
             return acc + order.items.reduce((acc, item: any) => {
                 return acc + item._id.price - item._id.cost
             }, 0)
         }, 0)
-
-        logger.info("Budget for day " + date + ": " + profit)
 
         res.status(200).json(profit)
     } catch (err) {
@@ -271,3 +267,45 @@ export async function fetchProfitForDay(req: Request, res: Response) {
         res.status(400).json(err)
     }
 }
+
+// write a function to fetch the best selling items returning the name and the number of times it was ordered
+export async function fetchBestSellingItems(req: Request, res: Response) {
+    try {
+        const orders = await Order.find().populate({
+            path: 'items._id',
+            model: 'MenuItem',
+            select: 'name',
+        }).lean()
+
+        if (!orders) {
+            logger.warn("Orders not found")
+            return res.status(404).json({ message: 'Orders not found' })
+        }
+
+        const itemCounts: { [key: string]: number } = {};
+
+        orders.forEach(order => {
+            order.items.forEach((item: any) => {
+                const itemName = item._id.name
+                if (itemCounts[itemName]) {
+                    itemCounts[itemName]++
+                } else {
+                    itemCounts[itemName] = 1
+                }
+            })
+        })
+
+        const itemsArray = Object.keys(itemCounts).map(itemName => ({
+            name: itemName,
+            count: itemCounts[itemName]
+        }))
+
+        itemsArray.sort((a, b) => b.count - a.count);
+
+        res.status(200).json(itemsArray)
+    } catch (err) {
+        logger.error("Error fetching best selling items for day: " + err)
+        res.status(400).json(err)
+    }
+}
+

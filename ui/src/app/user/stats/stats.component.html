@@ -1,14 +1,29 @@
 <div class="container">
   <h3>Statistics</h3>
-  <div class="container mt-3 border p-4 rounded grey-container">
-    <h4>Profit Calculator</h4>
-    <div class="budget-widget">
-      <label for="date-profit" class="form-label">Select a date</label>
-      <input id="date-profit" type="date" class="form-control" [(ngModel)]="selectedDate"
-        (change)="fetchBudgetForDate()" />
-      <hr>
-      <h5>Total Profit for {{ selectedDate | date }}</h5>
-      <p>{{ totalBudget | currency }}</p>
+  <div class="row mt-3 ">
+    <div class="col">
+      <div class="budget-widget border p-4 rounded grey-container">
+        <h4>Profit Calculator</h4>
+        <label for="date-profit" class="form-label">Select a date</label>
+        <input id="date-profit" type="date" class="form-control" [(ngModel)]="selectedDate"
+          (change)="fetchBudgetForDate()" />
+        <hr>
+        <h5>Total Profit for {{ selectedDate | date }}</h5>
+        <p>{{ totalBudget | currency }}</p>
+      </div>
+    </div>
+    <div class="col">
+      <div class="border p-4 rounded grey-container">
+        <div class="d-flex justify-content-between">
+          <h4>Best selling items</h4>
+          <button class="btn btn-secondary">
+            <i class="bi bi-arrow-repeat" (click)="fetchBestSellingItems()"></i>
+          </button>
+        </div>
+        <canvas baseChart class="chart" [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+          [legend]="barChartLegend">
+        </canvas>
+      </div>
     </div>
   </div>
   <div class="row mt-4">
@@ -23,7 +38,7 @@
         <hr>
         <div class="row">
           <div class="col">
-            <h5>Dishes served</h5>
+            <h5>Dishes prepared</h5>
             <p>{{ ordersPreparedByCook }}</p>
           </div>
           <div class="col">
@@ -44,7 +59,7 @@
         <hr>
         <div class="row">
           <div class="col">
-            <h5>Drinks served</h5>
+            <h5>Drinks prepared</h5>
             <p>{{ ordersPreparedByBartender }}</p>
           </div>
           <div class="col">
@@ -56,23 +71,3 @@
     </div>
   </div>
 </div>
-
-<!-- <div class="container mt-3 border p-4 rounded">
-        <h4>Top 5 Products</h4>
-        <div class="top-products-widget">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">Product</th>
-                <th scope="col">Profit</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let product of topProducts">
-                <td>{{ product.name }}</td>
-                <td>{{ product.profit | currency }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div> -->

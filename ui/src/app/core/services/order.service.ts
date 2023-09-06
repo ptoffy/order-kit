@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core"
 import { ApiService } from "./api.service"
 import { Observable } from "rxjs"
 import { Order, OrderStatus } from "../models/order.model"
-import { CreateOrderRequest } from "../dtos/order.dto"
+import { BestSellingItemResponse, CreateOrderRequest } from "../dtos/order.dto"
 
 @Injectable({
   providedIn: "root"
@@ -43,5 +43,9 @@ export class OrderService {
 
   fetchBudgetForDay(date: string): Observable<number> {
     return this.apiService.get(`order/budget?date=${date}`)
+  }
+
+  fetchBestSellingItems(): Observable<BestSellingItemResponse[]> {
+    return this.apiService.get(`order/best-selling-items`)
   }
 }

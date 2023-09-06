@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { LabelItem } from 'chart.js';
+import { BestSellingItemResponse } from 'src/app/core/dtos/order.dto';
 import { User, UserRole } from 'src/app/core/models/user.model';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { OrderService } from 'src/app/core/services/order.service';
@@ -9,8 +11,19 @@ import { OrderService } from 'src/app/core/services/order.service';
   styleUrls: ['./stats.component.css']
 })
 export class StatsComponent {
+  public barChartOptions = {
+    responsive: true
+  }
+  public barChartLabels: string[] = []
+  public barChartType = 'bar'
+  public barChartLegend = true
+  public barChartData = [
+    { data: [] as number[], label: 'Revenue' },
+  ]
+
   selectedDate: string = new Date().toISOString().split('T')[0]
   totalBudget: number = 0
+
   selectedWaiterId!: string
   selectedCookId!: string
   selectedBartenderId!: string
@@ -29,6 +42,7 @@ export class StatsComponent {
     private authService: AuthService
   ) {
     this.fetchBudgetForDate()
+    this.fetchBestSellingItems()
     this.authService.list().subscribe((users: User[]) => {
       this.cooks = users.filter(user => user.role === UserRole.Cook)
       this.bartenders = users.filter(user => user.role === UserRole.Bartender)
@@ -38,6 +52,13 @@ export class StatsComponent {
       this.updateOrdersPreparedByCook()
       this.selectedBartenderId = this.bartenders[0]._id
       this.updateOrdersPreparedByBartender()
+    })
+  }
+
+  fetchBestSellingItems(): void {
+    this.orderService.fetchBestSellingItems().subscribe((items: BestSellingItemResponse[]) => {
+      this.barChartLabels = items.map(item => item.name)
+      this.barChartData[0].data = items.map(item => item.count)
     })
   }
 

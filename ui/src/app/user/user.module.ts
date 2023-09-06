@@ -7,6 +7,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UserRoutingModule } from './user-routing.module';
 import { ListComponent } from './list/list.component';
 import { StatsComponent } from './stats/stats.component';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { StatsComponent } from './stats/stats.component';
     StatsComponent
   ],
   imports: [
+    NgChartsModule,
     FormsModule,
     CommonModule,
     FormsModule,
