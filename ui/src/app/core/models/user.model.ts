@@ -14,8 +14,8 @@ interface User extends BaseModel {
     name: string
     role: UserRole
     statistics: {
-        orders?: number
-        revenue?: number
+        orders: number
+        revenue: number
     };
 }
 

@@ -1,11 +1,11 @@
 import { Order, OrderMenuItemStatus, OrderMenuItemType, OrderStatus, OrderType } from "../models/order.model"
 import { Request, Response } from "express"
-import { CreateOrderRequest, UpdateOrderRequest } from "../DTOs/order.dto"
+import { CreateOrderRequest, UpdateBulkOrderRequest, UpdateOrderRequest } from "../DTOs/order.dto"
 import { plainToClass } from "class-transformer"
 import logger from "../logger"
 import { validate } from "class-validator"
 import { MenuItemCategory } from "../models/item.model"
-import { UserRole } from "../models/user.model"
+import { User, UserRole } from "../models/user.model"
 import { Table } from "../models/table.model"
 import { Types } from "mongoose"
 
@@ -64,38 +64,41 @@ export async function createOrder(req: Request, res: Response) {
 export async function getOrders(req: Request, res: Response) {
     try {
         const status = req.query.status as OrderStatus | undefined
-        const waiterId = req.query.waiterId
 
         const query = Order.find()
 
         // If the user is a bartender, only show drink orders
         if (req.role == UserRole.Bartender)
             query.where('type', MenuItemCategory.Drinks)
+
         // If the user is a cook, only show food orders
         else if (req.role == UserRole.Cook)
             query.where('type', MenuItemCategory.Food)
 
+        // If a table number is specified, only show orders for that table
+        if (req.query.tableNumber)
+            query.where('table', req.query.tableNumber)
+
         // If the user is a waiter, only show orders for their tables
-        if (waiterId) {
-            const tables = await Table.find({ waiterId }).select('number')
+        if (req.role === UserRole.Waiter) {
+            const tables = await Table.find({ waiterId: req.userId }).select('number')
             const tableNumbers = tables.map(table => table.number)
             query.where('table').in(tableNumbers)
         }
 
         // If a status is specified, only show orders with that status
-        if (status) {
+        if (status)
             query.where('status', status)
-        }
 
         // Show only orders created today
         query.where('createdAt').gte(new Date().setHours(0, 0, 0, 0))
 
         // Populate the items with the menu item data
-        var orders = await Order.find(query)
+        var orders = await query
             .populate({
                 path: 'items._id',
                 model: 'MenuItem',
-                select: 'name price category',
+                select: 'name price category estimatedPrepTime cost',
             })
             .sort({ createdAt: 1 })
             .lean()
@@ -119,7 +122,9 @@ export async function getOrders(req: Request, res: Response) {
                 name: item._id.name,
                 price: item._id.price,
                 category: item._id.category,
-                status: item.status as OrderMenuItemStatus
+                estimatedPrepTime: item._id.estimatedPrepTime,
+                status: item.status as OrderMenuItemStatus,
+                cost: item._id.cost
             }))
         })) as OrderType[]
 
@@ -151,9 +156,25 @@ export async function updateOrder(req: Request, res: Response) {
         order.status = orderRequest.status
         order.items = orderRequest.items
 
-        if (order.status === OrderStatus.Done) {
-            logger.info("Order " + order._id + " is ready, emitting event")
+        req.io.emit('order-status-change', order)
+
+        if (orderRequest.status === OrderStatus.Done) {
             req.io.emit('order-ready', order)
+
+            const user = await User.findById(req.userId)
+            if (!user) {
+                logger.warn("User not found: " + req.userId)
+                return res.status(404).json({ message: 'User not found' })
+            }
+            user.statistics.orders += 1
+
+            const profit = orderRequest.items.reduce((acc, item) => {
+                return acc + item.price - item.cost
+            }, 0)
+
+            user.statistics.revenue += profit
+
+            await user.save()
         }
 
         await order.save()
@@ -164,3 +185,127 @@ export async function updateOrder(req: Request, res: Response) {
         res.status(400).json(err)
     }
 }
+
+export async function updateOrdersBulk(req: Request, res: Response) {
+    try {
+        const updateBulkOrderRequest = plainToClass(UpdateBulkOrderRequest, req.body)
+        const errors = await validate(updateBulkOrderRequest)
+
+        if (errors.length > 0) {
+            const message = "Invalid request body: " + errors
+            logger.warn(message)
+            return res.status(400).json(message)
+        }
+
+        const orders = await Order.find({ _id: { $in: updateBulkOrderRequest.orders.map(order => order._id) } })
+
+        if (!orders) {
+            logger.warn("Orders not found")
+            return res.status(404).json({ message: 'Orders not found' })
+        }
+
+        orders.forEach(order => {
+            const updatedOrder = updateBulkOrderRequest.orders.find((o: OrderType) => o._id == order._id)!
+            order.status = updatedOrder.status
+            order.items = updatedOrder.items
+
+            if (order.status === OrderStatus.Done) {
+                logger.info("Order " + order._id + " is ready, emitting event")
+                req.io.emit('order-ready', order)
+            }
+        })
+
+        await Promise.all(orders.map(order => order.save()))
+
+        res.status(200).json(orders)
+    } catch (err) {
+        logger.error("Error updating orders: " + err)
+        res.status(400).json(err)
+    }
+}
+
+/**
+ * Fetch the profit for a specific day.
+ * The profit is calculated by subtracting the cost of the ingredients from the price of the menu items.
+ * @param req 
+ * @param res 
+ * @returns The profit for the day.
+ */
+export async function fetchProfitForDay(req: Request, res: Response) {
+    try {
+        const date = new Date(req.query.date as string)
+        date.setHours(0, 0, 0, 0)
+        const nextDay = new Date(date)
+        nextDay.setDate(nextDay.getDate() + 1)
+
+        const orders = await Order.find({
+            status: OrderStatus.Paid,
+            updatedAt: {
+                $gte: date,
+                $lt: nextDay
+            }
+        }).populate({
+            path: 'items._id',
+            model: 'MenuItem',
+            select: 'name price category estimatedPrepTime cost',
+        }).lean()
+
+        if (!orders) {
+            logger.warn("Orders not found")
+            return res.status(404).json({ message: 'Orders not found' })
+        }
+
+        const profit = orders.reduce((acc, order) => {
+            return acc + order.items.reduce((acc, item: any) => {
+                return acc + item._id.price - item._id.cost
+            }, 0)
+        }, 0)
+
+        res.status(200).json(profit)
+    } catch (err) {
+        logger.error("Error fetching profit for day: " + err)
+        res.status(400).json(err)
+    }
+}
+
+// write a function to fetch the best selling items returning the name and the number of times it was ordered
+export async function fetchBestSellingItems(req: Request, res: Response) {
+    try {
+        const orders = await Order.find().populate({
+            path: 'items._id',
+            model: 'MenuItem',
+            select: 'name',
+        }).lean()
+
+        if (!orders) {
+            logger.warn("Orders not found")
+            return res.status(404).json({ message: 'Orders not found' })
+        }
+
+        const itemCounts: { [key: string]: number } = {};
+
+        orders.forEach(order => {
+            order.items.forEach((item: any) => {
+                const itemName = item._id.name
+                if (itemCounts[itemName]) {
+                    itemCounts[itemName]++
+                } else {
+                    itemCounts[itemName] = 1
+                }
+            })
+        })
+
+        const itemsArray = Object.keys(itemCounts).map(itemName => ({
+            name: itemName,
+            count: itemCounts[itemName]
+        }))
+
+        itemsArray.sort((a, b) => b.count - a.count);
+
+        res.status(200).json(itemsArray)
+    } catch (err) {
+        logger.error("Error fetching best selling items for day: " + err)
+        res.status(400).json(err)
+    }
+}
+

@@ -1,7 +1,7 @@
-<div class="container full-height-minus-navbar d-flex flex-column">
+<div class="container full-height-minus-navbar d-flex flex-column" (updateStatus)="getOrders()">
   <div class="d-flex justify-content-between align-items-center">
     <h2>Orders you're managing</h2>
-    <button class="btn btn-info" routerLink="/order/create">
+    <button *ngIf="currentUserRole == UserRole.Waiter" class="btn btn-info" routerLink="/order/create">
       <i class="bi bi-plus-lg"></i>
       Add new order
     </button>
@@ -27,7 +27,7 @@
             {{ order.type.charAt(0).toUpperCase() + order.type.slice(1) }}
           </h5>
           <span *ngFor="let item of order.items | groupItems" class="d-flex justify-content-between">
-            <span>{{ item.count }}x {{ item.name }}</span>
+            <span>{{ item.count }}x {{ item.item.name }}</span>
           </span>
         </div>
       </div>
@@ -57,6 +57,9 @@
               aria-valuemin="0" aria-valuemax="100">
             </div>
           </div>
+          <small class="text-muted d-flex align-items-center prep-time-text mb-1">
+            ~{{ calculateEstimatedPrepTime(order) }} min left
+          </small>
           <span *ngFor="let item of order.items">
             <div class="d-flex justify-content-between align-items-center">
               <p class="m-0">{{item.name}}</p>
@@ -89,13 +92,14 @@
           <span *ngFor="let item of order.items">
             <p class="m-0 text-muted">{{item.name}}</p>
           </span>
-          <button class="btn btn-sm btn-info mt-2 w-100" (click)="serveOrder(order)">Mark as Served</button>
+          <button *ngIf="currentUserRole == UserRole.Waiter" class="btn btn-sm btn-info mt-2 w-100"
+            (click)="serveOrder(order)">Mark as Served</button>
         </div>
       </div>
     </div>
     <div class="col border rounded bg-primary p-3 orders-col">
       <h4>Served</h4>
-      <small class="text-muted d-flex align-items-center">
+      <small class="text-muted d-flex align-items-center mb-3">
         This order has been served
       </small>
       <div class="orders-list">
@@ -109,6 +113,13 @@
               #{{ order.number }}
             </small>
           </div>
+          <div class="d-flex justify-content-between align-items-center mt-2 mb-2">
+            <h5 class="m-0">{{ order.type.charAt(0).toUpperCase() + order.type.slice(1) }}</h5>
+            <i class="bi bi-check-lg green"></i>
+          </div>
+          <span *ngFor="let item of order.items">
+            <p class="m-0 text-muted">{{item.name}}</p>
+          </span>
         </div>
       </div>
     </div>

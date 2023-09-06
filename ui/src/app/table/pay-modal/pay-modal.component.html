@@ -1,0 +1,26 @@
+<div class="modal-content p-3">
+  <div class="modal-header">
+    <h5 class="modal-title text-center">Order Receipt for Table #{{ table.number }}</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+      (click)="activeModal.dismiss('Cross click')"></button>
+  </div>
+  <div *ngIf="orders.length === 0" class="modal-body">
+    The meal is not completed yet!
+  </div>
+  <div *ngIf="orders.length > 0">
+    <div class="modal-body">
+      <div *ngFor="let item of items | groupItems">
+        <div class="d-flex justify-content-between">
+          <span>{{ item.count }}x {{ item.item.name }}</span>
+          <span>{{ item.item.price * item.count | currency:'EUR' }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="d-flex justify-content-between">
+        <strong>Total: {{ total | currency:'EUR' }}</strong>
+      </div>
+      <button type="button" class="btn btn-lg btn-info w-100 mt-2" (click)="pay()">Pay</button>
+    </div>
+  </div>
+</div>

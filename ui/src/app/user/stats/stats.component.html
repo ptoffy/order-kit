@@ -1,0 +1,73 @@
+<div class="container">
+  <h3>Statistics</h3>
+  <div class="row mt-3 ">
+    <div class="col">
+      <div class="budget-widget border p-4 rounded grey-container">
+        <h4>Profit Calculator</h4>
+        <label for="date-profit" class="form-label">Select a date</label>
+        <input id="date-profit" type="date" class="form-control" [(ngModel)]="selectedDate"
+          (change)="fetchBudgetForDate()" />
+        <hr>
+        <h5>Total Profit for {{ selectedDate | date }}</h5>
+        <p>{{ totalBudget | currency }}</p>
+      </div>
+    </div>
+    <div class="col">
+      <div class="border p-4 rounded grey-container">
+        <div class="d-flex justify-content-between">
+          <h4>Best selling items</h4>
+          <button class="btn btn-secondary">
+            <i class="bi bi-arrow-repeat" (click)="fetchBestSellingItems()"></i>
+          </button>
+        </div>
+        <canvas baseChart class="chart" [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+          [legend]="barChartLegend">
+        </canvas>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-4">
+    <div class="col">
+      <div class="border p-4 rounded grey-container">
+        <h4>Orders prepared by Cook</h4>
+        <label for="cook-select" class="form-label">Select a Cook</label>
+        <select id="cook-select" class="form-select" aria-label="Cook select" [(ngModel)]="selectedCookId"
+          (change)="updateOrdersPreparedByCook()">
+          <option *ngFor="let cook of cooks" [value]="cook._id">{{ cook.name }}</option>
+        </select>
+        <hr>
+        <div class="row">
+          <div class="col">
+            <h5>Dishes prepared</h5>
+            <p>{{ ordersPreparedByCook }}</p>
+          </div>
+          <div class="col">
+            <h5>Profit</h5>
+            <p>{{ revenueForCook | currency }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="border p-4 rounded grey-container">
+        <h4>Orders prepared by Bartender</h4>
+        <label for="bartender-select" class="form-label">Select a Bartender</label>
+        <select id="bartender-select" class="form-select" aria-label="Bartender select"
+          [(ngModel)]="selectedBartenderId" (change)="updateOrdersPreparedByBartender()">
+          <option *ngFor="let bartender of bartenders" [value]="bartender._id">{{ bartender.name }}</option>
+        </select>
+        <hr>
+        <div class="row">
+          <div class="col">
+            <h5>Drinks prepared</h5>
+            <p>{{ ordersPreparedByBartender }}</p>
+          </div>
+          <div class="col">
+            <h5>Profit</h5>
+            <p>{{ revenueForBartender | currency }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

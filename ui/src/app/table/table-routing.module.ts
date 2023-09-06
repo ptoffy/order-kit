@@ -8,7 +8,7 @@ const routes: Routes = [
   {
     path: 'table',
     children: [
-      { path: 'list', component: ListComponent, canActivate: [guardRole([UserRole.Waiter])] }
+      { path: 'list', component: ListComponent, canActivate: [guardRole([UserRole.Waiter, UserRole.Cashier])] }
     ]
   }
 ];

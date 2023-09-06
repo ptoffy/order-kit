@@ -3,9 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-occupy-table-modal',
-  templateUrl: './occupy-table-modal.component.html',
-  styles: [
-  ]
+  templateUrl: './occupy-table-modal.component.html'
 })
 export class OccupyTableModalComponent {
   @Input() tableNumber: number

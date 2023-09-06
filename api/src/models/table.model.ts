@@ -1,12 +1,12 @@
-import { Schema, Document, Model, model, Types } from "mongoose";
-import { baseSchema, BaseModelType } from "./base.model";
+import { Schema, Model, model, Types } from "mongoose"
+import { BaseModelType } from "./base.model"
 
 interface TableType extends BaseModelType {
-    number: number;
-    seats: number;
-    occupancy: number;
-    waiterId?: Types.ObjectId | null;
-    orders: Types.ObjectId[] | null;
+    number: number
+    seats: number
+    occupancy: number
+    waiterId?: Types.ObjectId | null
+    orders: Types.ObjectId[] | null
 }
 
 const tableSchema = new Schema<TableType>({
@@ -15,8 +15,8 @@ const tableSchema = new Schema<TableType>({
     occupancy: { type: Number, default: 0 },
     waiterId: { type: Types.ObjectId, ref: "User" },
     orders: [{ type: Types.ObjectId, ref: "Order" }]
-}, { timestamps: true });
+}, { timestamps: true })
 
-const Table: Model<TableType> = model("Table", tableSchema);
+const Table: Model<TableType> = model("Table", tableSchema)
 
-export { TableType, Table };
+export { TableType, Table }

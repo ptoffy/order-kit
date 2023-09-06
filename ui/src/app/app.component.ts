@@ -34,9 +34,12 @@ export class AppComponent implements OnInit {
       this.notificationService.showNotification(`Order #${order.number} for table #${order.table} is ready!`)
     })
 
+    this.notificationService.onOrderStatusChange().subscribe((_: Order) => {
+      this.notificationService.triggerOrderUpdate()
+    })
+
     this.notificationService.notifications$.subscribe(messages => {
       this.notifications = messages
-      this.cdr.detectChanges()
     })
   }
 

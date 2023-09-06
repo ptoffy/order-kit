@@ -18,7 +18,7 @@
               </small>
             </div>
             <div class="col-6">
-              <div class="d-flex justify-content-end align-items-center">
+              <div *ngIf="currentUserRole === UserRole.Waiter" class="d-flex justify-content-end align-items-center">
                 <button *ngIf="table.waiterId === null && table.occupancy !== 0" class="btn btn-sm btn-outline-info"
                   (click)="onAssign(table.number)">
                   Assign Yourself
@@ -33,6 +33,12 @@
                 <button *ngIf="table.occupancy !== 0" class="btn btn-sm ms-2 btn-outline-warning"
                   (click)="onFree(table.number)">
                   Free
+                </button>
+              </div>
+              <div *ngIf="currentUserRole === UserRole.Cashier" class="d-flex justify-content-end align-items-center">
+                <button *ngIf="table.occupancy !== 0" class="btn btn-sm btn-outline-info"
+                  (click)="onOpenPayModal(table)">
+                  Pay
                 </button>
               </div>
             </div>

@@ -1,5 +1,5 @@
 import { IsEnum, IsNotEmpty, IsNumber } from "class-validator"
-import { OrderMenuItemType, OrderStatus } from "../models/order.model"
+import { OrderMenuItemType, OrderStatus, OrderType } from "../models/order.model"
 import { MenuItemCategory } from "../models/item.model"
 
 export class CreateOrderRequest {
@@ -20,4 +20,9 @@ export class UpdateOrderRequest {
 
     @IsEnum(OrderStatus)
     status!: OrderStatus
+}
+
+export class UpdateBulkOrderRequest {
+    @IsNotEmpty()
+    orders!: OrderType[]
 }

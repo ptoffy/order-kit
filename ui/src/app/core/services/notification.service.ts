@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { BehaviorSubject, Observable } from 'rxjs'
+import { BehaviorSubject, Observable, Subject } from 'rxjs'
 import { Socket, io } from "socket.io-client"
 import { Order } from '../models/order.model'
 import { AuthService } from './auth.service'
@@ -11,7 +11,9 @@ import { UserRole } from '../models/user.model'
 export class NotificationService {
   private socket: Socket
   private _notifications = new BehaviorSubject<string[]>([])
+  private orderUpdateSubject = new Subject<void>()
   public readonly notifications$ = this._notifications.asObservable()
+  public readonly orderUpdate$ = this.orderUpdateSubject.asObservable()
 
   constructor(
     private authService: AuthService
@@ -31,6 +33,10 @@ export class NotificationService {
       currentNotifications.splice(index, 1)
       this._notifications.next(currentNotifications)
     }
+  }
+
+  triggerOrderUpdate() {
+    this.orderUpdateSubject.next()
   }
 
   /**
@@ -64,6 +70,16 @@ export class NotificationService {
     return new Observable((observer) => {
       this.socket.on('order-ready', (order: Order) => {
         if (this.authService.getCurrentUserRole() === UserRole.Waiter)
+          observer.next(order)
+      })
+    })
+  }
+
+  onOrderStatusChange(): Observable<Order> {
+    return new Observable((observer) => {
+      this.socket.on('order-status-change', (order: Order) => {
+        const currentRole = this.authService.getCurrentUserRole()
+        if (currentRole === UserRole.Waiter || currentRole === UserRole.Cashier)
           observer.next(order)
       })
     })

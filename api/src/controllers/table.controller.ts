@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import logger from "../logger";
-import { Table, TableType } from "../models/table.model";
+import { Table } from "../models/table.model";
 import { Types } from 'mongoose';
 
 /**

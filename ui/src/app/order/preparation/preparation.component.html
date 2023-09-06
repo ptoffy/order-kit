@@ -52,7 +52,7 @@
             <h5 class="card-title">Order #{{order.number}}</h5>
             <div *ngIf="activeTab === 'new' || activeTab === 'done'" class="mt-2">
               <div *ngFor="let item of order.items | groupItems" class="d-flex justify-content-between">
-                <p class="card-text">{{item.count}}x {{item.name}}</p>
+                <p class="card-text">{{item.count}}x {{item.item.name}}</p>
               </div>
             </div>
             <div *ngIf="activeTab === 'preparing'" class="progress mt-2" style="height: 10px;">

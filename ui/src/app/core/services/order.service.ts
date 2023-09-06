@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core"
 import { ApiService } from "./api.service"
 import { Observable } from "rxjs"
 import { Order, OrderStatus } from "../models/order.model"
-import { CreateOrderRequest } from "../dtos/order.dto"
+import { BestSellingItemResponse, CreateOrderRequest } from "../dtos/order.dto"
 
 @Injectable({
   providedIn: "root"
@@ -10,9 +10,24 @@ import { CreateOrderRequest } from "../dtos/order.dto"
 export class OrderService {
   constructor(private apiService: ApiService) { }
 
-  list(status: OrderStatus): Observable<Order[]> {
-    return this.apiService.get(`order?status=${status}`)
+  list(
+    status: OrderStatus | null = null,
+    tableNumber: number | null = null
+  ): Observable<Order[]> {
+    let query = 'order'
+    const queryParams = []
+    if (status !== null) {
+      queryParams.push(`status=${status}`)
+    }
+    if (tableNumber !== null) {
+      queryParams.push(`tableNumber=${tableNumber}`)
+    }
+    if (queryParams.length) {
+      query += `?${queryParams.join('&')}`
+    }
+    return this.apiService.get(query);
   }
+
 
   create(order: CreateOrderRequest): Observable<void> {
     return this.apiService.post(`order`, order)
@@ -22,7 +37,15 @@ export class OrderService {
     return this.apiService.post(`order/${order._id}/update`, order)
   }
 
-  listForWaiter(waiterId: string): Observable<Order[]> {
-    return this.apiService.get(`order?waiterId=${waiterId}`)
+  updateBulk(orders: Order[]): Observable<void> {
+    return this.apiService.post(`order/update-bulk`, { orders })
+  }
+
+  fetchBudgetForDay(date: string): Observable<number> {
+    return this.apiService.get(`order/budget?date=${date}`)
+  }
+
+  fetchBestSellingItems(): Observable<BestSellingItemResponse[]> {
+    return this.apiService.get(`order/best-selling-items`)
   }
 }

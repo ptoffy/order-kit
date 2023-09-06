@@ -17,6 +17,8 @@ import { TokenInterceptor } from './core/interceptors/token.interceptor'
 import { ErrorInterceptor } from './core/interceptors/error.interceptor'
 import { NotificationComponent } from './core/components/notification/notification.component'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { GroupItemsPipe } from './shared/pipes/group-items.pipe'
+import { SharedModule } from './shared/shared.module'
 
 @NgModule({
   declarations: [
@@ -34,6 +36,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
     UserModule,
     TableModule,
     OrderModule,
+    SharedModule,
     AppRoutingModule
   ],
   providers: [

@@ -1,8 +1,11 @@
-import { Component } from '@angular/core';
-import { Table } from 'src/app/core/models/table.model';
-import { TableService } from 'src/app/core/services/table.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { OccupyTableModalComponent } from '../occupy-table-modal/occupy-table-modal.component';
+import { Component } from '@angular/core'
+import { Table } from 'src/app/core/models/table.model'
+import { TableService } from 'src/app/core/services/table.service'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+import { OccupyTableModalComponent } from '../occupy-table-modal/occupy-table-modal.component'
+import { UserRole } from 'src/app/core/models/user.model'
+import { AuthService } from 'src/app/core/services/auth.service'
+import { PayModalComponent } from '../pay-modal/pay-modal.component'
 
 @Component({
   selector: 'app-list',
@@ -10,12 +13,17 @@ import { OccupyTableModalComponent } from '../occupy-table-modal/occupy-table-mo
   styles: []
 })
 export class ListComponent {
-  tables: Table[] = [];
+  tables: Table[] = []
+  currentUserRole!: UserRole
+  UserRole = UserRole
 
   constructor(
     private tableService: TableService,
-    private modalService: NgbModal
-  ) { }
+    private modalService: NgbModal,
+    private authService: AuthService,
+  ) {
+    this.currentUserRole = this.authService.getCurrentUserRole()!
+  }
 
   ngOnInit(): void {
     this.updateList()
@@ -39,6 +47,15 @@ export class ListComponent {
         error: this.handleError.bind(this)
       })
     }, () => { })
+  }
+
+  onOpenPayModal(table: Table): void {
+    const modal = this.modalService.open(PayModalComponent)
+    modal.componentInstance.table = table
+
+    modal.result.then(() => {
+      this.updateList()
+    })
   }
 
   onFree(tableNumber: number): void {

@@ -1,12 +1,15 @@
-import { createOrder, getOrders, updateOrder } from "../controllers/order.controller"
+import { createOrder, fetchBestSellingItems, fetchProfitForDay, getOrders, updateOrder, updateOrdersBulk } from "../controllers/order.controller"
 import { checkAuth } from "../middleware/auth.middleware"
 import { UserRole } from "../models/user.model"
 
 const router = require('express')()
 
-router.get('/', checkAuth([UserRole.Cook, UserRole.Bartender, UserRole.Waiter]), getOrders)
-router.post('/:id/update', checkAuth([UserRole.Cook, UserRole.Bartender, UserRole.Waiter]), updateOrder)
+router.get('/', checkAuth(), getOrders)
+router.post('/:id/update', checkAuth(), updateOrder)
 router.post('/', checkAuth([UserRole.Waiter]), createOrder)
+router.post('/update-bulk', checkAuth([UserRole.Cashier]), updateOrdersBulk)
+router.get('/budget', checkAuth([UserRole.Cashier]), fetchProfitForDay)
+router.get('/best-selling-items', checkAuth([UserRole.Cashier]), fetchBestSellingItems)
 
 export default router
 module.exports = router
