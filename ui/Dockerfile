@@ -1,5 +1,5 @@
 # Create a docker image for the angular ui
-FROM node:20-alpine
+FROM node:19-alpine
 
 # Change directory so that our commands run inside this new directory
 WORKDIR /app

@@ -1,8 +1,15 @@
 {
+    "ts-node": {
+        "files": true
+    },
+    "files": [
+        "src/main.ts",
+        "src/types/express/types.d.ts"
+    ],
     "compilerOptions": {
         "target": "es6",
-        "module": "NodeNext",
-        "moduleResolution": "NodeNext",
+        "module": "commonjs",
+        "moduleResolution": "node",
         "outDir": "./out",
         "rootDir": "./src",
         "strict": true,
@@ -10,12 +17,19 @@
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
         "experimentalDecorators": true,
-        "emitDecoratorMetadata": true
+        "emitDecoratorMetadata": true,
+        "typeRoots": [
+            "./node_modules/@types",
+            "./src/types"
+        ]
     },
     "include": [
-        "src/**/*.ts",
+        "./src/**/*.ts",
     ],
     "exclude": [
         "node_modules"
     ],
+    "typeAcquisition": {
+        "enable": true
+    }
 }

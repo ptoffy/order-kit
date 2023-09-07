@@ -10,11 +10,13 @@
           <form (submit)="onRegister()">
             <div class="mb-3 mt-3">
               <label for="username" class="form-label">Username</label>
-              <input type="text" class="form-control" id="username" [(ngModel)]="user.username" name="username" required>
+              <input type="text" class="form-control" id="username" [(ngModel)]="user.username" name="username"
+                required>
             </div>
             <div class="mb-3">
               <label for="password" class="form-label">Password</label>
-              <input type="password" class="form-control" id="password" [(ngModel)]="user.password" name="password" required>
+              <input type="password" class="form-control" id="password" [(ngModel)]="user.password" name="password"
+                required>
             </div>
             <div class="mb-3">
               <label for="name" class="form-label">Name</label>
@@ -22,8 +24,8 @@
             </div>
             <div class="mb-3">
               <label for="role" class="form-label">Role</label>
-              <select class="form-control" id="role" [(ngModel)]="user.role" name="role">
-                <option *ngFor="let role of userRoles" [value]="role">{{role}}</option>
+              <select class="form-control form-select" id="role" [(ngModel)]="user.role" name="role">
+                <option *ngFor="let role of userRoles; let i = index" [value]="role">{{role}}</option>
               </select>
             </div>
             <button type="submit" class="btn btn-success w-100">Register</button>

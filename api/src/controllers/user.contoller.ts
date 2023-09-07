@@ -54,7 +54,7 @@ export async function registerHandler(req: Request, res: Response) {
 
         // Generate a JWT token
         const { header, payload, signature, expiration } = generateAuthToken(user)
-        res.cookie('jwt_token', `${signature}`, { httpOnly: true, expires: new Date(expiration) })
+        res.cookie('jwt', `${signature}`, { httpOnly: true, expires: new Date(expiration), secure: false })
         res.status(201).json(new LoginResponse(header, payload, expiration, user.role, user._id.toHexString()))
     } catch (error) {
         logger.error("Error registering: " + error)
@@ -78,18 +78,20 @@ export async function loginHandler(req: Request, res: Response) {
         if (!user) {
             // We don't want to tell the user that the email is not found 
             // since it could reveal whether a user is registered or not
+            logger.warn(`User with username ${loginRequest.username} not found`)
             return res.status(401).json({ message: 'Invalid email or password' })
         }
 
         // Check if the password is correct
         const passwordValid: boolean = await bcrypt.compare(loginRequest.password, user.password)
         if (!passwordValid) {
+            logger.warn(`Invalid password for user with username ${loginRequest.username}`)
             return res.status(401).json({ message: 'Invalid email or password' })
         }
 
         // Generate a JWT token
         const { header, payload, signature, expiration } = generateAuthToken(user)
-        res.cookie('jwt_token', `${signature}`, { expires: new Date(expiration) })
+        res.cookie('jwt', `${signature}`, { expires: new Date(expiration), secure: false, httpOnly: true })
         res.status(200).json(new LoginResponse(header, payload, expiration, user.role, user._id.toHexString()))
     } catch (error) {
         logger.error("Error logging in: " + error)

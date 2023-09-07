@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose"
-import { BaseModelType, Base, baseSchema } from "./base.model"
+import { BaseModelType } from "./base.model"
 import { MenuItemCategory, MenuItemType } from "./item.model"
 
 export enum OrderStatus {

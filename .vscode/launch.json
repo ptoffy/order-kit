@@ -5,14 +5,19 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Launch API",
             "type": "node",
             "request": "launch",
-            "name": "Launch API",
             "skipFiles": [
                 "<node_internals>/**"
             ],
             "preLaunchTask": "tsc: build - api/tsconfig.json",
-            "program": "${workspaceFolder}/api/out/main.js",
+            "runtimeExecutable": "npm",
+            "cwd": "${workspaceFolder}/api",
+            "args": [
+                "run",
+                "start"
+            ],
             "env": {
                 "NODE_ENV": "development"
             },

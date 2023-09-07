@@ -1,8 +1,8 @@
-import { Request, Response } from 'express';
-import { UserRole } from '../models/user.model';
-import logger from '../logger';
-import { jwtUtil } from '../utils/jwt.util';
-import { UserJwtPayload } from '../models/jwt.model';
+import { Request, Response } from 'express'
+import { UserRole } from '../models/user.model'
+import logger from '../logger'
+import { jwtUtil } from '../utils/jwt.util'
+import { UserJwtPayload } from '../models/jwt.model'
 
 // This middleware checks if the user has the required role to access a resource
 export function checkAuth(requiredRole: UserRole[] | null = null) {
@@ -27,7 +27,7 @@ export function checkAuth(requiredRole: UserRole[] | null = null) {
 
         var role: UserRole | null = null
 
-        const cookie = req.cookies.jwt_token
+        const cookie = req.cookies.jwt
         if (!cookie) {
             logger.debug('No JWT cookie found')
             return res.status(401).json({ message: 'Please provide an authentication token!' })

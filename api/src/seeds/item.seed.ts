@@ -1,7 +1,7 @@
 import logger from "../logger"
 import { MenuItem, MenuItemCategory, MenuItemType } from "../models/item.model"
 
-export async function seedMenuItems() {
+export async function seedMenuItems(): Promise<void> {
     const count = await MenuItem.countDocuments()
 
     if (count > 0) return
@@ -13,6 +13,7 @@ export async function seedMenuItems() {
         { name: "Fanta", price: 2.50, category: MenuItemCategory.Drinks, estimatedPrepTime: 3, cost: 0.50 },
         { name: "Sprite", price: 2.50, category: MenuItemCategory.Drinks, estimatedPrepTime: 3, cost: 0.50 },
         { name: "Water", price: 2.00, category: MenuItemCategory.Drinks, estimatedPrepTime: 3, cost: 0.50 },
+        { name: "Beer", price: 3.00, category: MenuItemCategory.Drinks, estimatedPrepTime: 3, cost: 0.50 },
         { name: "Burger", price: 5.00, category: MenuItemCategory.Food, estimatedPrepTime: 10, cost: 1.50 },
         { name: "Pizza", price: 7.50, category: MenuItemCategory.Food, estimatedPrepTime: 15, cost: 2.50 },
         { name: "Pasta", price: 6.00, category: MenuItemCategory.Food, estimatedPrepTime: 10, cost: 1.50 },
@@ -24,4 +25,6 @@ export async function seedMenuItems() {
     await MenuItem.insertMany(items)
 
     logger.info('🌳 Item collection seeded!')
+
+    return
 }

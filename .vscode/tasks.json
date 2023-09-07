@@ -5,10 +5,11 @@
             "type": "typescript",
             "tsconfig": "api/tsconfig.json",
             "problemMatcher": [
-                "$tsc"
+                "$tsc-watch"
             ],
             "group": "build",
-            "label": "tsc: build - api/tsconfig.json"
+            "label": "tsc: build - api/tsconfig.json",
+            "option": "watch"
         },
         {
             "type": "npm",
