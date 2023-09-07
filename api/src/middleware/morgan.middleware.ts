@@ -4,12 +4,12 @@ import logger from "../logger";
 const stream = {
     // Use the http severity
     write: (message: string) => logger.http(message),
-};
+}
 
 const skip = () => {
     const env = process.env.NODE_ENV || "development";
     return env !== "development";
-};
+}
 
 const morganMiddleware = morgan(
     // Define message format string (this is the default one).
@@ -20,8 +20,7 @@ const morganMiddleware = morgan(
     // Options: in this case, I overwrote the stream and the skip logic.
     // See the methods above.
     { stream, skip }
-);
+)
 
-module.exports = morganMiddleware;
-
-export default morganMiddleware;
+module.exports = morganMiddleware
+export default morganMiddleware

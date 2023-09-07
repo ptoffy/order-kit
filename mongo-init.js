@@ -3,8 +3,9 @@ db.createUser({
     pwd: 'password',
     roles: [{
         role: 'readWrite',
-        db: 'orders'
+        db: 'order-kit'
     }]
-});
+})
 
-db = new Mongo().getDB('mydatabase');
+db.auth('root', 'password')
+db = new Mongo().getDB('mydatabase')

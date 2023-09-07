@@ -1,21 +1,23 @@
 {
-  "name": "orders-kit",
+  "name": "order-kit",
   "version": "1.0.0",
   "description": "Manages the orders of a restaurant",
   "main": "src/main.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "start": "ts-node src/main.ts",
+    "start": "nodemon --exec ts-node --files src/main.ts",
     "lint": "tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix"
   },
   "author": "Paul Toffoloni",
   "devDependencies": {
-    "@types/bcryptjs": "^2.4.2",
-    "@types/cookie-parser": "^1.4.3",
-    "@types/cors": "^2.8.13",
+    "@types/bcryptjs": "^2.4.3",
+    "@types/cookie-parser": "^1.4.4",
+    "@types/cors": "^2.8.14",
     "@types/express-session": "^1.17.7",
-    "typescript": "^5.0.4"
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
   },
   "dependencies": {
     "@types/bcrypt": "^5.0.0",
@@ -23,19 +25,19 @@
     "@types/jsonwebtoken": "^9.0.2",
     "@types/mongoose": "^5.11.97",
     "@types/morgan": "^1.9.5",
+    "@types/socket.io": "^3.0.2",
     "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
-    "dotenv": "^16.0.3",
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
-    "jsonwebtoken": "^9.0.1",
-    "mongoose": "^7.2.0",
-    "mongoose-morgan": "^1.0.17",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^7.5.0",
+    "morgan": "^1.10.0",
     "socket.io": "^4.7.2",
-    "ts-node": "^10.9.1",
-    "winston": "^3.8.2"
+    "winston": "^3.10.0"
   }
 }

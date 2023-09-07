@@ -1,6 +1,6 @@
-import { JwtPayload } from "jsonwebtoken";
+import { JwtPayload } from "jsonwebtoken"
 
 export interface UserJwtPayload extends JwtPayload {
-    id: string;
-    role: string;
+    id: string
+    role: string
 }

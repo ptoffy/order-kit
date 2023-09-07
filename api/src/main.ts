@@ -12,7 +12,7 @@ const app = express()
 
 // Import env variables from env file only when in dev mode
 if (app.get('env') === 'development') {
-    require('dotenv').config({ path: 'api/.env' })
+    require('dotenv').config({ path: '.env' })
 }
 
 if (!process.env.SESSION_SECRET) {
@@ -36,21 +36,22 @@ import { seedTables } from './seeds/table.seed'
 import { seedOrders } from './seeds/order.seed'
 import { seedMenuItems } from './seeds/item.seed'
 
+logger.info('🐱 Connecting to MongoDB... with URI: ' + process.env.MONGODB_URI)
 mongoose.connect(process.env.MONGODB_URI).then(() => {
     logger.info('🐱 Connected to MongoDB')
     seedUser()
     seedTables()
-    seedMenuItems()
-    seedOrders()
-}).catch((err) => {
+    seedMenuItems().then(() => seedOrders())
+}).catch((err: Error) => {
     logger.error('❌ MongoDB connection error: ' + err)
     process.exit(1)
 })
 
 // Express configuration
 app.use(cors({
-    origin: ['http://localhost:4200'],
+    origin: ['http://localhost:4200', 'http://127.0.0.1:4200', 'http://ui:4200'],
     credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin', 'Access-Control-Allow-Headers', 'Access-Control-Allow-Origin', 'Access-Control-Allow-Credentials', 'x-auth-token'],
 }))
 app.use(cookies())
 
@@ -72,6 +73,8 @@ app.use(morganMiddleware)
 
 // Socket.io
 import { Server } from 'socket.io'
+import { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from './types/socket'
+
 const server = require('http').createServer(app)
 const io = new Server<
     ClientToServerEvents,
@@ -80,11 +83,11 @@ const io = new Server<
     SocketData
 >(server, {
     cors: {
-        origin: ['http://localhost:4200'],
+        origin: ['http://localhost:4200', 'http://127.0.0.1:4200', 'http://ui:4200'],
         methods: ['GET', 'POST'],
     }
 })
-app.use((req, _, next) => {
+app.use((req, res, next) => {
     req.io = io
     next()
 })

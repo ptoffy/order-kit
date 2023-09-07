@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { AuthService } from '../../core/services/auth.service';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core'
+import { AuthService } from '../../core/services/auth.service'
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-login',
@@ -12,7 +12,7 @@ export class LoginComponent {
     username: '',
     password: ''
   };
-  errorMessage: string | null = null;
+  errorMessage: string | null = null
 
   constructor(
     private authService: AuthService,
@@ -27,26 +27,26 @@ export class LoginComponent {
   }
 
   private handleSuccess(): void {
-    this.router.navigate(['/']);
+    this.router.navigate(['/'])
   }
 
   private handleErrors(error: any): void {
     if (error.status === 401) {
-      this.errorMessage = 'Invalid username or password.';
-      return;
+      this.errorMessage = 'Invalid username or password.'
+      return
     }
-    const errors = error.error
-      .split(':')[1].split(',')
-      .map((err: string) => err.charAt(0) === ' ' ? err.slice(1) : err)
-      .map((err: string) => err.charAt(0).toUpperCase() + err.slice(1))
-      .map((err: string, index: number) => index === 0 ? err : '• '.concat(err))
-      .map((err: string, index: number, array: string[]) => index !== array.length - 1 ? err.concat('\n') : err)
-      .join('');
-    this.errorMessage = errors || 'An error occurred during login.';
+    const errors = error.error.message
+    // .split(':')[1].split(',')
+    // .map((err: string) => err.charAt(0) === ' ' ? err.slice(1) : err)
+    // .map((err: string) => err.charAt(0).toUpperCase() + err.slice(1))
+    // .map((err: string, index: number) => index === 0 ? err : '• '.concat(err))
+    // .map((err: string, index: number, array: string[]) => index !== array.length - 1 ? err.concat('\n') : err)
+    // .join('')
+    this.errorMessage = errors || 'An error occurred during login.'
   }
 }
 
 interface LoginRequest {
-  username: string;
-  password: string;
+  username: string
+  password: string
 }

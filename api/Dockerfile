@@ -1,5 +1,5 @@
 # Create a docker image for the api
-FROM node:20-alpine
+FROM node:19-alpine
 
 # Change directory so that our commands run inside this new directory
 WORKDIR /app
@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 3000
 
 # Run the app
-CMD ["npm", "start"]
+CMD ["npm", "run", "start"]

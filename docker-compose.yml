@@ -6,37 +6,50 @@
 version: '3.8'
 
 services:
-  # # Setup the backend Node.js API
-  # api:
-  #   build: api
-  #   env_file: api/.env
-  #   # Docker-compose fails to read the .env file if we set the environment variables here 😑
-  #   # environment:
-  #   #   - SESSION_SECRET=${SESSION_SECRET}
-  #   #   - MONGODB_URI=${MONGODB_URI}
-  #   ports:
-  #     - '3000:3000'
-  #   # Create a connection to the MongoDB service with the name of the service as the host name
-  #   links:
-  #     - db 
-  #   # Start the MongoDB service before the API service
-  #   depends_on:
-  #     - db
-  # # Setup the frontend Angular.js UI
-  # ui:
-  #   build: ui
-  #   ports:
-  #     - '8080:8080'
-  #   depends_on:
-  #     - api
-  # # Setup the MongoDB service
+  # Setup the backend Node.js API
+  api:
+    container_name: order-kit-api
+    # Build the Dockerfile in the api directory
+    build: api
+    # Set the environment variables
+    environment:
+      - SESSION_SECRET=test
+      - MONGODB_URI=mongodb://root:password@db:27017/order-kit
+      - JWT_PUBLIC_KEY=mySuperKey
+      - JWT_PRIVATE_KEY=mySuperSecretKey
+    ports:
+      - '3000:3000'
+    # Create a connection to the MongoDB service with the name of the service as the host name
+    links:
+      - db 
+    # Start the MongoDB service before the API service
+    depends_on:
+      - db
+    volumes:
+      - ./api:/app
+      - /app/node_modules
+  # Setup the frontend Angular.js UI
+  ui:
+    container_name: order-kit-ui
+    # Build the Dockerfile in the ui directory
+    build: ui
+    links:
+      - api
+    ports:
+      - '4200:4200'
+    depends_on:
+      - api
+    volumes:
+      - ./ui:/app
+      - /app/node_modules
+  # Setup the MongoDB service
   db:
     image: mongo
-    container_name: orders-db
+    container_name: order-kit-db
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=password
-      - MONGO_INITDB_DATABASE=orders
+      - MONGO_INITDB_DATABASE=order-kit
     volumes:
       - mongo-data:/data/db
       - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro

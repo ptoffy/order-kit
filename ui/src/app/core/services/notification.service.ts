@@ -4,6 +4,7 @@ import { Socket, io } from "socket.io-client"
 import { Order } from '../models/order.model'
 import { AuthService } from './auth.service'
 import { UserRole } from '../models/user.model'
+import { environment } from 'src/environments/environment'
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class NotificationService {
   constructor(
     private authService: AuthService
   ) {
-    this.socket = io('http://localhost:3000')
+    this.socket = io(environment.apiUrl)
   }
 
   showNotification(message: string) {

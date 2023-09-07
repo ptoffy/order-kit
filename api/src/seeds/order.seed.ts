@@ -1,6 +1,6 @@
 import logger from "../logger"
 import { MenuItem, MenuItemCategory } from "../models/item.model"
-import { Order, OrderMenuItemStatus, OrderType } from "../models/order.model"
+import { Order, OrderMenuItemStatus, OrderStatus, OrderType } from "../models/order.model"
 
 export async function seedOrders() {
     const count = await Order.countDocuments()
@@ -21,7 +21,7 @@ export async function seedOrders() {
                 { _id: drinks[0]._id, status: OrderMenuItemStatus.New },
                 { _id: drinks[1]._id, status: OrderMenuItemStatus.New },
             ],
-            status: OrderMenuItemStatus.New,
+            status: OrderStatus.New,
             type: MenuItemCategory.Drinks
         },
         {
@@ -31,7 +31,7 @@ export async function seedOrders() {
                 { _id: foods[1]._id, status: OrderMenuItemStatus.New },
                 { _id: foods[2]._id, status: OrderMenuItemStatus.New },
             ],
-            status: OrderMenuItemStatus.New,
+            status: OrderStatus.New,
             type: MenuItemCategory.Food
         },
         {
@@ -43,7 +43,7 @@ export async function seedOrders() {
                 { _id: foods[3]._id, status: OrderMenuItemStatus.New },
                 { _id: foods[4]._id, status: OrderMenuItemStatus.New },
             ],
-            status: OrderMenuItemStatus.New,
+            status: OrderStatus.New,
             type: MenuItemCategory.Food
         },
         {
@@ -54,8 +54,81 @@ export async function seedOrders() {
                 { _id: drinks[2]._id, status: OrderMenuItemStatus.New },
                 { _id: drinks[3]._id, status: OrderMenuItemStatus.New },
             ],
-            status: OrderMenuItemStatus.New,
+            status: OrderStatus.New,
             type: MenuItemCategory.Drinks
+        },
+        {
+            table: 5,
+            items: [
+                { _id: drinks[0]._id, status: OrderMenuItemStatus.New },
+                { _id: drinks[1]._id, status: OrderMenuItemStatus.New },
+                { _id: drinks[2]._id, status: OrderMenuItemStatus.New },
+                { _id: drinks[3]._id, status: OrderMenuItemStatus.New },
+                { _id: drinks[4]._id, status: OrderMenuItemStatus.New },
+            ],
+            status: OrderStatus.New,
+            type: MenuItemCategory.Drinks
+        },
+        {
+            table: 6,
+            items: [
+                { _id: foods[0]._id, status: OrderMenuItemStatus.New },
+                { _id: foods[1]._id, status: OrderMenuItemStatus.New },
+                { _id: foods[2]._id, status: OrderMenuItemStatus.New },
+                { _id: foods[3]._id, status: OrderMenuItemStatus.New },
+                { _id: foods[4]._id, status: OrderMenuItemStatus.New },
+            ],
+            status: OrderStatus.New,
+            type: MenuItemCategory.Food
+        },
+        {
+            table: 7,
+            items: [
+                { _id: foods[0]._id, status: OrderMenuItemStatus.New },
+                { _id: foods[1]._id, status: OrderMenuItemStatus.New },
+                { _id: foods[2]._id, status: OrderMenuItemStatus.New },
+                { _id: foods[3]._id, status: OrderMenuItemStatus.New },
+                { _id: foods[4]._id, status: OrderMenuItemStatus.New },
+            ],
+            status: OrderStatus.New,
+            type: MenuItemCategory.Food
+        },
+        // Add some paid orders
+        {
+            table: 8,
+            items: [
+                { _id: foods[0]._id, status: OrderMenuItemStatus.Done },
+                { _id: foods[1]._id, status: OrderMenuItemStatus.Done },
+                { _id: foods[2]._id, status: OrderMenuItemStatus.Done },
+                { _id: foods[3]._id, status: OrderMenuItemStatus.Done },
+                { _id: foods[4]._id, status: OrderMenuItemStatus.Done },
+            ],
+            status: OrderStatus.Paid,
+            type: MenuItemCategory.Food
+        },
+        {
+            table: 9,
+            items: [
+                { _id: foods[0]._id, status: OrderMenuItemStatus.Done },
+                { _id: foods[1]._id, status: OrderMenuItemStatus.Done },
+                { _id: foods[2]._id, status: OrderMenuItemStatus.Done },
+                { _id: foods[3]._id, status: OrderMenuItemStatus.Done },
+                { _id: foods[4]._id, status: OrderMenuItemStatus.Done },
+            ],
+            status: OrderStatus.Paid,
+            type: MenuItemCategory.Food
+        },
+        {
+            table: 10,
+            items: [
+                { _id: foods[0]._id, status: OrderMenuItemStatus.Done },
+                { _id: foods[1]._id, status: OrderMenuItemStatus.Done },
+                { _id: foods[2]._id, status: OrderMenuItemStatus.Done },
+                { _id: foods[3]._id, status: OrderMenuItemStatus.Done },
+                { _id: foods[4]._id, status: OrderMenuItemStatus.Done },
+            ],
+            status: OrderStatus.Paid,
+            type: MenuItemCategory.Food
         }
     ]
 
