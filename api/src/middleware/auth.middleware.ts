@@ -4,7 +4,10 @@ import logger from '../logger'
 import { jwtUtil } from '../utils/jwt.util'
 import { UserJwtPayload } from '../models/jwt.model'
 
-// This middleware checks if the user has the required role to access a resource
+/**
+ * Checks if the user is authenticated and has the required role.
+ * @param requiredRole The required role to access the resource. If null, no role is required.
+ */
 export function checkAuth(requiredRole: UserRole[] | null = null) {
     return function (req: Request, res: Response, next: Function) {
         var token = req.headers['x-auth-token']

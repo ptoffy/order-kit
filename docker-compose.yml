@@ -17,6 +17,7 @@ services:
       - MONGODB_URI=mongodb://root:password@db:27017/order-kit
       - JWT_PUBLIC_KEY=mySuperKey
       - JWT_PRIVATE_KEY=mySuperSecretKey
+      - PORT=3000
     ports:
       - '3000:3000'
     # Create a connection to the MongoDB service with the name of the service as the host name

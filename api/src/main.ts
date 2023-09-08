@@ -15,6 +15,11 @@ if (app.get('env') === 'development') {
     require('dotenv').config({ path: '.env' })
 }
 
+if (!process.env.PORT) {
+    logger.error('No port. Set PORT environment variable.')
+    process.exit(1)
+}
+
 if (!process.env.SESSION_SECRET) {
     logger.error('No session secret. Set SESSION_SECRET environment variable.')
     process.exit(1)
@@ -36,7 +41,6 @@ import { seedTables } from './seeds/table.seed'
 import { seedOrders } from './seeds/order.seed'
 import { seedMenuItems } from './seeds/item.seed'
 
-logger.info('🐱 Connecting to MongoDB... with URI: ' + process.env.MONGODB_URI)
 mongoose.connect(process.env.MONGODB_URI).then(() => {
     logger.info('🐱 Connected to MongoDB')
     seedUser()
@@ -87,7 +91,7 @@ const io = new Server<
         methods: ['GET', 'POST'],
     }
 })
-app.use((req, res, next) => {
+app.use((req, _, next) => {
     req.io = io
     next()
 })
@@ -96,7 +100,7 @@ io.listen(server)
 
 // Routes
 
-server.listen(app.get("port"), '0.0.0.0', () => {
+server.listen(process.env.PORT, '0.0.0.0', () => {
     logger.info(`⏱️ Orders API is running at http://localhost:${app.get("port")} in ${app.get("env")} mode`)
 })
 

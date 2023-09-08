@@ -9,8 +9,8 @@
           </div>
           <form #loginForm="ngForm" (submit)="loginForm.form.valid && onLogin()">
             <div class="mb-3 mt-3">
-              <label for="email-input" class="form-label">Username</label>
-              <input type="text" name="username" class="form-control" id="username-input"
+              <label for="username-input" class="form-label">Username</label>
+              <input type="text" name="username" class="form-control" id="username-input" autocomplete="username"
                 [(ngModel)]="loginRequest.username" required
                 [ngClass]="{ 'is-invalid': loginForm.submitted && loginForm.controls['username'].invalid }" />
               <div *ngIf="loginForm.submitted && loginForm.controls['username'].invalid" class="invalid-feedback">
