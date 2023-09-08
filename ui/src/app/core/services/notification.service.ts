@@ -36,6 +36,10 @@ export class NotificationService {
     }
   }
 
+  emptyNotifications() {
+    this._notifications.next([])
+  }
+
   triggerOrderUpdate() {
     this.orderUpdateSubject.next()
   }

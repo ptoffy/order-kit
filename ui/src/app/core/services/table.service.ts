@@ -11,8 +11,8 @@ export class TableService {
 
   constructor(private apiService: ApiService) { }
 
-  list(waiterOnly: boolean = false): Observable<Table[]> {
-    return this.apiService.get(`${this.basePath}?waiterOnly=${waiterOnly}`)
+  list(waiterOnly: boolean = false, withWaiter: boolean = false): Observable<Table[]> {
+    return this.apiService.get(`${this.basePath}?waiterOnly=${waiterOnly}&withWaiter=${withWaiter}`)
   }
 
   occupy(tableNumber: number, peopleCount: number): Observable<void> {

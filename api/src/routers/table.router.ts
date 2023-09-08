@@ -10,7 +10,9 @@ const router = require('express')()
  *   get:
  *     summary: Lists all tables.
  *     description: |
- *       Lists all tables. If the waiterOnly query parameter is set to true, only tables assigned to the current waiter are returned.
+ *       Lists all tables. 
+ *       If the waiterOnly query parameter is set to true, only tables assigned to the current waiter are returned.
+ *       If the withWaiter query parameter is set to true, the waiter's username assigned to each table is also returned.
  *     tags:
  *       - Tables
  *     parameters:
@@ -25,6 +27,13 @@ const router = require('express')()
  *           type: boolean
  *         required: false
  *         description: If set to true, only tables assigned to the current waiter are returned.
+ *         example: true
+ *       - in: query
+ *         name: withWaiter
+ *         schema:
+ *           type: boolean
+ *         required: false
+ *         description: If set to true, the waiter's username assigned to each table is also returned.
  *         example: true
  *     responses:
  *       200:

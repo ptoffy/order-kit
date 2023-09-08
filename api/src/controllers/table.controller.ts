@@ -1,7 +1,7 @@
-import { Request, Response } from 'express';
-import logger from "../logger";
-import { Table } from "../models/table.model";
-import { Types } from 'mongoose';
+import { Request, Response } from 'express'
+import logger from "../logger"
+import { Table } from "../models/table.model"
+import { Types } from 'mongoose'
 
 /**
  * Lists all tables.
@@ -14,6 +14,7 @@ export async function listTables(req: Request, res: Response) {
     logger.debug("Listing tables")
     try {
         const waiterOnly = req.query.waiterOnly ?? false
+        const withWaiter = req.query.withWaiter ?? false
 
         const query = Table.find()
 
@@ -26,7 +27,12 @@ export async function listTables(req: Request, res: Response) {
             query.where('waiterId').equals(new Types.ObjectId(waiterId))
         }
 
-        const tables = await query.exec()
+        if (withWaiter === 'true') {
+            query.populate('waiterId', 'username')
+        }
+
+        let tables = await query.exec()
+
         res.json(tables)
     } catch (error) {
         logger.error("Error listing tables: " + error)
@@ -55,7 +61,7 @@ export async function assignTable(req: Request, res: Response) {
             return res.status(400).json({ message: 'Invalid waiter ID' })
         }
 
-        table.waiterId = new Types.ObjectId(waiterId);
+        table.waiterId = new Types.ObjectId(waiterId)
         await table.save()
 
         res.json(table)

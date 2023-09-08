@@ -310,7 +310,7 @@ export async function fetchBestSellingItems(req: Request, res: Response) {
             return res.status(404).json({ message: 'Orders not found' })
         }
 
-        const itemCounts: { [key: string]: number } = {};
+        const itemCounts: { [key: string]: number } = {}
 
         orders.forEach(order => {
             order.items.forEach((item: any) => {
@@ -328,7 +328,7 @@ export async function fetchBestSellingItems(req: Request, res: Response) {
             count: itemCounts[itemName]
         }))
 
-        itemsArray.sort((a, b) => b.count - a.count);
+        itemsArray.sort((a, b) => b.count - a.count)
 
         res.status(200).json(itemsArray)
     } catch (err) {

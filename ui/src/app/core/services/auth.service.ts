@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable, tap } from 'rxjs'
 import { User, UserRole } from '../models/user.model'
 import { ApiService } from 'src/app/core/services/api.service'
 import { LoginResponse } from '../dtos/user.dto'
+import { NotificationService } from './notification.service'
 
 /**
  * Service to manage authentication.
@@ -23,7 +24,10 @@ export class AuthService {
    * Constructor.
    * @param apiService The API service.
    */
-  constructor(private apiService: ApiService) {
+  constructor(
+    private apiService: ApiService,
+    private notificationService: NotificationService,
+  ) {
     this.isAuthenticatedSubject.next(this.isAuthenticated())
   }
 
@@ -109,6 +113,7 @@ export class AuthService {
     localStorage.removeItem(this.currentUserRoleStorageName)
     localStorage.removeItem(this.currentUserIdStorageName)
     this.isAuthenticatedSubject.next(false)
+    this.notificationService.emptyNotifications()
   }
 
   /**

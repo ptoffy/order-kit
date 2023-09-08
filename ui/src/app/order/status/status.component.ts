@@ -23,7 +23,6 @@ export class StatusComponent implements OnInit, OnDestroy {
     private orderService: OrderService,
     private authService: AuthService,
     private notificationService: NotificationService,
-    private tableService: TableService,
   ) {
     this.currentUserRole = this.authService.getCurrentUserRole()!
   }
@@ -80,12 +79,10 @@ export class StatusComponent implements OnInit, OnDestroy {
         groupedItems[orderItem.category] += orderItem.estimatedPrepTime
     }
 
-    // Calculate time for each group
     let totalPrepTime = 0
     for (const category in groupedItems) {
       const groupTime = groupedItems[category]
       // Assuming 50% efficiency for parallel cooking
-      // This is a simple formula; you can adjust based on real-world observations
       const efficiencyFactor = 1 + 0.5 * (groupTime / groupTime - 1)
       totalPrepTime += groupTime * efficiencyFactor
     }

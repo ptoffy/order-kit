@@ -1,9 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Order, OrderMenuItem, OrderStatus } from 'src/app/core/models/order.model';
-import { Table } from 'src/app/core/models/table.model';
-import { OrderService } from 'src/app/core/services/order.service';
-import { TableService } from 'src/app/core/services/table.service';
+import { Component, Input, OnInit } from '@angular/core'
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
+import { Order, OrderMenuItem, OrderStatus } from 'src/app/core/models/order.model'
+import { Table } from 'src/app/core/models/table.model'
+import { OrderService } from 'src/app/core/services/order.service'
+import { TableService } from 'src/app/core/services/table.service'
 
 @Component({
   selector: 'app-pay-modal',

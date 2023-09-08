@@ -26,7 +26,7 @@ export class OrderService {
     if (queryParams.length) {
       query += `?${queryParams.join('&')}`
     }
-    return this.apiService.get(query);
+    return this.apiService.get(query)
   }
 
 

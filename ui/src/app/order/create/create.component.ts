@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { CreateOrderRequest } from 'src/app/core/dtos/order.dto';
-import { MenuItem, MenuItemCategory } from 'src/app/core/models/item.model';
-import { ItemService } from 'src/app/core/services/item.service';
-import { OrderService } from 'src/app/core/services/order.service';
-import { TableService } from 'src/app/core/services/table.service';
+import { Component } from '@angular/core'
+import { Router } from '@angular/router'
+import { CreateOrderRequest } from 'src/app/core/dtos/order.dto'
+import { MenuItem, MenuItemCategory } from 'src/app/core/models/item.model'
+import { ItemService } from 'src/app/core/services/item.service'
+import { OrderService } from 'src/app/core/services/order.service'
+import { TableService } from 'src/app/core/services/table.service'
 
 @Component({
   selector: 'app-order-create',
@@ -28,7 +28,7 @@ export class CreateComponent {
   ) { }
 
   ngOnInit(): void {
-    this.tableService.list(true).subscribe(tables => {
+    this.tableService.list(true, true).subscribe(tables => {
       this.tables = tables.map(t => t.number)
       this.createOrderRequest.table = this.tables[0]
     })
@@ -55,7 +55,7 @@ export class CreateComponent {
         type: 'food',
       }
       this.selectedItems = []
-      this.router.navigate(['/orders/waiter-list'])
+      this.router.navigate(['/orders/status'])
     })
   }
 
