@@ -9,6 +9,7 @@ import cookies from 'cookie-parser'
 
 // Create Express server
 const app = express()
+const allowedOrigins = ['http://localhost:4200', 'http://127.0.0.1:4200', 'http://ui:4200']
 
 // Import env variables from env file only when in dev mode
 if (app.get('env') === 'development') {
@@ -53,7 +54,7 @@ mongoose.connect(process.env.MONGODB_URI).then(() => {
 
 // Express configuration
 app.use(cors({
-    origin: ['http://localhost:4200', 'http://127.0.0.1:4200', 'http://ui:4200'],
+    origin: allowedOrigins,
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin', 'Access-Control-Allow-Headers', 'Access-Control-Allow-Origin', 'Access-Control-Allow-Credentials', 'x-auth-token'],
 }))
@@ -87,7 +88,7 @@ const io = new Server<
     SocketData
 >(server, {
     cors: {
-        origin: ['http://localhost:4200', 'http://127.0.0.1:4200', 'http://ui:4200'],
+        origin: allowedOrigins,
         methods: ['GET', 'POST'],
     }
 })
@@ -95,6 +96,9 @@ app.use((req, _, next) => {
     req.io = io
     next()
 })
+
+import { originMiddleware } from './middleware/origin.middleware'
+app.use(originMiddleware(allowedOrigins))
 
 io.listen(server)
 
