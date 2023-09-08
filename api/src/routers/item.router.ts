@@ -48,7 +48,7 @@ const router = require('express')()
  *                   type: string
  *             example:
  *               message: "Items not found"
- *       400:
+ *       500:
  *         description: Error occurred while fetching items.
  *         content:
  *           application/json:

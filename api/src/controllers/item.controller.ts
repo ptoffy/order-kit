@@ -20,6 +20,6 @@ export async function getItems(req: Request, res: Response) {
         res.status(200).json(items)
     } catch (err) {
         logger.error("Error getting items: " + err)
-        res.status(400).json(err)
+        res.status(500).json(err)
     }
 }

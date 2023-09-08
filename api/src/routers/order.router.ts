@@ -95,6 +95,17 @@ const router = require('express')()
  *                   type: string
  *             example:
  *               message: "Error getting orders: "
+ *       500:
+ *         description: Error occurred while fetching orders.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *             example:
+ *               message: "Internal Server Error"
  */
 router.get('/', checkAuth(), getOrders)
 
@@ -158,6 +169,18 @@ router.get('/', checkAuth(), getOrders)
  *                   estimatedPrepTime: 15
  *                   status: "done"
  *                   cost: 5
+ *       400:
+ *         description: Invalid request body.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *             example:
+ *               message: "Invalid request body: "
+ * 
  *       401:
  *         description: Unauthorized, missing or invalid authentication token.
  *         content:
@@ -169,17 +192,6 @@ router.get('/', checkAuth(), getOrders)
  *                   type: string
  *             example:
  *               message: "Please provide an authentication token!"
- *       400:
- *         description: Invalid request body or other error.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *             example:
- *               message: "Error updating order: "
  *       404:
  *         description: Order or user not found.
  *         content:
@@ -191,6 +203,17 @@ router.get('/', checkAuth(), getOrders)
  *                   type: string
  *             example:
  *               message: "Order not found"
+ *       500:
+ *         description: Error occurred while fetching items.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *             example:
+ *               message: "Internal Server Error"
  */
 router.post('/:id/update', checkAuth(), updateOrder)
 
@@ -261,7 +284,27 @@ router.post('/:id/update', checkAuth(), updateOrder)
  *             example:
  *               message: "Forbidden"
  *       400:
- *         description: Invalid request body or other error.
+ *         description: Invalid request body.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *             example:
+ *               message: "Invalid request body: "
+ *       500:
+ *         description: Error occurred while fetching orders.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *             example:
+ *               message: "Internal Server Error"
  */
 router.post('/', checkAuth([UserRole.Waiter]), createOrder)
 
@@ -326,9 +369,38 @@ router.post('/', checkAuth([UserRole.Waiter]), createOrder)
  *             example:
  *               message: "Please provide an authentication token!"
  *       400:
- *         description: Invalid request body or other error.
+ *         description: Invalid date or other error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *             example:
+ *               message: "Error updating orders: "
  *       404:
  *         description: Orders not found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *             example:
+ *               message: "Order not found"
+ *       500:
+ *         description: Error occurred while fetching orders.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *             example:
+ *               message: "Internal Server Error"
  */
 router.post('/update-bulk', checkAuth([UserRole.Cashier]), updateOrdersBulk)
 
@@ -408,6 +480,17 @@ router.post('/update-bulk', checkAuth([UserRole.Cashier]), updateOrdersBulk)
  *                   type: string
  *             example:
  *               message: "Orders not found"
+ *       500:
+ *         description: Error fetching profit for day.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *             example:
+ *               message: "Internal Server Error"
  */
 router.get('/budget', checkAuth([UserRole.Cashier]), fetchProfitForDay)
 
@@ -490,8 +573,18 @@ router.get('/budget', checkAuth([UserRole.Cashier]), fetchProfitForDay)
  *                   type: string
  *             example:
  *               message: "Orders not found"
+ *       500:
+ *         description: Error occurred while fetching orders.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *             example:
+ *               message: "Internal Server Error"
  */
-
 router.get('/best-selling-items', checkAuth([UserRole.Cashier]), fetchBestSellingItems)
 
 export default router

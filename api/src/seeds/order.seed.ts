@@ -2,6 +2,10 @@ import logger from "../logger"
 import { MenuItem, MenuItemCategory } from "../models/item.model"
 import { Order, OrderMenuItemStatus, OrderStatus, OrderType } from "../models/order.model"
 
+/**
+ * Seeds the orders collection.
+ * @returns {Promise<void>} A promise that resolves when the collection has been seeded.
+ */
 export async function seedOrders() {
     const count = await Order.countDocuments()
 

@@ -46,7 +46,7 @@ export async function createOrder(req: Request, res: Response) {
         res.status(201).json(order)
     } catch (err) {
         logger.error("Error creating order: " + err)
-        res.status(400).json(err)
+        res.status(500).json("Internal Server Error")
     }
 }
 
@@ -131,7 +131,7 @@ export async function getOrders(req: Request, res: Response) {
         res.status(200).json(transformedData)
     } catch (err) {
         logger.error("Error getting orders: " + err)
-        res.status(400).json(err)
+        res.status(500).json("Internal Server Error")
     }
 }
 
@@ -193,7 +193,7 @@ export async function updateOrder(req: Request, res: Response) {
         res.status(200).json(order)
     } catch (err) {
         logger.error("Error updating order: " + err)
-        res.status(400).json(err)
+        res.status(500).json("Internal Server Error")
     }
 }
 
@@ -239,7 +239,7 @@ export async function updateOrdersBulk(req: Request, res: Response) {
         res.status(200).json(orders)
     } catch (err) {
         logger.error("Error updating orders: " + err)
-        res.status(400).json(err)
+        res.status(500).json("Internal Server Error")
     }
 }
 
@@ -285,7 +285,7 @@ export async function fetchProfitForDay(req: Request, res: Response) {
         res.status(200).json(profit)
     } catch (err) {
         logger.error("Error fetching profit for day: " + err)
-        res.status(400).json(err)
+        res.status(500).json("Internal Server Error")
     }
 }
 
@@ -333,7 +333,7 @@ export async function fetchBestSellingItems(req: Request, res: Response) {
         res.status(200).json(itemsArray)
     } catch (err) {
         logger.error("Error fetching best selling items for day: " + err)
-        res.status(400).json(err)
+        res.status(500).json("Internal Server Error")
     }
 }
 
