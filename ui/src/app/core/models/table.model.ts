@@ -4,7 +4,7 @@ interface Table extends BaseModel {
     number: number
     seats: number
     occupancy: number
-    waiterId?: string
+    waiterId?: { _id: string, username: string }
     orders: string[]
 }
 

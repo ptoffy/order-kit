@@ -14,7 +14,7 @@
               <small *ngIf="table.occupancy !== 0" class="text-muted">People: {{ table.occupancy }}</small>
               <br />
               <small class="text-muted">
-                Waiter: {{ table.waiterId === null ? 'None' : table.waiterId }}
+                Waiter: {{ table.waiterId?.username ?? 'None' }}
               </small>
             </div>
             <div class="col-6">

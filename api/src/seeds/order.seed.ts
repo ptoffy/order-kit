@@ -6,7 +6,7 @@ import { Order, OrderMenuItemStatus, OrderStatus, OrderType } from "../models/or
  * Seeds the orders collection.
  * @returns {Promise<void>} A promise that resolves when the collection has been seeded.
  */
-export async function seedOrders() {
+export async function seedOrders(): Promise<void> {
     const count = await Order.countDocuments()
 
     if (count > 0) return
@@ -62,7 +62,7 @@ export async function seedOrders() {
             type: MenuItemCategory.Drinks
         },
         {
-            table: 5,
+            table: 3,
             items: [
                 { _id: drinks[0]._id, status: OrderMenuItemStatus.New },
                 { _id: drinks[1]._id, status: OrderMenuItemStatus.New },
@@ -74,33 +74,44 @@ export async function seedOrders() {
             type: MenuItemCategory.Drinks
         },
         {
+            table: 2,
+            items: [
+                { _id: foods[0]._id, status: OrderMenuItemStatus.New },
+                { _id: foods[1]._id, status: OrderMenuItemStatus.New },
+                { _id: foods[2]._id, status: OrderMenuItemStatus.New },
+                { _id: foods[3]._id, status: OrderMenuItemStatus.New },
+                { _id: foods[4]._id, status: OrderMenuItemStatus.New },
+            ],
+            status: OrderStatus.New,
+            type: MenuItemCategory.Food
+        },
+        {
+            table: 5,
+            items: [
+                { _id: foods[0]._id, status: OrderMenuItemStatus.New },
+                { _id: foods[1]._id, status: OrderMenuItemStatus.New },
+                { _id: foods[2]._id, status: OrderMenuItemStatus.New },
+                { _id: foods[3]._id, status: OrderMenuItemStatus.New },
+                { _id: foods[4]._id, status: OrderMenuItemStatus.New },
+            ],
+            status: OrderStatus.New,
+            type: MenuItemCategory.Food
+        },
+        {
+            table: 4,
+            items: [
+                { _id: foods[0]._id, status: OrderMenuItemStatus.Done },
+                { _id: foods[1]._id, status: OrderMenuItemStatus.Done },
+                { _id: foods[2]._id, status: OrderMenuItemStatus.Done },
+                { _id: foods[3]._id, status: OrderMenuItemStatus.Done },
+                { _id: foods[4]._id, status: OrderMenuItemStatus.Done },
+            ],
+            status: OrderStatus.Paid,
+            type: MenuItemCategory.Food
+        },
+        {
             table: 6,
             items: [
-                { _id: foods[0]._id, status: OrderMenuItemStatus.New },
-                { _id: foods[1]._id, status: OrderMenuItemStatus.New },
-                { _id: foods[2]._id, status: OrderMenuItemStatus.New },
-                { _id: foods[3]._id, status: OrderMenuItemStatus.New },
-                { _id: foods[4]._id, status: OrderMenuItemStatus.New },
-            ],
-            status: OrderStatus.New,
-            type: MenuItemCategory.Food
-        },
-        {
-            table: 7,
-            items: [
-                { _id: foods[0]._id, status: OrderMenuItemStatus.New },
-                { _id: foods[1]._id, status: OrderMenuItemStatus.New },
-                { _id: foods[2]._id, status: OrderMenuItemStatus.New },
-                { _id: foods[3]._id, status: OrderMenuItemStatus.New },
-                { _id: foods[4]._id, status: OrderMenuItemStatus.New },
-            ],
-            status: OrderStatus.New,
-            type: MenuItemCategory.Food
-        },
-        // Add some paid orders
-        {
-            table: 8,
-            items: [
                 { _id: foods[0]._id, status: OrderMenuItemStatus.Done },
                 { _id: foods[1]._id, status: OrderMenuItemStatus.Done },
                 { _id: foods[2]._id, status: OrderMenuItemStatus.Done },
@@ -111,19 +122,7 @@ export async function seedOrders() {
             type: MenuItemCategory.Food
         },
         {
-            table: 9,
-            items: [
-                { _id: foods[0]._id, status: OrderMenuItemStatus.Done },
-                { _id: foods[1]._id, status: OrderMenuItemStatus.Done },
-                { _id: foods[2]._id, status: OrderMenuItemStatus.Done },
-                { _id: foods[3]._id, status: OrderMenuItemStatus.Done },
-                { _id: foods[4]._id, status: OrderMenuItemStatus.Done },
-            ],
-            status: OrderStatus.Paid,
-            type: MenuItemCategory.Food
-        },
-        {
-            table: 10,
+            table: 1,
             items: [
                 { _id: foods[0]._id, status: OrderMenuItemStatus.Done },
                 { _id: foods[1]._id, status: OrderMenuItemStatus.Done },

@@ -66,7 +66,7 @@ export class ListComponent {
   }
 
   private updateList(): void {
-    this.tableService.list().subscribe({
+    this.tableService.list(false, true).subscribe({
       next: tables => this.tables = tables,
       error: this.handleError.bind(this)
     })

@@ -28,7 +28,7 @@ export class CreateComponent {
   ) { }
 
   ngOnInit(): void {
-    this.tableService.list(true).subscribe(tables => {
+    this.tableService.list(true, true).subscribe(tables => {
       this.tables = tables.map(t => t.number)
       this.createOrderRequest.table = this.tables[0]
     })
