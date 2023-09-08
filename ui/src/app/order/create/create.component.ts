@@ -55,7 +55,7 @@ export class CreateComponent {
         type: 'food',
       }
       this.selectedItems = []
-      this.router.navigate(['/orders/waiter-list'])
+      this.router.navigate(['/orders/status'])
     })
   }
 
