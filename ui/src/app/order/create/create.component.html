@@ -6,7 +6,7 @@
         <div class="mb-3 mt-3">
           <label for="table" class="form-label">Table</label>
           <select type="number" class="form-select" id="table" name="table" required aria-describedby="tableHelp"
-            [(ngModel)]="createOrderRequest.table">
+            [attr.disabled]="!tables || !tables.length" [(ngModel)]="createOrderRequest.table">
             <option *ngFor="let table of tables" [value]="table">{{table}}</option>
           </select>
           <div id="tableHelp" class="form-text">If you don't find the table you are
@@ -17,7 +17,8 @@
           <span class="form-label mb-3">Order Type</span>
           <div class="col text-center">
             <button class="btn btn-lg btn-block w-100" type="button" (click)="selectedCategory='drinks'"
-              [ngClass]="{'btn-primary': selectedCategory === 'drinks'}">
+              [ngClass]="{'btn-primary': selectedCategory === 'drinks'}" [attr.disabled]="!tables || !tables.length"
+              [ngClass]="{'disabled': selectedItems.length === 0}">
               <div>
                 <i class="bi bi-cup-straw" style="font-size: 48px;"
                   [ngStyle]="selectedCategory === 'drinks' ? {'color': '#46954a'} : null"></i>
@@ -27,7 +28,8 @@
           </div>
           <div class="col text-center">
             <button class="btn btn-lg btn-block w-100" (click)="selectedCategory='food'" type="button"
-              [ngClass]="{'btn-primary': selectedCategory === 'food'}">
+              [ngClass]="{'btn-primary': selectedCategory === 'food'}" [attr.disabled]="!tables || !tables.length"
+              [ngClass]="{'disabled': selectedItems.length === 0}">
               <div>
                 <!-- Colored egg SVG -->
                 <svg *ngIf="selectedCategory === 'food'" xmlns="http://www.w3.org/2000/svg" width="48" height="48"

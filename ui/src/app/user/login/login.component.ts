@@ -1,6 +1,7 @@
 import { Component } from '@angular/core'
 import { AuthService } from '../../core/services/auth.service'
 import { Router } from '@angular/router'
+import { NotificationService } from 'src/app/core/services/notification.service';
 
 @Component({
   selector: 'app-login',
@@ -16,18 +17,20 @@ export class LoginComponent {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private notificationService: NotificationService
   ) { }
 
   onLogin() {
     this.authService.login(this.loginRequest.username, this.loginRequest.password).subscribe({
       next: this.handleSuccess.bind(this),
       error: this.handleErrors.bind(this)
-    });
+    })
   }
 
   private handleSuccess(): void {
     this.router.navigate(['/'])
+    this.notificationService.showNotification(`Welcome back, ${this.loginRequest.username}!`)
   }
 
   private handleErrors(error: any): void {
