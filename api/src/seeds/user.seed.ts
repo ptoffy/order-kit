@@ -1,19 +1,19 @@
+import { hash } from 'bcryptjs'
 import logger from '../logger'
 import { User, UserRole, UserType } from '../models/user.model'
-import bcrypt from 'bcrypt'
 
 /**
  * Seeds the user collection.
  * @returns {Promise<void>} A promise that resolves when the collection has been seeded.
  */
-export async function seedUser() {
+export async function seedUser(): Promise<void> {
     const count = await User.countDocuments()
 
     if (count > 0) return
 
     logger.info('🌱 Seeding user collection...')
 
-    const passwordHash = await bcrypt.hash('password', 10)
+    const passwordHash = await hash('password', 10)
     const users: Partial<UserType>[] = [
         { username: 'walter', password: passwordHash, name: 'Walter Waiter', role: UserRole.Waiter },
         { username: 'wilmer', password: passwordHash, name: 'Wilmer Waiter', role: UserRole.Waiter, statistics: { orders: 10, revenue: 100 } },

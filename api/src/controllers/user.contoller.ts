@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import bcrypt from 'bcrypt'
+import { hash, compare } from 'bcryptjs'
 import { UserType, User } from '../models/user.model'
 import logger from '../logger'
 import { plainToClass } from 'class-transformer'
@@ -64,7 +64,7 @@ export async function registerHandler(req: Request, res: Response) {
             return res.status(400).json({ message: 'User already exists' })
         }
 
-        const passwordHash = await bcrypt.hash(password, 10)
+        const passwordHash = await hash(password, 10)
         const user = await User.create({ username, password: passwordHash, name, role })
 
         // Generate a JWT token
@@ -103,7 +103,7 @@ export async function loginHandler(req: Request, res: Response) {
         }
 
         // Check if the password is correct
-        const passwordValid: boolean = await bcrypt.compare(loginRequest.password, user.password)
+        const passwordValid: boolean = await compare(loginRequest.password, user.password)
         if (!passwordValid) {
             logger.warn(`Invalid password for user with username ${loginRequest.username}`)
             return res.status(401).json({ message: 'Invalid email or password' })
