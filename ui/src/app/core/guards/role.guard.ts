@@ -18,6 +18,6 @@ export function guardRole(roles: UserRole[]): CanActivateFn {
       return true
     }
 
-    return router.navigate(['/user/login'])
+    return router.navigate(['/users/login'])
   }
 }

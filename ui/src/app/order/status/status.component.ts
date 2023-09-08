@@ -5,6 +5,7 @@ import { UserRole } from 'src/app/core/models/user.model'
 import { AuthService } from 'src/app/core/services/auth.service'
 import { NotificationService } from 'src/app/core/services/notification.service'
 import { OrderService } from 'src/app/core/services/order.service'
+import { TableService } from 'src/app/core/services/table.service'
 
 @Component({
   selector: 'app-order-status',
@@ -21,7 +22,8 @@ export class StatusComponent implements OnInit, OnDestroy {
   constructor(
     private orderService: OrderService,
     private authService: AuthService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private tableService: TableService,
   ) {
     this.currentUserRole = this.authService.getCurrentUserRole()!
   }

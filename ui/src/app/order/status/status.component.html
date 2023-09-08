@@ -1,7 +1,7 @@
 <div class="container full-height-minus-navbar d-flex flex-column" (updateStatus)="getOrders()">
   <div class="d-flex justify-content-between align-items-center">
     <h2>Orders you're managing</h2>
-    <button *ngIf="currentUserRole == UserRole.Waiter" class="btn btn-info" routerLink="/order/create">
+    <button *ngIf="currentUserRole == UserRole.Waiter" class="btn btn-info" routerLink="/orders/create">
       <i class="bi bi-plus-lg"></i>
       Add new order
     </button>

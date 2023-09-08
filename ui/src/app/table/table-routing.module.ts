@@ -6,7 +6,7 @@ import { NgModule } from "@angular/core";
 
 const routes: Routes = [
   {
-    path: 'table',
+    path: 'tables',
     children: [
       { path: 'list', component: ListComponent, canActivate: [guardRole([UserRole.Waiter, UserRole.Cashier])] }
     ]

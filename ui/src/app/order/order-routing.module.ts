@@ -8,7 +8,7 @@ import { CreateComponent } from "./create/create.component";
 
 const routes: Routes = [
   {
-    path: 'order',
+    path: 'orders',
     children: [
       { path: 'preparation', component: PreparationComponent, canActivate: [guardRole([UserRole.Cook, UserRole.Bartender, UserRole.Waiter])] },
       { path: 'status', component: StatusComponent, canActivate: [guardRole([UserRole.Waiter, UserRole.Cashier])] },

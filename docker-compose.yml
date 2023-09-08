@@ -26,7 +26,7 @@ services:
     depends_on:
       - db
     volumes:
-      - ./api:/app
+      - api-data:/app
       - /app/node_modules
   # Setup the frontend Angular.js UI
   ui:
@@ -40,7 +40,7 @@ services:
     depends_on:
       - api
     volumes:
-      - ./ui:/app
+      - ui-data:/app
       - /app/node_modules
   # Setup the MongoDB service
   db:
@@ -58,4 +58,12 @@ services:
 
 volumes:
   mongo-data:
+    driver: local
+  api-data:
+    driver: local
+  ui-data:
+    driver: local
+  node-modules-api:
+    driver: local
+  node-modules-ui:
     driver: local

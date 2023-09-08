@@ -10,7 +10,7 @@ import { loginGuard } from '../core/guards/login.guard'
 
 const routes: Routes = [
   {
-    path: 'user',
+    path: 'users',
     children: [
       { path: 'login', component: LoginComponent, canActivate: [loginGuard] },
       { path: 'register', component: RegistrationComponent, canActivate: [loginGuard] },
