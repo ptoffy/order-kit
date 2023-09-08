@@ -386,7 +386,7 @@ const swaggerOptions = {
         },
     },
     apis: [
-        `${__dirname}/routers/*.ts`,
+        `./routers/*.ts`,
         "./dist/routers/*.js"
     ],
 }

@@ -20,28 +20,32 @@ services:
     ports:
       - '3000:3000'
     # Create a connection to the MongoDB service with the name of the service as the host name
-    links:
-      - db 
+    # links:
+    #   - db 
     # Start the MongoDB service before the API service
     depends_on:
       - db
     volumes:
       - api-data:/app
-      - /app/node_modules
+      - node-modules-api:/app/node_modules
+    networks:
+      - order-kit-network
   # Setup the frontend Angular.js UI
   ui:
     container_name: order-kit-ui
     # Build the Dockerfile in the ui directory
     build: ui
-    links:
-      - api
+    # links:
+    #   - api
     ports:
       - '4200:4200'
     depends_on:
       - api
     volumes:
       - ui-data:/app
-      - /app/node_modules
+      - node-modules-ui:/app/node_modules
+    networks:
+      - order-kit-network
   # Setup the MongoDB service
   db:
     image: mongo
@@ -55,6 +59,8 @@ services:
       - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     ports:
       - '27017:27017'
+    networks:
+      - order-kit-network
 
 volumes:
   mongo-data:
@@ -67,3 +73,8 @@ volumes:
     driver: local
   node-modules-ui:
     driver: local
+  
+networks:
+  order-kit-network:
+    driver: bridge
+
