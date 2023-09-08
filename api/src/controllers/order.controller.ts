@@ -135,6 +135,17 @@ export async function getOrders(req: Request, res: Response) {
     }
 }
 
+/**
+ * Update an order by id.
+ * Also, emit an event to the client to notify them of the status change.
+ * @param req The request object containing the order id in the params and the updated order in the body.
+ * @param res The response object.
+ * @returns The updated order.
+ * @throws 400 if the request body is invalid.
+ * @throws 404 if the order is not found.
+ * @throws 404 if the user to emit the event to is not found.
+ * @throws 400 if an error occurs.
+ */
 export async function updateOrder(req: Request, res: Response) {
     try {
         const order = await Order.findById(req.params.id)
@@ -186,6 +197,14 @@ export async function updateOrder(req: Request, res: Response) {
     }
 }
 
+/**
+ * Update multiple orders at once.
+ * @param req The request object containing the orders to update in the body.
+ * @param res The response object.
+ * @returns The updated orders.
+ * @throws 400 if the request body is invalid.
+ * @throws 404 if no orders are found.
+ */
 export async function updateOrdersBulk(req: Request, res: Response) {
     try {
         const updateBulkOrderRequest = plainToClass(UpdateBulkOrderRequest, req.body)
@@ -227,9 +246,11 @@ export async function updateOrdersBulk(req: Request, res: Response) {
 /**
  * Fetch the profit for a specific day.
  * The profit is calculated by subtracting the cost of the ingredients from the price of the menu items.
- * @param req 
- * @param res 
+ * @param req The request object containing the date in the query string.
+ * @param res The response object.
  * @returns The profit for the day.
+ * @throws 400 if the date is invalid.
+ * @throws 404 if no orders are found for the specified date.
  */
 export async function fetchProfitForDay(req: Request, res: Response) {
     try {
@@ -268,7 +289,14 @@ export async function fetchProfitForDay(req: Request, res: Response) {
     }
 }
 
-// write a function to fetch the best selling items returning the name and the number of times it was ordered
+/**
+ * Fetch the best selling items overall, with the respective revenue.
+ * @param req The request object.
+ * @param res The response object.
+ * @returns The best selling items.
+ * @throws 404 if no orders are found.
+ * @throws 400 if an error occurs.
+ */
 export async function fetchBestSellingItems(req: Request, res: Response) {
     try {
         const orders = await Order.find().populate({

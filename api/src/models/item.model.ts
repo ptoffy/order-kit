@@ -9,7 +9,7 @@ export enum MenuItemCategory {
 interface MenuItemType extends BaseModelType {
     name: string
     price: number
-    category: string
+    category: MenuItemCategory
     estimatedPrepTime: number
     cost: number
 }
@@ -17,7 +17,7 @@ interface MenuItemType extends BaseModelType {
 const menuItemSchema = new Schema<MenuItemType>({
     name: { type: String, required: true },
     price: { type: Number, required: true },
-    category: { type: String, required: true },
+    category: { type: String, enum: Object.values(MenuItemCategory), required: true },
     estimatedPrepTime: { type: Number, required: true },
     cost: { type: Number, required: true },
 }, { timestamps: true })

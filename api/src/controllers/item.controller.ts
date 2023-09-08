@@ -2,6 +2,12 @@ import { Request, Response } from "express"
 import { MenuItem } from "../models/item.model"
 import logger from "../logger"
 
+/**
+ * Get all items that are on the menu.
+ * @param req The request object.
+ * @param res The response object.
+ * @returns The items that are on the menu.
+ */
 export async function getItems(req: Request, res: Response) {
     try {
         const items = await MenuItem.find().lean()

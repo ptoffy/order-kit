@@ -1,6 +1,5 @@
 import express, { Request, Response } from 'express'
 import mongoose from 'mongoose'
-import session from 'express-session'
 import cors from 'cors'
 
 import logger from './logger'
@@ -21,11 +20,6 @@ if (!process.env.PORT) {
     process.exit(1)
 }
 
-if (!process.env.SESSION_SECRET) {
-    logger.error('No session secret. Set SESSION_SECRET environment variable.')
-    process.exit(1)
-}
-
 if (!process.env.MONGODB_URI) {
     logger.error('No Mongo connection string. Set MONGODB_URI environment variable.')
     process.exit(1)
@@ -36,7 +30,14 @@ if (!process.env.JWT_PRIVATE_KEY) {
     process.exit(1)
 }
 
-// Connect to DB
+// Swagger
+
+import swaggerUI from 'swagger-ui-express'
+import { specs } from './utils/swagger.util'
+
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs))
+
+// Connect to MongoDB and seed the database
 import { seedUser } from './seeds/user.seed'
 import { seedTables } from './seeds/table.seed'
 import { seedOrders } from './seeds/order.seed'
@@ -62,16 +63,6 @@ app.use(cookies())
 
 app.set('port', process.env.PORT || 3000)
 app.use(express.json())
-
-// Session config
-
-// Add/configure our app to use the session middleware with a unique session id we generate. 
-// We will log the request.sessionID object before and after the middleware is used.
-app.use(session({
-    resave: false,
-    saveUninitialized: true,
-    secret: process.env.SESSION_SECRET
-}))
 
 // Logger
 app.use(morganMiddleware)
