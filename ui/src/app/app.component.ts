@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import { NotificationService } from './core/services/notification.service'
-import { Order } from './core/models/order.model';
+import { Order } from './core/models/order.model'
 
 @Component({
   selector: 'app-root',

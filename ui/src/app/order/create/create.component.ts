@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { CreateOrderRequest } from 'src/app/core/dtos/order.dto';
-import { MenuItem, MenuItemCategory } from 'src/app/core/models/item.model';
-import { ItemService } from 'src/app/core/services/item.service';
-import { OrderService } from 'src/app/core/services/order.service';
-import { TableService } from 'src/app/core/services/table.service';
+import { Component } from '@angular/core'
+import { Router } from '@angular/router'
+import { CreateOrderRequest } from 'src/app/core/dtos/order.dto'
+import { MenuItem, MenuItemCategory } from 'src/app/core/models/item.model'
+import { ItemService } from 'src/app/core/services/item.service'
+import { OrderService } from 'src/app/core/services/order.service'
+import { TableService } from 'src/app/core/services/table.service'
 
 @Component({
   selector: 'app-order-create',

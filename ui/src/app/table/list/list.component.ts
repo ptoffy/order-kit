@@ -69,7 +69,7 @@ export class ListComponent {
     this.tableService.list().subscribe({
       next: tables => this.tables = tables,
       error: this.handleError.bind(this)
-    });
+    })
   }
 
   private handleError(error: any): void {

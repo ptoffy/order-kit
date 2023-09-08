@@ -1,10 +1,10 @@
-import { Component, Inject, OnDestroy, OnInit, inject } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
-import { CommonModule } from '@angular/common';
-import { Subscription } from 'rxjs';
-import { User, UserRole } from '../../models/user.model';
-import { NotificationService } from '../../services/notification.service';
+import { Component, Inject, OnDestroy, OnInit, inject } from '@angular/core'
+import { Router, RouterLink, RouterLinkActive } from '@angular/router'
+import { AuthService } from '../../services/auth.service'
+import { CommonModule } from '@angular/common'
+import { Subscription } from 'rxjs'
+import { User, UserRole } from '../../models/user.model'
+import { NotificationService } from '../../services/notification.service'
 
 @Component({
   selector: 'app-header',
@@ -24,7 +24,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   UserRole = UserRole
   notifications: string[] = []
 
-  private subscription!: Subscription;
+  private subscription!: Subscription
 
   constructor(
     @Inject(AuthService) authService: AuthService,
@@ -47,7 +47,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       if (this.isLoggedIn) {
         this.currentUserRole = this.authService.getCurrentUserRole()
       }
-    });
+    })
   }
 
   ngOnDestroy() {

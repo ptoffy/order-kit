@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
-import { LabelItem } from 'chart.js';
-import { BestSellingItemResponse } from 'src/app/core/dtos/order.dto';
-import { User, UserRole } from 'src/app/core/models/user.model';
-import { AuthService } from 'src/app/core/services/auth.service';
-import { OrderService } from 'src/app/core/services/order.service';
+import { Component } from '@angular/core'
+import { BestSellingItemResponse } from 'src/app/core/dtos/order.dto'
+import { User, UserRole } from 'src/app/core/models/user.model'
+import { AuthService } from 'src/app/core/services/auth.service'
+import { OrderService } from 'src/app/core/services/order.service'
 
 @Component({
   selector: 'app-stats',

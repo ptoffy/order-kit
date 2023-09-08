@@ -16,7 +16,7 @@ interface User extends BaseModel {
     statistics: {
         orders: number
         revenue: number
-    };
+    }
 }
 
 export { User, UserRole }

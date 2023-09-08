@@ -1,7 +1,7 @@
 import { Component } from '@angular/core'
 import { AuthService } from '../../core/services/auth.service'
 import { Router } from '@angular/router'
-import { NotificationService } from 'src/app/core/services/notification.service';
+import { NotificationService } from 'src/app/core/services/notification.service'
 
 @Component({
   selector: 'app-login',
@@ -12,7 +12,7 @@ export class LoginComponent {
   loginRequest: LoginRequest = {
     username: '',
     password: ''
-  };
+  }
   errorMessage: string | null = null
 
   constructor(

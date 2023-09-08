@@ -1,4 +1,4 @@
-import { BaseModel } from "./base.model";
+import { BaseModel } from "./base.model"
 
 interface Table extends BaseModel {
     number: number
@@ -8,4 +8,4 @@ interface Table extends BaseModel {
     orders: string[]
 }
 
-export { Table };
+export { Table }
