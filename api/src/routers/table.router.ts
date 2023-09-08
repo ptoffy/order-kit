@@ -6,7 +6,7 @@ const router = require('express')()
 
 /**
  * @swagger
- * /table:
+ * /tables:
  *   get:
  *     summary: Lists all tables.
  *     description: |
@@ -34,7 +34,7 @@ const router = require('express')()
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/TableType'
+ *                 $ref: '#/components/schemas/Table'
  *             example:
  *               - number: 1
  *                 seats: 4
@@ -90,7 +90,7 @@ router.get('/', checkAuth([UserRole.Waiter, UserRole.Cashier]), listTables)
 
 /**
  * @swagger
- * /table/{tableNumber}/occupy:
+ * /tables/{tableNumber}/occupy:
  *   post:
  *     summary: Occupies a table by setting its occupancy to the given people count.
  *     description: |
@@ -129,7 +129,7 @@ router.get('/', checkAuth([UserRole.Waiter, UserRole.Cashier]), listTables)
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/TableType'
+ *               $ref: '#/components/schemas/Table'
  *             example:
  *               number: 5
  *               seats: 6
@@ -196,7 +196,7 @@ router.post('/:tableNumber/occupy', checkAuth([UserRole.Waiter]), occupyTable)
 
 /**
  * @swagger
- * /table/{tableNumber}/free:
+ * /tables/{tableNumber}/free:
  *   post:
  *     summary: Frees a table by setting its occupancy to 0.
  *     description: |
@@ -222,7 +222,7 @@ router.post('/:tableNumber/occupy', checkAuth([UserRole.Waiter]), occupyTable)
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/TableType'
+ *               $ref: '#/components/schemas/Table'
  *             example:
  *               number: 5
  *               seats: 4
@@ -289,7 +289,7 @@ router.post('/:tableNumber/free', checkAuth([UserRole.Waiter, UserRole.Cashier])
 
 /**
  * @swagger
- * /table/{tableNumber}/assign:
+ * /tables/{tableNumber}/assign:
  *   post:
  *     summary: Assigns a table to the current waiter.
  *     description: |
@@ -316,7 +316,7 @@ router.post('/:tableNumber/free', checkAuth([UserRole.Waiter, UserRole.Cashier])
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/TableType'
+ *               $ref: '#/components/schemas/Table'
  *             example:
  *               number: 5
  *               seats: 4

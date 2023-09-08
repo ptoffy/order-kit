@@ -334,6 +334,54 @@ const swaggerOptions = {
                         },
                     },
                 },
+                LoginRequest: {
+                    type: 'object',
+                    properties: {
+                        username: {
+                            type: 'string',
+                        },
+                        password: {
+                            type: 'string',
+                        },
+                    },
+                },
+                LoginResponse: {
+                    type: 'object',
+                    properties: {
+                        header: {
+                            type: 'string',
+                        },
+                        payload: {
+                            type: 'string',
+                        },
+                        expiration: {
+                            type: 'string',
+                        },
+                        role: {
+                            type: 'string',
+                        },
+                        userId: {
+                            type: 'string',
+                        },
+                    },
+                },
+                RegistrationRequest: {
+                    type: 'object',
+                    properties: {
+                        username: {
+                            type: 'string',
+                        },
+                        password: {
+                            type: 'string',
+                        },
+                        name: {
+                            type: 'string',
+                        },
+                        role: {
+                            type: 'string',
+                        },
+                    },
+                },
             },
         },
     },

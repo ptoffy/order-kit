@@ -6,7 +6,7 @@ const router = require('express')()
 
 /**
  * @swagger
- * /order:
+ * /orders:
  *   get:
  *     summary: Retrieve orders based on user role and other filters.
  *     description: |
@@ -111,7 +111,7 @@ router.get('/', checkAuth(), getOrders)
 
 /**
  * @swagger
- * /order/{id}/update:
+ * /orders/{id}/update:
  *   post:
  *     summary: Update an order by its ID.
  *     description: |
@@ -219,7 +219,7 @@ router.post('/:id/update', checkAuth(), updateOrder)
 
 /**
  * @swagger
- * /order:
+ * /orders:
  *   post:
  *     summary: Create a new order.
  *     description: |
@@ -315,6 +315,7 @@ router.post('/', checkAuth([UserRole.Waiter]), createOrder)
  *     summary: Update multiple orders at once.
  *     description: |
  *       Update multiple orders at once based on the provided order IDs and their new data.
+ *
  *       This endpoint is only accessible to cashiers.
  *     tags:
  *       - Orders
@@ -406,11 +407,12 @@ router.post('/update-bulk', checkAuth([UserRole.Cashier]), updateOrdersBulk)
 
 /**
  * @swagger
- * /order/budget:
+ * /orders/budget:
  *   get:
  *     summary: Fetch the profit for a specific day.
  *     description: |
  *       Fetch the profit for a specific day by subtracting the cost of the ingredients from the price of the menu items.
+ * 
  *       This endpoint is only accessible to cashiers.
  *     tags:
  *       - Orders
@@ -496,11 +498,13 @@ router.get('/budget', checkAuth([UserRole.Cashier]), fetchProfitForDay)
 
 /**
  * @swagger
- * /order/best-selling-items:
+ * /orders/best-selling-items:
  *   get:
  *     summary: Fetch the best selling items overall.
  *     description: |
  *       Fetch the best selling items overall, with the respective revenue.
+ * 
+ *       This endpoint is only accessible to cashiers.
  *     tags:
  *       - Orders
  *     parameters:

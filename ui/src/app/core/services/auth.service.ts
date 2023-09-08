@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { User, UserRole } from '../models/user.model';
-import { ApiService } from 'src/app/core/services/api.service';
-import { LoginResponse } from '../dtos/user.dto';
+import { Injectable } from '@angular/core'
+import { BehaviorSubject, Observable, tap } from 'rxjs'
+import { User, UserRole } from '../models/user.model'
+import { ApiService } from 'src/app/core/services/api.service'
+import { LoginResponse } from '../dtos/user.dto'
 
 /**
  * Service to manage authentication.
@@ -11,6 +11,7 @@ import { LoginResponse } from '../dtos/user.dto';
   providedIn: 'root'
 })
 export class AuthService {
+  private basePath = 'users'
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.isAuthenticated())
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable()
   private jwtTokenStorageName = 'auth-token'
@@ -32,7 +33,7 @@ export class AuthService {
    * @returns An observable that emits the login response.
    */
   register(user: User): Observable<LoginResponse> {
-    return this.apiService.post<LoginResponse>('users/register', user)
+    return this.apiService.post<LoginResponse>(`${this.basePath}/register`, user)
       .pipe(
         tap(res => {
           this.setCurrentUser(res)
@@ -47,7 +48,7 @@ export class AuthService {
    * @returns An observable that emits the login response.
    */
   login(username: string, password: string): Observable<LoginResponse> {
-    return this.apiService.post<LoginResponse>('users/login', { username, password })
+    return this.apiService.post<LoginResponse>(`${this.basePath}/login`, { username, password })
       .pipe(
         tap(res => {
           this.setCurrentUser(res)
@@ -60,7 +61,7 @@ export class AuthService {
    * @returns An observable that emits the list of users.
    */
   list(): Observable<User[]> {
-    return this.apiService.get('users')
+    return this.apiService.get(this.basePath)
   }
 
   /**
@@ -69,7 +70,7 @@ export class AuthService {
    * @returns An observable that emits the response.
    */
   delete(username: string): Observable<any> {
-    return this.apiService.delete(`users/${username}`)
+    return this.apiService.delete(`${this.basePath}/${username}`)
   }
 
   /**
@@ -119,7 +120,7 @@ export class AuthService {
     if (!this.isAuthenticated()) {
       throw new Error('User is not authenticated')
     }
-    return this.apiService.get('users/me')
+    return this.apiService.get(`${this.basePath}/me`)
   }
 
   /**

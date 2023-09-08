@@ -8,7 +8,8 @@ import cookies from 'cookie-parser'
 
 // Create Express server
 const app = express()
-const allowedOrigins = ['http://localhost:4200', 'http://127.0.0.1:4200', 'http://ui:4200']
+// Here we're adding the API too so we can make requests from the swagger UI
+const allowedOrigins = ['http://localhost:4200', 'http://127.0.0.1:4200', 'http://ui:4200', 'http://localhost:3000']
 
 // Import env variables from env file only when in dev mode
 if (app.get('env') === 'development') {
@@ -108,8 +109,8 @@ import tableRouter from './routers/table.router'
 import orderRouter from './routers/order.router'
 import itemRouter from './routers/item.router'
 app.use('/users', userRouter)
-app.use('/table', tableRouter)
-app.use('/order', orderRouter)
-app.use('/item', itemRouter)
+app.use('/tables', tableRouter)
+app.use('/orders', orderRouter)
+app.use('/items', itemRouter)
 
 export default app

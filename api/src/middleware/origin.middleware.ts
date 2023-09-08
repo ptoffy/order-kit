@@ -15,12 +15,12 @@ export function originMiddleware(allowedOrigins: string[]) {
 
         if (origin && !allowedOrigins.includes(origin as string)) {
             logger.warn(`Origin ${origin} is not allowed`)
-            return res.status(403).json({ message: 'Forbidden' })
+            return res.status(403).json({ message: 'Forbidden, origin not allowed' })
         }
 
         if (referer && !allowedOrigins.some(o => referer.startsWith(o))) {
             logger.warn(`Referer ${referer} is not allowed`)
-            return res.status(403).json({ message: 'Forbidden' })
+            return res.status(403).json({ message: 'Forbidden, referer not allowed' })
         }
 
         next()

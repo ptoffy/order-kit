@@ -5,7 +5,7 @@ const router = require('express')()
 
 /**
  * @swagger
- * /item:
+ * /items:
  *   get:
  *     summary: Retrieve a list of menu items.
  *     description: Fetches all the menu items from the database.

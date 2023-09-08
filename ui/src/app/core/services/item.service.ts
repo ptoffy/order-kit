@@ -7,11 +7,12 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ItemService {
+  private basePath = 'items'
   constructor(private apiService: ApiService) { }
 
   list(category: MenuItemCategory | null = null): Observable<MenuItem[]> {
     if (category)
-      return this.apiService.get(`item?category=${category}`)
-    return this.apiService.get('item')
+      return this.apiService.get(`${this.basePath}?category=${category}`)
+    return this.apiService.get(`${this.basePath}`)
   }
 }
