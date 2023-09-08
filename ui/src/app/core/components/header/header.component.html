@@ -15,24 +15,24 @@
             [routerLinkActiveOptions]="{ exact: true }">Home</a>
         </li>
         <li *ngIf="currentUserRole == UserRole.Cashier" class="nav-item">
-          <a class="nav-link" routerLink="/user/list" routerLinkActive="active">Users</a>
+          <a class="nav-link" routerLink="/users/list" routerLinkActive="active">Users</a>
         </li>
         <li *ngIf="currentUserRole == UserRole.Waiter || currentUserRole == UserRole.Cashier" class="nav-item">
-          <a class="nav-link" routerLink="/table/list" routerLinkActive="active">Tables</a>
+          <a class="nav-link" routerLink="/tables/list" routerLinkActive="active">Tables</a>
         </li>
         <li *ngIf="currentUserRole == UserRole.Cook || currentUserRole == UserRole.Bartender" class="nav-item">
-          <a class="nav-link" routerLink="/order/preparation" routerLinkActive="active">Orders</a>
+          <a class="nav-link" routerLink="/orders/preparation" routerLinkActive="active">Orders</a>
         </li>
         <li *ngIf="currentUserRole == UserRole.Waiter || currentUserRole == UserRole.Cashier">
-          <a class="nav-link" routerLink="/order/status" routerLinkActive="active">Orders</a>
+          <a class="nav-link" routerLink="/orders/status" routerLinkActive="active">Orders</a>
         </li>
         <li *ngIf="currentUserRole == UserRole.Cashier" class="nav-item">
-          <a class="nav-link" routerLink="/user/stats" routerLinkActive="active">Stats</a>
+          <a class="nav-link" routerLink="/users/stats" routerLinkActive="active">Stats</a>
         </li>
       </ul>
       <div *ngIf="!isLoggedIn" class="d-lg-flex col-lg-3 justify-content-lg-end">
-        <a routerLink="/user/login" class="btn btn-outline btn-sm me-2">Login</a>
-        <a routerLink="/user/register" class="btn btn-success btn-sm">Register</a>
+        <a routerLink="/users/login" class="btn btn-outline btn-sm me-2">Login</a>
+        <a routerLink="/users/register" class="btn btn-success btn-sm">Register</a>
       </div>
       <div *ngIf="isLoggedIn" class="d-lg-flex col-lg-3 justify-content-lg-end">
         <div class="dropdown me-2">

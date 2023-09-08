@@ -2,6 +2,10 @@ import logger from '../logger'
 import { User, UserRole, UserType } from '../models/user.model'
 import bcrypt from 'bcrypt'
 
+/**
+ * Seeds the user collection.
+ * @returns {Promise<void>} A promise that resolves when the collection has been seeded.
+ */
 export async function seedUser() {
     const count = await User.countDocuments()
 

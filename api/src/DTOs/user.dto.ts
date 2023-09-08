@@ -29,25 +29,6 @@ export class RegistrationRequest {
     @IsNotEmpty()
     role!: string
 }
-
-class CreateUserDTO {
-    @IsString()
-    @IsNotEmpty()
-    username!: string
-
-    @IsString()
-    @IsNotEmpty()
-    password!: string
-
-    @IsString()
-    @IsNotEmpty()
-    name!: string
-
-    @IsString()
-    @IsIn(Object.values(UserRole))
-    role!: UserRole
-}
-
 export class LoginResponse {
     header!: string
     payload!: string

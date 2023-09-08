@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/core/services/auth.service'
 import { PayModalComponent } from '../pay-modal/pay-modal.component'
 
 @Component({
-  selector: 'app-list',
+  selector: 'app-table-list',
   templateUrl: './list.component.html',
   styles: []
 })

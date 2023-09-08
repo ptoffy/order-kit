@@ -13,7 +13,7 @@ import { TableService } from 'src/app/core/services/table.service';
 export class CreateComponent {
   MenuItemCategory = MenuItemCategory
   tables!: number[]
-  createOrderRequest: CreateOrderRequest = { table: 1, items: [], type: 'food' }
+  createOrderRequest: CreateOrderRequest = { table: -1, items: [], type: 'food' }
   private _selectedCategory: 'food' | 'drinks' | null = null
   items: { food: MenuItem[], drinks: MenuItem[] } = { food: [], drinks: [] }
   selectedItems: { item: MenuItem, count: number }[] = []
@@ -55,7 +55,7 @@ export class CreateComponent {
         type: 'food',
       }
       this.selectedItems = []
-      this.router.navigate(['/order/waiter-list'])
+      this.router.navigate(['/orders/waiter-list'])
     })
   }
 

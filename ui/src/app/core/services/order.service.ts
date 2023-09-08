@@ -8,13 +8,14 @@ import { BestSellingItemResponse, CreateOrderRequest } from "../dtos/order.dto"
   providedIn: "root"
 })
 export class OrderService {
+  private basePath = 'orders'
   constructor(private apiService: ApiService) { }
 
   list(
     status: OrderStatus | null = null,
     tableNumber: number | null = null
   ): Observable<Order[]> {
-    let query = 'order'
+    let query = this.basePath
     const queryParams = []
     if (status !== null) {
       queryParams.push(`status=${status}`)
@@ -30,22 +31,22 @@ export class OrderService {
 
 
   create(order: CreateOrderRequest): Observable<void> {
-    return this.apiService.post(`order`, order)
+    return this.apiService.post(this.basePath, order)
   }
 
   update(order: Order): Observable<void> {
-    return this.apiService.post(`order/${order._id}/update`, order)
+    return this.apiService.post(`${this.basePath}/${order._id}/update`, order)
   }
 
   updateBulk(orders: Order[]): Observable<void> {
-    return this.apiService.post(`order/update-bulk`, { orders })
+    return this.apiService.post(`${this.basePath}/update-bulk`, { orders })
   }
 
   fetchBudgetForDay(date: string): Observable<number> {
-    return this.apiService.get(`order/budget?date=${date}`)
+    return this.apiService.get(`${this.basePath}/budget?date=${date}`)
   }
 
   fetchBestSellingItems(): Observable<BestSellingItemResponse[]> {
-    return this.apiService.get(`order/best-selling-items`)
+    return this.apiService.get(`${this.basePath}/best-selling-items`)
   }
 }

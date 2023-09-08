@@ -8,6 +8,11 @@ import { jwtUtil } from '../utils/jwt.util'
 import mongoose from 'mongoose'
 import { LoginRequest, LoginResponse, RegistrationRequest } from '../DTOs/user.dto'
 
+/**
+ * Gets all users.
+ * @param req The request object. 
+ * @param res The response object. 
+ */
 export async function usersHandler(req: Request, res: Response) {
     try {
         const userId = mongoose.mongo.ObjectId.createFromHexString(req.userId!)
@@ -19,6 +24,11 @@ export async function usersHandler(req: Request, res: Response) {
     }
 }
 
+/**
+ * Gets the currently logged in user.
+ * @param req The request object.
+ * @param res The response object. 
+ */
 export async function meHandler(req: Request, res: Response) {
     try {
         const user = await User.findById(req.userId)
@@ -30,6 +40,11 @@ export async function meHandler(req: Request, res: Response) {
     }
 }
 
+/**
+ * Registers a new user.
+ * @param req The request object.
+ * @param res The response object. 
+ */
 export async function registerHandler(req: Request, res: Response) {
     try {
         const registrationRequest = plainToClass(RegistrationRequest, req.body)
@@ -62,6 +77,11 @@ export async function registerHandler(req: Request, res: Response) {
     }
 }
 
+/**
+ * Logs in a user.
+ * @param req The request object.
+ * @param res The response object.
+ */
 export async function loginHandler(req: Request, res: Response) {
     try {
         const loginRequest = plainToClass(LoginRequest, req.body)

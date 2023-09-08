@@ -1,6 +1,10 @@
 import logger from "../logger"
 import { MenuItem, MenuItemCategory, MenuItemType } from "../models/item.model"
 
+/**
+ * Seeds the menu items collection.
+ * @returns {Promise<void>} A promise that resolves when the collection has been seeded.
+ */
 export async function seedMenuItems(): Promise<void> {
     const count = await MenuItem.countDocuments()
 

@@ -1,6 +1,10 @@
 import logger from "../logger"
 import { Table } from "../models/table.model"
 
+/**
+ * Seeds the table collection.
+ * @returns {Promise<void>} A promise that resolves when the collection has been seeded.
+ */
 export async function seedTables() {
     const count = await Table.countDocuments()
 
