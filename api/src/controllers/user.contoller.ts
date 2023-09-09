@@ -69,7 +69,7 @@ export async function registerHandler(req: Request, res: Response) {
 
         // Generate a JWT token
         const { header, payload, signature, expiration } = generateAuthToken(user)
-        res.cookie('jwt', `${signature}`, { httpOnly: true, expires: new Date(expiration), secure: false })
+        res.cookie('jwt', `${signature}`, { httpOnly: true, expires: new Date(expiration), secure: false, sameSite: 'strict' })
         res.status(201).json(new LoginResponse(header, payload, expiration, user.role, user._id.toHexString()))
     } catch (error) {
         logger.error("Error registering: " + error)
@@ -111,7 +111,7 @@ export async function loginHandler(req: Request, res: Response) {
 
         // Generate a JWT token
         const { header, payload, signature, expiration } = generateAuthToken(user)
-        res.cookie('jwt', `${signature}`, { expires: new Date(expiration), secure: false, httpOnly: true })
+        res.cookie('jwt', `${signature}`, { expires: new Date(expiration), secure: false, httpOnly: true, sameSite: 'strict' })
         res.status(200).json(new LoginResponse(header, payload, expiration, user.role, user._id.toHexString()))
     } catch (error) {
         logger.error("Error logging in: " + error)
