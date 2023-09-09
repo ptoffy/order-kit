@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core'
-import { BehaviorSubject, Observable, tap } from 'rxjs'
+import { BehaviorSubject, Observable, Subject, tap } from 'rxjs'
 import { User, UserRole } from '../models/user.model'
 import { ApiService } from 'src/app/core/services/api.service'
 import { LoginResponse } from '../dtos/user.dto'
-import { NotificationService } from './notification.service'
 
 /**
  * Service to manage authentication.
@@ -19,6 +18,8 @@ export class AuthService {
   private jwtExpirationStorageName = 'auth-token-expiration'
   private currentUserRoleStorageName = 'user-role'
   private currentUserIdStorageName = 'user-id'
+  private logoutSubject = new Subject<void>()
+  public readonly logout$ = this.logoutSubject.asObservable()
 
   /**
    * Constructor.
@@ -26,7 +27,6 @@ export class AuthService {
    */
   constructor(
     private apiService: ApiService,
-    private notificationService: NotificationService,
   ) {
     this.isAuthenticatedSubject.next(this.isAuthenticated())
   }
@@ -113,7 +113,7 @@ export class AuthService {
     localStorage.removeItem(this.currentUserRoleStorageName)
     localStorage.removeItem(this.currentUserIdStorageName)
     this.isAuthenticatedSubject.next(false)
-    this.notificationService.emptyNotifications()
+    this.logoutSubject.next()
   }
 
   /**
