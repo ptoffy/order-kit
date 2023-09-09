@@ -26,8 +26,21 @@ The database will be seeded with some initial data: two users for every role:
 
 All users have the password `password`.
 
+There's also some other data seeded in the database, 6 tables, some menu items and some orders, some tables already have customers and waiters assigned to them, so you can go ahead with the orders flow.
+All orders which are seeded are marked as paid and closed, so they won't show up in the orders page, they're just to have some statistics to show.
+
+> [!NOTE]\
+> The most interesting way to use the application is to open up different windows in the browser, each one with a different user logged in, this way you can see how notifications and live updates on the order status page work. 
+
+The orders flow is explained in detail in the documentation, but the general idea is that after customers come in, the waiter can occupy a table and assign theirself to it. Aftwerwards they can create an order, then a cook or a bartender work on it, the waiter serves it and finally the cashier closes it.
+
 > [!WARNING]\
 > If you're running the application __without__ Docker (e.g. with `npm` directly), the backend relies on an `.env` file to set environment variables. This file is not included in the repository for security reasons. If you want to run the application locally, you will need to create this file following the `.env.example` file.
 
 > [!IMPORTANT]\
 > At http://localhost:3000/api-docs/ you can find the Swagger documentation for the backend API.
+
+> [!IMPORTANT]\
+> Don't open the frontend using 127.0.0.1! This will cause CORS errors and cookies will not be stored. Always use localhost.
+
+

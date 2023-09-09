@@ -46,8 +46,7 @@ import { seedMenuItems } from './seeds/item.seed'
 
 mongoose.connect(process.env.MONGODB_URI).then(() => {
     logger.info('🐱 Connected to MongoDB')
-    seedUser()
-    seedTables()
+    seedUser().then(() => seedTables())
     seedMenuItems().then(() => seedOrders())
 }).catch((err: Error) => {
     logger.error('❌ MongoDB connection error: ' + err)

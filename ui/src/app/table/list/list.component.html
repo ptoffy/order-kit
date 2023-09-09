@@ -30,10 +30,6 @@
                   (click)="onOccupyModal(table.number)">
                   Occupy
                 </button>
-                <button *ngIf="table.occupancy !== 0" class="btn btn-sm ms-2 btn-outline-warning"
-                  (click)="onFree(table.number)">
-                  Free
-                </button>
               </div>
               <div *ngIf="currentUserRole === UserRole.Cashier" class="d-flex justify-content-end align-items-center">
                 <button *ngIf="table.occupancy !== 0" class="btn btn-sm btn-outline-info"
