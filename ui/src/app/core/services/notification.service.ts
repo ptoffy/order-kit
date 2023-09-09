@@ -20,6 +20,10 @@ export class NotificationService {
     private authService: AuthService
   ) {
     this.socket = io(environment.apiUrl)
+    this.authService.logout$.subscribe(() => {
+      this.emptyNotifications()
+      this.socket.disconnect()
+    })
   }
 
   showNotification(message: string) {
